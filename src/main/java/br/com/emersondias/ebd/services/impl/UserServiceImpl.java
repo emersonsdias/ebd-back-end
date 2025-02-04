@@ -7,6 +7,7 @@ import br.com.emersondias.ebd.mappers.UserMapper;
 import br.com.emersondias.ebd.repositories.UserRepository;
 import br.com.emersondias.ebd.services.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +21,13 @@ import static java.util.Objects.requireNonNull;
 public class UserServiceImpl implements IUserService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO create(UserDTO userDTO) {
         requireNonNull(userDTO);
         userDTO.setId(null);
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userDTO.setActive(true);
         User userEntity = repository.save(UserMapper.toEntity(userDTO));
         return UserMapper.toDTO(userEntity);
@@ -44,7 +47,7 @@ public class UserServiceImpl implements IUserService {
         userEntity.setName(userDTO.getName());
         userEntity.setEmail(userDTO.getEmail());
         if (nonNull(userDTO.getPassword()) && !userDTO.getPassword().isBlank()) {
-            userEntity.setPassword(userDTO.getPassword());
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
         userEntity.setActive(userDTO.isActive());
     }
