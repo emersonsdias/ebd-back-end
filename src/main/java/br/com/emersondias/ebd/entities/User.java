@@ -10,7 +10,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -53,19 +52,19 @@ public class User implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public Set<UserRole> getRoles() {
+        if (isNull(roles)) {
+            return new HashSet<>();
+        }
+        return roles.stream().map(UserRole::toEnum).collect(Collectors.toSet());
+    }
+
     public void setRoles(Set<UserRole> roles) {
         if (isNull(roles)) {
             this.roles = null;
             return;
         }
         this.roles = roles.stream().map(UserRole::getCod).collect(Collectors.toSet());
-    }
-
-    public Set<UserRole> getRoles() {
-        if (isNull(roles)) {
-            return new HashSet<>();
-        }
-        return roles.stream().map(UserRole::toEnum).collect(Collectors.toSet());
     }
 
     public void addRole(UserRole role) {

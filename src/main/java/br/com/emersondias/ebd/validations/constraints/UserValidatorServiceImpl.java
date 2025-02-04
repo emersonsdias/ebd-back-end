@@ -98,7 +98,7 @@ public class UserValidatorServiceImpl implements ConstraintValidator<UserDTOVali
         if (FIELD_VALUE.length() > LENGTH_MAX) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
-        repository.findByEmail(FIELD_VALUE).ifPresent(userEntity -> {
+        repository.findByEmailIgnoreCase(FIELD_VALUE).ifPresent(userEntity -> {
             if (!userEntity.getId().equals(userDTO.getId())) {
                 addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O e-mail '" + FIELD_VALUE + "' já está em uso por outro usuário");
             }

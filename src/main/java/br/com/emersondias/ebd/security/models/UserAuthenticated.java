@@ -1,14 +1,13 @@
 package br.com.emersondias.ebd.security.models;
 
 import br.com.emersondias.ebd.entities.User;
+import br.com.emersondias.ebd.entities.enums.UserRole;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 public class UserAuthenticated implements UserDetails {
@@ -22,7 +21,7 @@ public class UserAuthenticated implements UserDetails {
     @Getter
     private final String name;
 
-    private UserAuthenticated(User user) {
+    public UserAuthenticated(User user) {
         super();
         id = user.getId();
         username = user.getEmail();
@@ -34,17 +33,40 @@ public class UserAuthenticated implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return active;
+    }
+
+    public boolean hasRole(UserRole role) {
+        return getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + role.getDescription()));
+    }
 }

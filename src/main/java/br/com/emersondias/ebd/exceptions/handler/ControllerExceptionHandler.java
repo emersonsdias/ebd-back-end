@@ -22,7 +22,7 @@ import java.time.Instant;
 })
 public class ControllerExceptionHandler {
 
-    LogHelper LOG = LogHelper.getInstance();
+    private static final LogHelper LOG = LogHelper.getInstance();
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardErrorDTO> resourceNotFoundHandler(ResourceNotFoundException e, HttpServletRequest request) {
