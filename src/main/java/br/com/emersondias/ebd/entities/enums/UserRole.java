@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public enum UserRole {
 
     ADMIN(1, "ADMIN"),
-    BASIC(2, "BASIC");
+    TEACHER(2, "TEACHER");
 
     private final int cod;
     private final String description;

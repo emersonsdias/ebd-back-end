@@ -1,4 +1,6 @@
-create table users (
+create schema app;
+
+create table app.users (
     id uuid not null,
     name varchar(255) not null,
     email varchar(255) not null unique,

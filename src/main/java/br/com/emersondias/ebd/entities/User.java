@@ -22,7 +22,7 @@ import static java.util.Objects.isNull;
 @Setter
 @Builder
 @Entity
-@Table(name = "users")
+@Table(schema = "app", name = "users")
 public class User implements Serializable {
 
     @Id
@@ -40,7 +40,7 @@ public class User implements Serializable {
     @Setter(AccessLevel.NONE)
     @Singular
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(schema = "app", name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     private Set<Integer> roles = new HashSet<>();
     @Column(name = "active")
