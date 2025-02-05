@@ -2,7 +2,6 @@ package br.com.emersondias.ebd.services.impl;
 
 import br.com.emersondias.ebd.dtos.UserDTO;
 import br.com.emersondias.ebd.entities.User;
-import br.com.emersondias.ebd.entities.enums.UserRole;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.UserMapper;
 import br.com.emersondias.ebd.repositories.UserRepository;
@@ -12,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static java.util.Objects.nonNull;

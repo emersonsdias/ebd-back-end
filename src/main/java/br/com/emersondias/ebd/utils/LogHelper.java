@@ -30,6 +30,17 @@ public class LogHelper {
         this.LOG.debug(message.concat(reference));
     }
 
+    public void info(Object message) {
+        this.LOG.info(message);
+    }
+
+    public void info(String message, Object... references) {
+        String reference = Arrays.stream(references)
+                .map(Objects::toString)
+                .reduce("", (a, b) -> a.concat("[").concat(b).concat("]"));
+        this.LOG.info(message.concat(reference));
+    }
+
     public void error(Object message) {
         this.LOG.error(message);
     }

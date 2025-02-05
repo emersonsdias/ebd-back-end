@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
 
@@ -16,5 +17,10 @@ public class AppConfig {
         return new GsonBuilder()
                 .registerTypeAdapter(Instant.class, new InstantAdapter())
                 .create();
+    }
+
+    @Bean
+    public static RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }
