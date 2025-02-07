@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,7 +68,7 @@ public class Person implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
+    public void setPhoneNumbers(Collection<PhoneNumber> phoneNumbers) {
         if (isNull(phoneNumbers)) {
             this.phoneNumbers.clear();
             return;

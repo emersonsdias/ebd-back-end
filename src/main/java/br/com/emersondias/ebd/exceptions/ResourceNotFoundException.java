@@ -15,4 +15,11 @@ public class ResourceNotFoundException extends RuntimeException {
         this.term = id.toString();
         this.classType = classType;
     }
+
+    public ResourceNotFoundException(Long id, Class<?> classType) {
+        super("Resource not found, id: [" + id.toString() + "], class name: [" + classType.getSimpleName() + "]");
+        this.term = id.toString();
+        this.classType = classType;
+    }
+
 }

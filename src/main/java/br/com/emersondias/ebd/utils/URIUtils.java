@@ -14,6 +14,11 @@ public class URIUtils {
         return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id]").buildAndExpand(id).toUri();
     }
 
+    public static URI buildUri(Long id) {
+        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id]").buildAndExpand(id).toUri();
+    }
+
+
     public static UUID findUuidAfterPath(String url, String path) {
         var id = findNextSegmentAfterPath(url, path);
         if (nonNull(id)) {
