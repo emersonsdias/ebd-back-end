@@ -1,8 +1,11 @@
 package br.com.emersondias.ebd.services.impl;
 
+import br.com.emersondias.ebd.dtos.AddressDTO;
 import br.com.emersondias.ebd.dtos.PersonDTO;
+import br.com.emersondias.ebd.entities.Address;
 import br.com.emersondias.ebd.entities.Person;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
+import br.com.emersondias.ebd.mappers.CityMapper;
 import br.com.emersondias.ebd.mappers.PersonMapper;
 import br.com.emersondias.ebd.mappers.PhoneNumberMapper;
 import br.com.emersondias.ebd.repositories.PersonRepository;
@@ -50,6 +53,16 @@ public class PersonServiceImpl implements IPersonService {
         personEntity.setEmail(personDTO.getEmail());
         personEntity.setActive(personDTO.isActive());
         personEntity.setPhoneNumbers(personDTO.getPhoneNumbers().stream().map(PhoneNumberMapper::toEntity).toList());
+        updateAddress(personEntity.getAddress(), personDTO.getAddress());
+    }
+
+    private void updateAddress(Address addressEntity, AddressDTO addressDTO) {
+        addressEntity.setStreet(addressDTO.getStreet());
+        addressEntity.setNumber(addressDTO.getNumber());
+        addressEntity.setComplement(addressDTO.getComplement());
+        addressEntity.setNeighborhood(addressDTO.getNeighborhood());
+        addressEntity.setZipCode(addressDTO.getZipCode());
+        addressEntity.setCity(CityMapper.toEntity(addressDTO.getCity()));
     }
 
 

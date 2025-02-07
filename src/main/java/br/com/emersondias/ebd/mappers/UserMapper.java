@@ -2,7 +2,6 @@ package br.com.emersondias.ebd.mappers;
 
 import br.com.emersondias.ebd.dtos.UserDTO;
 import br.com.emersondias.ebd.entities.User;
-import br.com.emersondias.ebd.entities.enums.UserRole;
 
 public class UserMapper {
 
@@ -25,7 +24,7 @@ public class UserMapper {
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
-                .roles(dto.getRoles().stream().map(UserRole::getCod).toList())
+                .roles(dto.getRoles())
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())

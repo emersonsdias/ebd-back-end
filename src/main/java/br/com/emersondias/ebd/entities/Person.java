@@ -1,5 +1,11 @@
 package br.com.emersondias.ebd.entities;
 
+import br.com.emersondias.ebd.entities.enums.EducationLevel;
+import br.com.emersondias.ebd.entities.enums.Gender;
+import br.com.emersondias.ebd.entities.enums.MaritalStatus;
+import br.com.emersondias.ebd.entities.enums.converters.EducationLevelConverter;
+import br.com.emersondias.ebd.entities.enums.converters.GenderConverter;
+import br.com.emersondias.ebd.entities.enums.converters.MaritalStatusConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnTransformer;
@@ -36,6 +42,18 @@ public class Person implements Serializable {
     @ColumnTransformer(write = "LOWER(?)")
     @Column(name = "email")
     private String email;
+    @Convert(converter = GenderConverter.class)
+    @Column(name = "gender")
+    private Gender gender;
+    @Convert(converter = EducationLevelConverter.class)
+    @Column(name = "education_level")
+    private EducationLevel educationLevel;
+    @Convert(converter = MaritalStatusConverter.class)
+    @Column(name = "marital_status")
+    private MaritalStatus maritalStatus;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)

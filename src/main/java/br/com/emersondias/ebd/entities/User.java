@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.entities;
 
 import br.com.emersondias.ebd.entities.enums.UserRole;
+import br.com.emersondias.ebd.entities.enums.converters.UserRoleConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnTransformer;
@@ -12,7 +13,6 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
@@ -36,13 +36,12 @@ public class User implements Serializable {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
     @Singular
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(schema = "app", name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Convert(converter = UserRoleConverter.class)
     @Column(name = "role")
-    private Set<Integer> roles = new HashSet<>();
+    private Set<UserRole> roles = new HashSet<>();
     @Column(name = "active")
     private boolean active;
     @CreationTimestamp
@@ -52,26 +51,11 @@ public class User implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    public Set<UserRole> getRoles() {
-        if (isNull(roles)) {
-            return new HashSet<>();
-        }
-        return roles.stream().map(UserRole::toEnum).collect(Collectors.toSet());
-    }
-
-    public void setRoles(Set<UserRole> roles) {
-        if (isNull(roles)) {
-            this.roles = null;
-            return;
-        }
-        this.roles = roles.stream().map(UserRole::getCod).collect(Collectors.toSet());
-    }
-
     public void addRole(UserRole role) {
         if (isNull(roles)) {
             roles = new HashSet<>();
         }
-        roles.add(role.getCod());
+        roles.add(role);
     }
 
 }
