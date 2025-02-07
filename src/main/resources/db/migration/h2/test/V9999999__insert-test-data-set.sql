@@ -1,3 +1,5 @@
+-- Apenas dados para testes, por isso a versão do SQL alta, para ser sempre o último a ser executado
+
 insert into app.users (id, name, email, password, active, created_at, updated_at) values
     ('677ee01b-c521-4681-aa1f-f1f4fe229d77', 'Christian', 'trent_harber32@hotmail.com', '$2a$10$qfd7liQUAdszSQiwmf8lc./MGBFQoyzBonSd66bb.CurEsHitVdfS', true, timestamp with time zone '2025-02-04 21:35:04.369685+00', timestamp with time zone '2025-02-04 21:35:04.369685+00'),
     ('5dde01c1-3a53-4ab8-90fe-51d5cbf3b979', 'Abe', 'devante.feil72@hotmail.com', '$2a$10$/4L227F71NcCLLWXc0OdGe2VEMqiX6MYjZ5wy5Va.r.UrsnW8hCIC', true, timestamp with time zone '2025-02-04 21:35:04.588026+00', timestamp with time zone '2025-02-04 21:35:04.588026+00'),
