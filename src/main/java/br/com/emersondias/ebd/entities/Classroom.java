@@ -20,6 +20,7 @@ import static java.util.Objects.isNull;
 @Table(schema = "app", name = "classrooms")
 public class Classroom implements Serializable {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -48,11 +49,11 @@ public class Classroom implements Serializable {
         }
         this.teachers.removeIf(t -> !teachers.contains(t));
         for (Teacher newTeacher : teachers) {
-            var phoneOpt = this.teachers.stream()
+            var teacherOpt = this.teachers.stream()
                     .filter(newTeacher::equals)
                     .findFirst();
-            if (phoneOpt.isPresent()) {
-                phoneOpt.get().setActive(newTeacher.isActive());
+            if (teacherOpt.isPresent()) {
+                teacherOpt.get().setActive(newTeacher.isActive());
             } else {
                 this.teachers.add(newTeacher);
             }
@@ -66,11 +67,11 @@ public class Classroom implements Serializable {
         }
         this.students.removeIf(s -> !students.contains(s));
         for (Student newStudent : students) {
-            var phoneOpt = this.students.stream()
+            var studentOpt = this.students.stream()
                     .filter(newStudent::equals)
                     .findFirst();
-            if (phoneOpt.isPresent()) {
-                phoneOpt.get().setActive(newStudent.isActive());
+            if (studentOpt.isPresent()) {
+                studentOpt.get().setActive(newStudent.isActive());
             } else {
                 this.students.add(newStudent);
             }

@@ -26,6 +26,7 @@ public class LessonItem implements Serializable {
     @ManyToOne
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
+    @EqualsAndHashCode.Include
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;

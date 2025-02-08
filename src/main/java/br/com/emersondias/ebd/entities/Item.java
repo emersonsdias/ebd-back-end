@@ -17,6 +17,7 @@ import java.time.Instant;
 @Table(schema = "app", name = "items")
 public class Item implements Serializable {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

@@ -23,6 +23,7 @@ public class Attendance implements Serializable {
     private Long id;
     @Column(name = "present", nullable = false)
     private boolean present;
+    @EqualsAndHashCode.Include
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;

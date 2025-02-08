@@ -4,15 +4,16 @@ import br.com.emersondias.ebd.dtos.ClassroomPersonDTO;
 import br.com.emersondias.ebd.entities.Person;
 import br.com.emersondias.ebd.entities.Teacher;
 
-import static java.util.Objects.nonNull;
+import java.util.Optional;
 
 public class TeacherMapper {
 
     public static ClassroomPersonDTO toDTO(Teacher entity) {
+        var personOpt = Optional.ofNullable(entity.getPerson());
         return ClassroomPersonDTO.builder()
                 .id(entity.getId())
-                .personId(nonNull(entity.getPerson()) ? entity.getPerson().getId() : null)
-                .personName(nonNull(entity.getPerson()) ? entity.getPerson().getName() : null)
+                .personId(personOpt.map(Person::getId).orElse(null))
+                .personName(personOpt.map(Person::getName).orElse(null))
                 .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
