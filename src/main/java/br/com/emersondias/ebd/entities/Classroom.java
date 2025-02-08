@@ -27,6 +27,9 @@ public class Classroom implements Serializable {
     private Long id;
     @Column(name = "name")
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "age_range_id")
+    private AgeRange ageRange;
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)

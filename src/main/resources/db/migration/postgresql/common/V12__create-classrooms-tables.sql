@@ -1,6 +1,7 @@
 create table app.classrooms (
     id bigserial primary key,
     name varchar(255) not null,
+    age_range_id int,
     active boolean not null,
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now()

@@ -2,6 +2,7 @@ package br.com.emersondias.ebd.constants;
 
 public class RouteConstants {
 
+    public static final String AGE_RANGES_ROUTE = "/age-ranges";
     public static final String AUTH_ROUTE = "/auth";
     public static final String CLASSROOMS_ROUTE = "/classrooms";
     public static final String ITEMS_ROUTE = "/items";
