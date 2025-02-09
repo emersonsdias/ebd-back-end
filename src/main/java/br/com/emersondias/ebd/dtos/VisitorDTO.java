@@ -1,5 +1,6 @@
 package br.com.emersondias.ebd.dtos;
 
+import br.com.emersondias.ebd.validations.annotations.VisitorDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Builder
+@VisitorDTOValidator
 public class VisitorDTO implements Serializable {
 
     private Long id;
