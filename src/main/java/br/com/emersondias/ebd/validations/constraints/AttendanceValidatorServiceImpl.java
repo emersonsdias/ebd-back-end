@@ -10,7 +10,6 @@ import br.com.emersondias.ebd.validations.DefaultValidationResult;
 import br.com.emersondias.ebd.validations.ValidationResult;
 import br.com.emersondias.ebd.validations.Validator;
 import br.com.emersondias.ebd.validations.annotations.AttendanceDTOValidator;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ import static java.util.Objects.nonNull;
 @RequiredArgsConstructor
 public class AttendanceValidatorServiceImpl implements Validator<AttendanceDTO>, ConstraintValidator<AttendanceDTOValidator, AttendanceDTO> {
 
-    private final HttpServletRequest request;
     private final StudentRepository studentRepository;
     private final LessonRepository lessonRepository;
 
