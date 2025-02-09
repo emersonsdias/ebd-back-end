@@ -3,8 +3,6 @@ package br.com.emersondias.ebd.dtos;
 import br.com.emersondias.ebd.entities.enums.UserRole;
 import br.com.emersondias.ebd.validations.annotations.UserDTOValidator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.io.Serializable;
@@ -22,10 +20,7 @@ import java.util.UUID;
 public class UserDTO implements Serializable {
 
     private UUID id;
-    @NotNull
     private String name;
-    @NotNull
-    @Email
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;

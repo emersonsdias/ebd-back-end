@@ -1,7 +1,7 @@
 package br.com.emersondias.ebd.security.filters;
 
 import br.com.emersondias.ebd.config.AppConfig;
-import br.com.emersondias.ebd.dtos.StandardErrorDTO;
+import br.com.emersondias.ebd.dtos.errors.StandardErrorDTO;
 import br.com.emersondias.ebd.security.dtos.CredentialsDTO;
 import br.com.emersondias.ebd.security.jwt.JwtTokenProvider;
 import br.com.emersondias.ebd.security.models.UserAuthenticated;

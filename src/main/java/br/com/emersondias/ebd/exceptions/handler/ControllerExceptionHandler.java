@@ -1,6 +1,6 @@
 package br.com.emersondias.ebd.exceptions.handler;
 
-import br.com.emersondias.ebd.dtos.StandardErrorDTO;
+import br.com.emersondias.ebd.dtos.errors.StandardErrorDTO;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.utils.LogHelper;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

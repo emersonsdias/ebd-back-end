@@ -1,4 +1,4 @@
-package br.com.emersondias.ebd.dtos;
+package br.com.emersondias.ebd.dtos.errors;
 
 import lombok.*;
 

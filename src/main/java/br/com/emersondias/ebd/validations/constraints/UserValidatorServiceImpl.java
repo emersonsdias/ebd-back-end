@@ -1,11 +1,14 @@
 package br.com.emersondias.ebd.validations.constraints;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
-import br.com.emersondias.ebd.dtos.FieldMessageDTO;
 import br.com.emersondias.ebd.dtos.UserDTO;
+import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
 import br.com.emersondias.ebd.repositories.UserRepository;
 import br.com.emersondias.ebd.utils.URIUtils;
 import br.com.emersondias.ebd.utils.ValidationUtils;
+import br.com.emersondias.ebd.validations.DefaultValidationResult;
+import br.com.emersondias.ebd.validations.ValidationResult;
+import br.com.emersondias.ebd.validations.Validator;
 import br.com.emersondias.ebd.validations.annotations.UserDTOValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintValidator;
@@ -22,28 +25,35 @@ import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
-public class UserValidatorServiceImpl implements ConstraintValidator<UserDTOValidator, UserDTO> {
+public class UserValidatorServiceImpl implements Validator<UserDTO>, ConstraintValidator<UserDTOValidator, UserDTO> {
 
     private final HttpServletRequest request;
     private final UserRepository repository;
 
     @Override
-    public boolean isValid(UserDTO userDTO, ConstraintValidatorContext context) {
+    public ValidationResult<UserDTO> validate(UserDTO userDTO) {
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
-        validateRoute(userDTO, errors);
         validateName(userDTO, errors);
         validateEmail(userDTO, errors);
         validatePassword(userDTO, errors);
 
-        errors.forEach(error -> {
+        return new DefaultValidationResult<>(userDTO, errors);
+    }
+
+    @Override
+    public boolean isValid(UserDTO userDTO, ConstraintValidatorContext context) {
+        var validationResult = validate(userDTO);
+        validateRoute(validationResult.getObject(), validationResult.getErrors());
+
+        validationResult.getErrors().forEach(error -> {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(error.getMessage())
                     .addPropertyNode(error.getFieldName())
                     .addConstraintViolation();
         });
 
-        return errors.isEmpty();
+        return validationResult.isValid();
     }
 
     private void validatePassword(UserDTO userDTO, List<FieldMessageDTO> errors) {
@@ -54,7 +64,7 @@ public class UserValidatorServiceImpl implements ConstraintValidator<UserDTOVali
 
         if (isNull(FIELD_VALUE)) {
             if (isNull(userDTO.getId())) {
-                addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha não pode ser nula");
+                addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha não pode ser vazia");
             }
             return;
         }
@@ -109,7 +119,7 @@ public class UserValidatorServiceImpl implements ConstraintValidator<UserDTOVali
         final var FIELD_NAME = "name";
         final var FIELD_VALUE = userDTO.getName();
 
-        final var LENGTH_MIN = 3;
+        final var LENGTH_MIN = 2;
         final var LENGTH_MAX = 255;
 
         if (isNull(FIELD_VALUE)) {
@@ -144,4 +154,5 @@ public class UserValidatorServiceImpl implements ConstraintValidator<UserDTOVali
                 .message(message)
                 .build());
     }
+
 }
