@@ -27,6 +27,16 @@ public class URIUtils {
         return null;
     }
 
+    public static Long findIdAfterPath(String url, String path) {
+        var id = findNextSegmentAfterPath(url, path);
+        if (nonNull(id)) {
+            if (ValidationUtils.isOnlyNumbers(id)) {
+                return Long.valueOf(id);
+            }
+        }
+        return null;
+    }
+
     public static String findNextSegmentAfterPath(String url, String path) {
         requireNonNull(url);
         requireNonNull(path);

@@ -1,5 +1,6 @@
 package br.com.emersondias.ebd.dtos;
 
+import br.com.emersondias.ebd.validations.annotations.ClassroomDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@ClassroomDTOValidator
 public class ClassroomDTO implements Serializable {
 
     private Long id;
