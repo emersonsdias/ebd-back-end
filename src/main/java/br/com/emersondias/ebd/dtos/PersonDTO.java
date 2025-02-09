@@ -3,6 +3,7 @@ package br.com.emersondias.ebd.dtos;
 import br.com.emersondias.ebd.entities.enums.EducationLevel;
 import br.com.emersondias.ebd.entities.enums.Gender;
 import br.com.emersondias.ebd.entities.enums.MaritalStatus;
+import br.com.emersondias.ebd.validations.annotations.PersonDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@PersonDTOValidator
 public class PersonDTO implements Serializable {
 
     private UUID id;

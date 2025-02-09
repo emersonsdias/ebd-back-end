@@ -1,5 +1,6 @@
 package br.com.emersondias.ebd.dtos;
 
+import br.com.emersondias.ebd.validations.annotations.PhoneNumberDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@PhoneNumberDTOValidator
 public class PhoneNumberDTO implements Serializable {
 
     private UUID id;

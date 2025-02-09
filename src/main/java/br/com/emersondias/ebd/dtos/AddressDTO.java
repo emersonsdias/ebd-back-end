@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.dtos;
 
 import br.com.emersondias.ebd.dtos.location.CityDTO;
+import br.com.emersondias.ebd.validations.annotations.AddressDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@AddressDTOValidator
 public class AddressDTO implements Serializable {
 
     private UUID id;

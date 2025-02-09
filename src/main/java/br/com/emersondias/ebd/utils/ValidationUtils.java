@@ -41,4 +41,12 @@ public class ValidationUtils {
         return text.matches(regex);
     }
 
+    public static boolean isOnlyNumbers(String text) {
+        if (isNull(text) || text.isBlank()) {
+            return false;
+        }
+        return text.matches("\\d+");
+    }
+
+
 }

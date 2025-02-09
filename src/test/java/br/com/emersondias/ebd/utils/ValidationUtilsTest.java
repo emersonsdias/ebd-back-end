@@ -57,4 +57,19 @@ public class ValidationUtilsTest {
         assertTrue(containsSpecialCharacters("test@test.com"));
         assertTrue(containsSpecialCharacters("<3"));
     }
+
+    @Test
+    public void isOnlyNumbers_shouldvalidateIfTextContainsOnlyNumbers() {
+        assertFalse(isOnlyNumbers(null));
+        assertFalse(isOnlyNumbers(""));
+        assertFalse(isOnlyNumbers(" "));
+        assertFalse(isOnlyNumbers("1 2"));
+        assertFalse(isOnlyNumbers("test"));
+        assertFalse(isOnlyNumbers("test123"));
+
+        assertTrue(isOnlyNumbers("1"));
+        assertTrue(isOnlyNumbers("2"));
+        assertTrue(isOnlyNumbers("0123456789"));
+    }
+
 }
