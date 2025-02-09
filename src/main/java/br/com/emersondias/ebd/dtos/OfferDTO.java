@@ -1,5 +1,6 @@
 package br.com.emersondias.ebd.dtos;
 
+import br.com.emersondias.ebd.validations.annotations.OfferDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Builder
+@OfferDTOValidator
 public class OfferDTO implements Serializable {
 
     private Long id;
