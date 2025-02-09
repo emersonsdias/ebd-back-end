@@ -89,17 +89,17 @@ public class AgeRangeValidatorServiceImpl implements Validator<AgeRangeDTO>, Con
         final var LENGTH_MAX = 100;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da faixa etária não pode ser nulo");
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser vazio");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da faixa etária não pode ser vazio");
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da faixa etária deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da faixa etária pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
 
         ageRangeRepository.findByName(FIELD_VALUE).ifPresent(ageRange -> {

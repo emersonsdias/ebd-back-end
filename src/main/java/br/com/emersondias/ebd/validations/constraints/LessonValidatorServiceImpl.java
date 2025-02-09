@@ -118,12 +118,12 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
         final var FIELD_VALUE = lessonDTO.getClassroomId();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A turma não pode ser nula");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A turma associada a aula não pode ser nula");
             return;
         }
 
         if (classrroomRepository.findById(FIELD_VALUE).isEmpty()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi possível encontrar a turma com o id: '" + FIELD_VALUE + "'");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi possível encontrar a turma com o id: '" + FIELD_VALUE + "' para a associar a aula");
         }
     }
 
@@ -138,7 +138,7 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
         }
 
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A observação não pode conter mais do que '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A observação da aula não pode conter mais do que '" + LENGTH_MAX + "' caracteres");
         }
 
     }

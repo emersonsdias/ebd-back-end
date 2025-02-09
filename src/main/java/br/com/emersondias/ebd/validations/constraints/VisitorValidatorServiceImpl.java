@@ -52,12 +52,12 @@ public class VisitorValidatorServiceImpl implements Validator<VisitorDTO>, Const
         final var FIELD_VALUE = visitorDTO.getLessonId();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A aula não pode ser nula");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A aula associada ao visitante não pode ser nula");
             return;
         }
 
         if (lessonRepository.findById(FIELD_VALUE).isEmpty()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada a aula com o id '" + FIELD_VALUE + "'");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada a aula com o id '" + FIELD_VALUE + "' para associar ao visitante");
         }
     }
 
@@ -69,17 +69,17 @@ public class VisitorValidatorServiceImpl implements Validator<VisitorDTO>, Const
         final var LENGTH_MAX = 255;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do visitante não pode ser nulo");
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser vazio");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do visitante não pode ser vazio");
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do visitante deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do visitante pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
     }
 

@@ -59,7 +59,7 @@ public class SchoolProfileValidatorServiceImpl implements Validator<SchoolProfil
         final var FIELD_VALUE = schoolProfileDTO.getAddress();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O endereço não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O endereço do perfil não pode ser nulo");
             return;
         }
         errors.addAll(addressValidator.validate(FIELD_VALUE).getErrors());
@@ -76,7 +76,7 @@ public class SchoolProfileValidatorServiceImpl implements Validator<SchoolProfil
         }
 
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O subtítulo não pode ter mais de '" + FIELD_VALUE + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O subtítulo do perfil não pode ter mais de '" + FIELD_VALUE + "' caracteres");
         }
     }
 
@@ -88,17 +88,17 @@ public class SchoolProfileValidatorServiceImpl implements Validator<SchoolProfil
         final var LENGTH_MAX = 100;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do perfil não pode ser nulo");
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser vazio");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do perfil não pode ser vazio");
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do perfil deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do perfil pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
     }
 

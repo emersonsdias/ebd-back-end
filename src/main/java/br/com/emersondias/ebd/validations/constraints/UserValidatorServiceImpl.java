@@ -64,24 +64,24 @@ public class UserValidatorServiceImpl implements Validator<UserDTO>, ConstraintV
 
         if (isNull(FIELD_VALUE)) {
             if (isNull(userDTO.getId())) {
-                addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha não pode ser vazia");
+                addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha do usuário não pode ser nula");
             }
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha não pode ser vazia");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha do usuário não pode ser vazia");
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha não pode ser menor que '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha do usuário não pode ser menor que '" + LENGTH_MIN + "' caracteres");
         }
         if (!containsLetters(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha deve conter pelo menos uma letra");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha do usuário deve conter pelo menos uma letra");
         }
         if (!containsNumbers(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha deve conter pelo menos um número");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha do usuário deve conter pelo menos um número");
         }
         if (!containsSpecialCharacters(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha deve conter pelo menos um caractere especial");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A senha do usuário deve conter pelo menos um caractere especial");
         }
     }
 
@@ -93,24 +93,24 @@ public class UserValidatorServiceImpl implements Validator<UserDTO>, ConstraintV
         final var LENGTH_MAX = 255;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email do usuário não pode ser nulo");
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email não pode ser vazio");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email do usuário não pode ser vazio");
         }
         if (!ValidationUtils.isValidEmail(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O endereço de email '" + FIELD_VALUE + "' não é válido");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O endereço de email do usuário '" + FIELD_VALUE + "' não é válido");
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email do usuário deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email do usuário pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
         repository.findByEmailIgnoreCase(FIELD_VALUE).ifPresent(userEntity -> {
             if (!userEntity.getId().equals(userDTO.getId())) {
-                addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O e-mail '" + FIELD_VALUE + "' já está em uso por outro usuário");
+                addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O email do usuário '" + FIELD_VALUE + "' já está em uso por outro usuário");
             }
         });
     }
@@ -123,17 +123,17 @@ public class UserValidatorServiceImpl implements Validator<UserDTO>, ConstraintV
         final var LENGTH_MAX = 255;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do usuário não pode ser nulo");
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser vazio");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do usuário não pode ser vazio");
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do usuário deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do usuário pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
     }
 

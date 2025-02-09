@@ -53,12 +53,12 @@ public class OfferValidatorServiceImpl implements Validator<OfferDTO>, Constrain
         final var FIELD_VALUE = offerDTO.getLessonId();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A aula não pode ser nula");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A aula associada a oferta não pode ser nula");
             return;
         }
 
         if (lessonRepository.findById(FIELD_VALUE).isEmpty()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada a aula com o id '" + FIELD_VALUE + "'");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada a aula com o id '" + FIELD_VALUE + "' para associar a oferta");
         }
     }
 

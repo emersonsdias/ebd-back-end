@@ -64,13 +64,13 @@ public class ItemValidatorServiceImpl implements Validator<ItemDTO>, ConstraintV
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O ícone não pode ser vazio");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O ícone do item não pode ser vazio");
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O ícone deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O ícone do item  deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O ícone pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O ícone do item  pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
     }
 
@@ -82,17 +82,17 @@ public class ItemValidatorServiceImpl implements Validator<ItemDTO>, ConstraintV
         final var LENGTH_MAX = 100;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do item não pode ser nulo");
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser vazio");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do  não pode ser vazio");
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do  deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do  pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
 
         repository.findByName(FIELD_VALUE).ifPresent(item -> {

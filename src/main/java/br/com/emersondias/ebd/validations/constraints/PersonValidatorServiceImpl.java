@@ -93,6 +93,9 @@ public class PersonValidatorServiceImpl implements Validator<PersonDTO>, Constra
         if (isNull(FIELD_VALUE)) {
             return;
         }
+        if (FIELD_VALUE.isBlank()) {
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O endereço de email não pode ser vazio");
+        }
         if (!ValidationUtils.isValidEmail(FIELD_VALUE)) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O endereço de email '" + FIELD_VALUE + "' é inválido");
         }
@@ -110,7 +113,7 @@ public class PersonValidatorServiceImpl implements Validator<PersonDTO>, Constra
             return;
         }
         if (FIELD_VALUE.isAfter(LocalDate.now())) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A data de nascimento não pode ser uma data futura");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A data de nascimento da pessoa não pode ser uma data futura");
         }
     }
 
@@ -122,17 +125,17 @@ public class PersonValidatorServiceImpl implements Validator<PersonDTO>, Constra
         final var LENGTH_MAX = 255;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da pessoa não pode ser nulo");
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome não pode ser vazio");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da pessoa não pode ser vazio");
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da pessoa deve ter pelo menos '" + LENGTH_MIN + "' caracteres");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da pessoa pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
     }
 

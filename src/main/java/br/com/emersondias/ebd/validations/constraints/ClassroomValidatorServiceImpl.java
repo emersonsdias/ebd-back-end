@@ -95,12 +95,16 @@ public class ClassroomValidatorServiceImpl implements Validator<ClassroomDTO>, C
         final var LENGTH_MAX = 255;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da classe não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da turma não pode ser nulo");
             return;
         }
 
+        if (FIELD_VALUE.isBlank()) {
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da turma não pode ser vazio");
+        }
+
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da turma pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
 
     }

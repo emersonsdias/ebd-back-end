@@ -56,11 +56,11 @@ public class AddressValidatorServiceImpl implements Validator<AddressDTO>, Const
         final var FIELD_VALUE = addressDTO.getCity();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A cidade não pode ser nula");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A cidade do endereço não pode ser nula");
             return;
         }
         if (cityRepository.findById(FIELD_VALUE.getId()).isEmpty()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A cidade com id informado não foi encontrada. Id: [" + FIELD_VALUE.getId() + "], nome: [" + FIELD_VALUE.getName() + "]");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A cidade do endereço com id informado não foi encontrada. Id: [" + FIELD_VALUE.getId() + "], nome: [" + FIELD_VALUE.getName() + "]");
         }
     }
 
@@ -74,10 +74,10 @@ public class AddressValidatorServiceImpl implements Validator<AddressDTO>, Const
             return;
         }
         if (FIELD_VALUE.length() < LENGTH_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O CEP deve ter no mínimo '" + LENGTH_MIN + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O CEP do endereço deve ter no mínimo '" + LENGTH_MIN + "' caracteres");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O CEP pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O CEP do endereço pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
     }
 
@@ -90,7 +90,7 @@ public class AddressValidatorServiceImpl implements Validator<AddressDTO>, Const
             return;
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do bairro pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome do bairro do endereço pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
     }
 
@@ -103,7 +103,7 @@ public class AddressValidatorServiceImpl implements Validator<AddressDTO>, Const
             return;
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O complemento pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O complemento do endereço pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
     }
 
@@ -128,14 +128,14 @@ public class AddressValidatorServiceImpl implements Validator<AddressDTO>, Const
         final var LENGTH_MAX = 255;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da rua não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da rua do endereço não pode ser nulo");
             return;
         }
         if (FIELD_VALUE.isBlank()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da rua não pode ser vazio");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da rua do endereço não pode ser vazio");
         }
         if (FIELD_VALUE.length() > LENGTH_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da rua pode ter no máximo '" + LENGTH_MAX + "' caracteres");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O nome da rua do endereço pode ter no máximo '" + LENGTH_MAX + "' caracteres");
         }
     }
 

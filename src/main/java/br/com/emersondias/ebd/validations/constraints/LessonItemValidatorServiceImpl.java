@@ -55,7 +55,7 @@ public class LessonItemValidatorServiceImpl implements Validator<LessonItemDTO>,
         final var FIELD_VALUE = lessonItemDTO.getLessonId();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O item não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O item da aula não pode ser nulo");
             return;
         }
         if (itemRepository.findById(FIELD_VALUE).isEmpty()) {
@@ -68,12 +68,12 @@ public class LessonItemValidatorServiceImpl implements Validator<LessonItemDTO>,
         final var FIELD_VALUE = lessonItemDTO.getLessonId();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A aula não pode ser nula");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A aula associada ao item não pode ser nula");
             return;
         }
 
         if (lessonRepository.findById(FIELD_VALUE).isEmpty()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada a aula com o id '" + FIELD_VALUE + "'");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada a aula com o id '" + FIELD_VALUE + "' para associar ao item");
         }
     }
 
@@ -85,15 +85,15 @@ public class LessonItemValidatorServiceImpl implements Validator<LessonItemDTO>,
         final var QUANTITY_MAX = 1000;
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A quantidade não pode ser nula");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A quantidade de items não pode ser nula");
             return;
         }
         if (FIELD_VALUE < QUANTITY_MIN) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A quantidade não pode ser menor que '" + QUANTITY_MIN + "'");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A quantidade de items não pode ser menor que '" + QUANTITY_MIN + "'");
         }
 
         if (FIELD_VALUE > QUANTITY_MAX) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A quantidade não pode ser maior que '" + QUANTITY_MAX + "'");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A quantidade de items não pode ser maior que '" + QUANTITY_MAX + "'");
         }
     }
 

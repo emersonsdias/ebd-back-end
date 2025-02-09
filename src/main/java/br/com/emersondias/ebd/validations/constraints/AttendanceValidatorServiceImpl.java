@@ -67,7 +67,7 @@ public class AttendanceValidatorServiceImpl implements Validator<AttendanceDTO>,
         final var FIELD_VALUE = attendanceDTO.getStudentId();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O aluno não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O aluno da chamada não pode ser nulo");
             return;
         }
         if (isNull(studentEntity)) {
@@ -75,7 +75,7 @@ public class AttendanceValidatorServiceImpl implements Validator<AttendanceDTO>,
         } else {
             if (nonNull(lessonEntity)) {
                 if (!studentEntity.getClassroom().getId().equals(lessonEntity.getClassroom().getId())) {
-                    addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O aluno não está matriculado nessa turma");
+                    addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não é possível cadastrar chamada pois o aluno não está matriculado nessa turma");
                 }
             }
         }

@@ -62,7 +62,7 @@ public class PhoneNumberValidatorServiceImpl implements Validator<PhoneNumberDTO
         final var FIELD_VALUE = phoneNumberDTO.getAreaCode();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O código de área não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O código de área do telefone não pode ser nulo");
             return;
         }
         final List<String> validDDDs = Arrays.asList("11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "24",
@@ -71,7 +71,7 @@ public class PhoneNumberValidatorServiceImpl implements Validator<PhoneNumberDTO
                 "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91", "92", "93", "94", "95",
                 "96", "97", "98", "99");
         if (!validDDDs.contains(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "o código de área '" + FIELD_VALUE + "' não é válido");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "o código de área do telefone '" + FIELD_VALUE + "' não é válido");
         }
     }
 
