@@ -1,5 +1,6 @@
 package br.com.emersondias.ebd.dtos;
 
+import br.com.emersondias.ebd.validations.annotations.AttendanceDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@AttendanceDTOValidator
 public class AttendanceDTO implements Serializable {
 
     private Long id;
