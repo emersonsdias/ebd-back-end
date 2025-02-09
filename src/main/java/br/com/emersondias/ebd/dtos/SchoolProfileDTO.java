@@ -1,5 +1,6 @@
 package br.com.emersondias.ebd.dtos;
 
+import br.com.emersondias.ebd.validations.annotations.SchoolProfileDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Builder
+@SchoolProfileDTOValidator
 public class SchoolProfileDTO implements Serializable {
 
     private Long id;
