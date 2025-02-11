@@ -5,11 +5,15 @@ import br.com.emersondias.ebd.dtos.PersonDTO;
 import br.com.emersondias.ebd.services.interfaces.IPersonService;
 import br.com.emersondias.ebd.utils.URIUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,5 +75,22 @@ public class PersonController {
     public ResponseEntity<List<PersonDTO>> findAll() {
         return ResponseEntity.ok(personService.findAll());
     }
+
+    @Operation(summary = "Generate person pdf")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/pdf",
+                    schema = @Schema(type = "string", format = "binary")))
+    })
+    @GetMapping(value = "/{id}/pdf")
+    public ResponseEntity<byte[]> generatePersonPdf(@PathVariable UUID id) {
+        byte[] pdf = personService.generatePersonPdf(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("filename", "pessoa_" + id + ".pdf");
+        return ResponseEntity.ok().headers(headers).body(pdf);
+    }
+
 
 }

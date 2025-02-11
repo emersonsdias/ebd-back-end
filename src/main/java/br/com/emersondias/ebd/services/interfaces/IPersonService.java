@@ -16,4 +16,6 @@ public interface IPersonService {
     PersonDTO findById(UUID id);
 
     List<PersonDTO> findAll();
+
+    byte[] generatePersonPdf(UUID id);
 }

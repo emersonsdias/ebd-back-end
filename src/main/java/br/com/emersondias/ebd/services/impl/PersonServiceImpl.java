@@ -10,11 +10,21 @@ import br.com.emersondias.ebd.mappers.PersonMapper;
 import br.com.emersondias.ebd.mappers.PhoneNumberMapper;
 import br.com.emersondias.ebd.repositories.PersonRepository;
 import br.com.emersondias.ebd.services.interfaces.IPersonService;
+import br.com.emersondias.ebd.services.interfaces.IReportService;
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.util.JRLoader;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
@@ -24,6 +34,7 @@ import static java.util.Objects.requireNonNull;
 public class PersonServiceImpl implements IPersonService {
 
     private final PersonRepository repository;
+    private final IReportService reportService;
 
     @Transactional
     @Override
@@ -81,6 +92,24 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public List<PersonDTO> findAll() {
         return repository.findAll().stream().map(PersonMapper::toDTO).toList();
+    }
+
+    @Override
+    public byte[] generatePersonPdf(UUID id) {
+        var person = findEntityById(id);
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", person.getId());
+        params.put("name", person.getName());
+        params.put("birthdate", person.getBirthdate());
+        params.put("email", person.getEmail());
+
+        try {
+            return reportService.generatePdf("person_registration", params);
+        } catch (JRException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Person findEntityById(UUID id) {
