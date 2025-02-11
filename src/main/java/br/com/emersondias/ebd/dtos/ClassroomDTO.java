@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,9 +21,9 @@ public class ClassroomDTO implements Serializable {
     private String name;
     private AgeRangeDTO ageRange;
     @Builder.Default
-    private Set<ClassroomPersonDTO> teachers = new HashSet<>();
+    private Set<TeacherDTO> teachers = new HashSet<>();
     @Builder.Default
-    private Set<ClassroomPersonDTO> students = new HashSet<>();
+    private Set<StudentDTO> students = new HashSet<>();
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;

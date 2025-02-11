@@ -2,7 +2,7 @@ package br.com.emersondias.ebd.validations.constraints;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.dtos.ClassroomDTO;
-import br.com.emersondias.ebd.dtos.ClassroomPersonDTO;
+import br.com.emersondias.ebd.dtos.TeacherDTO;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
 import br.com.emersondias.ebd.repositories.AgeRangeRepository;
 import br.com.emersondias.ebd.utils.URIUtils;
@@ -28,7 +28,7 @@ public class ClassroomValidatorServiceImpl implements Validator<ClassroomDTO>, C
 
     private final HttpServletRequest request;
     private final AgeRangeRepository ageRangeRepository;
-    private final Validator<ClassroomPersonDTO> classroomPersonValidator;
+    private final Validator<TeacherDTO> classroomPersonValidator;
 
     @Override
     public ValidationResult<ClassroomDTO> validate(ClassroomDTO classroomDTO) {

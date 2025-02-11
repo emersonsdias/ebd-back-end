@@ -10,13 +10,14 @@ import java.util.stream.Stream;
 @Getter
 public enum MaritalStatus {
 
-    SINGLE(1, "SINGLE"),
-    MARRIED(2, "MARRIED"),
-    DIVORCED(3, "DIVORCED"),
-    WIDOWED(4, "WIDOWED");
+    SINGLE(1, "SINGLE", "Solteiro(a)"),
+    MARRIED(2, "MARRIED", "Casado(a)"),
+    DIVORCED(3, "DIVORCED", "Divorciado(a)"),
+    WIDOWED(4, "WIDOWED", "Viúvo(a)");
 
     private final int cod;
     private final String description;
+    private final String translate;
 
     public static MaritalStatus toEnum(Integer cod) {
         if (Objects.isNull(cod)) {

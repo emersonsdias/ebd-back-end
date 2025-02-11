@@ -3,7 +3,7 @@ package br.com.emersondias.ebd.validations.constraints;
 import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.dtos.*;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
-import br.com.emersondias.ebd.repositories.ClassrroomRepository;
+import br.com.emersondias.ebd.repositories.ClassroomRepository;
 import br.com.emersondias.ebd.utils.URIUtils;
 import br.com.emersondias.ebd.validations.DefaultValidationResult;
 import br.com.emersondias.ebd.validations.ValidationResult;
@@ -27,7 +27,7 @@ import static java.util.Objects.nonNull;
 public class LessonValidatorServiceImpl implements Validator<LessonDTO>, ConstraintValidator<LessonDTOValidator, LessonDTO> {
 
     private final HttpServletRequest request;
-    private final ClassrroomRepository classrroomRepository;
+    private final ClassroomRepository classroomRepository;
     private final Validator<VisitorDTO> visitorValidator;
     private final Validator<OfferDTO> offerValidator;
     private final Validator<LessonItemDTO> lessonItemValidator;
@@ -122,7 +122,7 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
             return;
         }
 
-        if (classrroomRepository.findById(FIELD_VALUE).isEmpty()) {
+        if (classroomRepository.findById(FIELD_VALUE).isEmpty()) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi possível encontrar a turma com o id: '" + FIELD_VALUE + "' para a associar a aula");
         }
     }

@@ -13,7 +13,7 @@ public class ClassroomMapper {
                 .name(entity.getName())
                 .ageRange(AgeRangeMapper.toDTO(entity.getAgeRange()))
                 .teachers(entity.getTeachers().stream().map(TeacherMapper::toDTO).collect(Collectors.toSet()))
-                .teachers(entity.getStudents().stream().map(StudentMapper::toDTO).collect(Collectors.toSet()))
+                .students(entity.getStudents().stream().map(StudentMapper::toDTO).collect(Collectors.toSet()))
                 .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())

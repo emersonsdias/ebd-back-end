@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Tag(name = "Classroom", description = "the classroom API")
 @RestController
@@ -70,5 +71,18 @@ public class ClassroomController {
     public ResponseEntity<List<ClassroomDTO>> findAll() {
         return ResponseEntity.ok(classroomService.findAll());
     }
+
+    @PostMapping(value = "/{classroomId}/assign-teacher/{personId}")
+    public ResponseEntity<ClassroomDTO> assignTeacher(@PathVariable Long classroomId, @PathVariable UUID personId) {
+        ClassroomDTO classroomDTO = classroomService.assignTeacher(classroomId, personId);
+        return ResponseEntity.ok(classroomDTO);
+    }
+
+    @PostMapping(value = "/{classroomId}/enroll-student/{personId}")
+    public ResponseEntity<ClassroomDTO> enrollStudent(@PathVariable Long classroomId, @PathVariable UUID personId) {
+        ClassroomDTO classroomDTO = classroomService.enrollStudent(classroomId, personId);
+        return ResponseEntity.ok(classroomDTO);
+    }
+
 
 }

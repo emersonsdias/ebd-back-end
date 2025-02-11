@@ -5,9 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Objects.isNull;
 
@@ -44,6 +42,9 @@ public class Classroom implements Serializable {
     private Instant createdAt;
     @Column(name = "updated_at")
     private Instant updatedAt;
+    @Builder.Default
+    @OneToMany(mappedBy = "classroom")
+    private List<Lesson> lessons = new ArrayList<>();
 
     public void setTeachers(Collection<Teacher> teachers) {
         if (isNull(teachers)) {
@@ -81,5 +82,18 @@ public class Classroom implements Serializable {
         }
     }
 
+    public void addStudent(Student student) {
+        if (isNull(this.students)) {
+            this.students = new HashSet<>();
+        }
+        this.students.add(student);
+    }
+
+    public void addTeacher(Teacher teacher) {
+        if (isNull(this.teachers)) {
+            this.teachers = new HashSet<>();
+        }
+        this.teachers.add(teacher);
+    }
 }
 

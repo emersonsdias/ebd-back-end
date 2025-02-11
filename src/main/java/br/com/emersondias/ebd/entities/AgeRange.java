@@ -14,7 +14,7 @@ import java.time.Instant;
 @Setter
 @Builder
 @Entity
-@Table(schema = "app", name = "addresses")
+@Table(schema = "app", name = "age_ranges")
 public class AgeRange implements Serializable {
 
     @Id

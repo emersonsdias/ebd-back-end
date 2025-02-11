@@ -10,11 +10,12 @@ import java.util.stream.Stream;
 @Getter
 public enum Gender {
 
-    MALE(1, "MALE"),
-    FEMALE(2, "FEMALE");
+    MALE(1, "MALE", "Masculino"),
+    FEMALE(2, "FEMALE", "Feminino");
 
     private final int cod;
     private final String description;
+    private final String translate;
 
     public static Gender toEnum(Integer cod) {
         if (Objects.isNull(cod)) {

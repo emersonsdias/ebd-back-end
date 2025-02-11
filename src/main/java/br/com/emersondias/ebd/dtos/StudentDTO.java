@@ -1,6 +1,6 @@
 package br.com.emersondias.ebd.dtos;
 
-import br.com.emersondias.ebd.validations.annotations.ClassroomPersonDTOValidator;
+import br.com.emersondias.ebd.validations.annotations.StudentDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -12,8 +12,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@ClassroomPersonDTOValidator
-public class ClassroomPersonDTO implements Serializable {
+@StudentDTOValidator
+public class StudentDTO implements Serializable {
 
     private UUID id;
     private UUID personId;

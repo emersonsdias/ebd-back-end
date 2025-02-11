@@ -9,7 +9,10 @@ import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.CityMapper;
 import br.com.emersondias.ebd.mappers.PersonMapper;
 import br.com.emersondias.ebd.mappers.PhoneNumberMapper;
+import br.com.emersondias.ebd.repositories.ClassroomRepository;
 import br.com.emersondias.ebd.repositories.PersonRepository;
+import br.com.emersondias.ebd.repositories.StudentRepository;
+import br.com.emersondias.ebd.repositories.TeacherRepository;
 import br.com.emersondias.ebd.services.interfaces.IPersonService;
 import br.com.emersondias.ebd.services.interfaces.IReportService;
 import br.com.emersondias.ebd.utils.LogHelper;
@@ -34,6 +37,9 @@ public class PersonServiceImpl implements IPersonService {
     private static final LogHelper LOG = LogHelper.getInstance();
 
     private final PersonRepository repository;
+    private final ClassroomRepository classroomRepository;
+    private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
     private final IReportService reportService;
 
     @Transactional
@@ -76,7 +82,6 @@ public class PersonServiceImpl implements IPersonService {
         addressEntity.setCity(CityMapper.toEntity(addressDTO.getCity()));
     }
 
-
     @Override
     public void delete(UUID id) {
         requireNonNull(id);
@@ -98,6 +103,8 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public byte[] generatePersonPdf(UUID id) {
         var person = findEntityById(id);
+        var studentClassrooms = classroomRepository.findByStudentsPersonId(id);
+        var teacherClassrooms = classroomRepository.findByTeachersPersonId(id);
         Map<String, Object> params = new HashMap<>();
         params.put("personId", person.getId());
         params.put("name", person.getName());
@@ -106,12 +113,12 @@ public class PersonServiceImpl implements IPersonService {
         params.put("phoneNumbers", person.getPhoneNumbers()
                 .stream()
                 .map(PhoneNumber::getFormattedPhoneNumber)
-                .reduce((a, b) -> a.concat("/").concat(b))
+                .reduce((a, b) -> a.concat(" / ").concat(b))
                 .orElse("")
         );
-        params.put("gender", nonNull(person.getGender()) ? person.getGender().toString() : "");
-        params.put("educationLevel", nonNull(person.getEducationLevel()) ? person.getEducationLevel().toString() : "");
-        params.put("maritalStatus", nonNull(person.getMaritalStatus()) ? person.getMaritalStatus().toString() : "");
+        params.put("gender", nonNull(person.getGender()) ? person.getGender().getTranslate() : "");
+        params.put("educationLevel", nonNull(person.getEducationLevel()) ? person.getEducationLevel().getTranslate() : "");
+        params.put("maritalStatus", nonNull(person.getMaritalStatus()) ? person.getMaritalStatus().getTranslate() : "");
         params.put("createdAt", person.getCreatedAt());
         params.put("updatedAt", person.getUpdatedAt());
         params.put("addressStreet", person.getAddress().getStreet());
