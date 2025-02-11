@@ -30,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final static String[] PUBLIC_MATCHERS = {"/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/people/**"};
     private final Environment environment;
     private final UserDetailsService userDetailsService;
 
@@ -53,7 +54,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers(PUBLIC_MATCHERS).permitAll()
                         .anyRequest().hasAnyRole(UserRole.ADMIN.getDescription())
                 )
                 .addFilter(getJWTAuthenticationFilter(authenticationManager))

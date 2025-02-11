@@ -4,6 +4,7 @@ import br.com.emersondias.ebd.dtos.AddressDTO;
 import br.com.emersondias.ebd.dtos.PersonDTO;
 import br.com.emersondias.ebd.entities.Address;
 import br.com.emersondias.ebd.entities.Person;
+import br.com.emersondias.ebd.entities.PhoneNumber;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.CityMapper;
 import br.com.emersondias.ebd.mappers.PersonMapper;
@@ -11,27 +12,26 @@ import br.com.emersondias.ebd.mappers.PhoneNumberMapper;
 import br.com.emersondias.ebd.repositories.PersonRepository;
 import br.com.emersondias.ebd.services.interfaces.IPersonService;
 import br.com.emersondias.ebd.services.interfaces.IReportService;
+import br.com.emersondias.ebd.utils.LogHelper;
 import lombok.RequiredArgsConstructor;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.util.JRLoader;
-import org.springframework.core.io.ClassPathResource;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 @Service
 @RequiredArgsConstructor
 public class PersonServiceImpl implements IPersonService {
+
+    private static final LogHelper LOG = LogHelper.getInstance();
 
     private final PersonRepository repository;
     private final IReportService reportService;
@@ -94,21 +94,41 @@ public class PersonServiceImpl implements IPersonService {
         return repository.findAll().stream().map(PersonMapper::toDTO).toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public byte[] generatePersonPdf(UUID id) {
         var person = findEntityById(id);
         Map<String, Object> params = new HashMap<>();
-        params.put("id", person.getId());
+        params.put("personId", person.getId());
         params.put("name", person.getName());
         params.put("birthdate", person.getBirthdate());
         params.put("email", person.getEmail());
+        params.put("phoneNumbers", person.getPhoneNumbers()
+                .stream()
+                .map(PhoneNumber::getFormattedPhoneNumber)
+                .reduce((a, b) -> a.concat("/").concat(b))
+                .orElse("")
+        );
+        params.put("gender", nonNull(person.getGender()) ? person.getGender().toString() : "");
+        params.put("educationLevel", nonNull(person.getEducationLevel()) ? person.getEducationLevel().toString() : "");
+        params.put("maritalStatus", nonNull(person.getMaritalStatus()) ? person.getMaritalStatus().toString() : "");
+        params.put("createdAt", person.getCreatedAt());
+        params.put("updatedAt", person.getUpdatedAt());
+        params.put("addressStreet", person.getAddress().getStreet());
+        params.put("addressNumber", person.getAddress().getNumber());
+        params.put("addressComplement", person.getAddress().getComplement());
+        params.put("addressNeighborhood", person.getAddress().getNeighborhood());
+        params.put("addressCity", person.getAddress().getCity().getName());
+        params.put("addressState", person.getAddress().getCity().getState().getAbbreviation());
+        params.put("addressZipCode", person.getAddress().getZipCode());
+        params.put("qrCodeValue", "http://localhost:8080/".concat(person.getId().toString()));
 
         try {
-            return reportService.generatePdf("person_registration", params);
-        } catch (JRException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            return reportService.generatePdf("person_report", params);
+        } catch (JRException | IOException e) {
+            var error = "Failed to build person pdf, person id: '" + id + "'";
+            LOG.error(error);
+            throw new RuntimeException(error, e);
         }
     }
 

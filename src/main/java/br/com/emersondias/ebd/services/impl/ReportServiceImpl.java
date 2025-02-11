@@ -7,7 +7,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 
 @Service
@@ -15,7 +14,6 @@ public class ReportServiceImpl implements IReportService {
 
     private static final String REPORTS_PATH = "reports";
     private static final String JASPER_EXTENSION = ".jasper";
-
 
     @Override
     public byte[] generatePdf(String fileName, Map<String, Object> params) throws IOException, JRException {

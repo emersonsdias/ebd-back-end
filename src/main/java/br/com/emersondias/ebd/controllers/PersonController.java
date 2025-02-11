@@ -81,7 +81,7 @@ public class PersonController {
             @ApiResponse(
                     responseCode = "200",
                     content = @Content(mediaType = "application/pdf",
-                    schema = @Schema(type = "string", format = "binary")))
+                            schema = @Schema(type = "string", format = "binary")))
     })
     @GetMapping(value = "/{id}/pdf")
     public ResponseEntity<byte[]> generatePersonPdf(@PathVariable UUID id) {

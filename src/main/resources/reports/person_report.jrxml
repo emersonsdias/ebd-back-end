@@ -1,0 +1,140 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="person_report" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20"
+              rightMargin="20" topMargin="20" bottomMargin="20" uuid="c50e1be9-d137-4fff-be67-c24bf00fcce1">
+    <parameter name="personId" class="java.util.UUID"/>
+    <parameter name="name" class="java.lang.String"/>
+    <parameter name="birthdate" class="java.time.LocalDate"/>
+    <parameter name="qrCodeValue" class="java.lang.String"/>
+    <parameter name="email" class="java.lang.String"/>
+    <parameter name="phoneNumbers" class="java.lang.String"/>
+    <parameter name="gender" class="java.lang.String"/>
+    <parameter name="educationLevel" class="java.lang.String"/>
+    <parameter name="maritalStatus" class="java.lang.String"/>
+    <parameter name="addressStreet" class="java.lang.String"/>
+    <parameter name="addressNumber" class="java.lang.String"/>
+    <parameter name="addressComplement" class="java.lang.String"/>
+    <parameter name="addressNeighborhood" class="java.lang.String"/>
+    <parameter name="addressCity" class="java.lang.String"/>
+    <parameter name="addressState" class="java.lang.String"/>
+    <parameter name="addressZipCode" class="java.lang.String"/>
+    <parameter name="createdAt" class="java.time.Instant"/>
+    <parameter name="updatedAt" class="java.time.Instant"/>
+    <query language="sql"><![CDATA[]]></query>
+    <background splitType="Stretch"/>
+    <title height="113" splitType="Stretch">
+        <element kind="textField" uuid="747c2d14-3ab4-4493-b2c2-627fb2fec24c" x="109" y="0" width="446" height="30"
+                 hTextAlign="Right">
+            <expression><![CDATA["Id: "+$P{personId}]]></expression>
+        </element>
+        <element kind="textField" uuid="faee319a-0ac6-4fbf-ba86-e1beb87f2868" x="109" y="10" width="446" height="40"
+                 fontSize="24.0" bold="true" hTextAlign="Left" vTextAlign="Top">
+            <expression><![CDATA[$P{name}]]></expression>
+        </element>
+        <element kind="component" uuid="47bc8d5b-21b0-4aab-abcd-98d6ae15cc57" x="0" y="0" width="110" height="96">
+            <printWhenExpression><![CDATA[true]]></printWhenExpression>
+            <component kind="barcode4j:QRCode" evaluationTime="Report">
+                <codeExpression><![CDATA[$P{qrCodeValue}]]></codeExpression>
+            </component>
+        </element>
+        <element kind="line" uuid="bded2a73-714e-49bd-890b-824504d594c0" x="0" y="110" width="555" height="1"/>
+        <element kind="textField" uuid="4caad113-0aad-4fdf-9867-07475ad95500" x="109" y="50" width="446" height="24"
+                 fontSize="16.0">
+            <expression>
+                <![CDATA["Data de nascimento: " + $P{birthdate}.format( java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy") )]]></expression>
+        </element>
+        <element kind="textField" uuid="e875a284-537c-44cd-84e3-dde155e55781" x="110" y="80" width="220" height="24"
+                 fontSize="12.0">
+            <expression><![CDATA[$P{email}]]></expression>
+        </element>
+        <element kind="textField" uuid="2a9872f2-48e2-4a94-bd49-29067669869d" x="335" y="80" width="220" height="24"
+                 fontSize="12.0" hTextAlign="Right">
+            <expression><![CDATA[$P{phoneNumbers}]]></expression>
+        </element>
+    </title>
+    <pageHeader height="104" splitType="Stretch">
+        <element kind="staticText" uuid="8c979092-d8a1-422a-9c60-6660fd56dad3" x="0" y="0" width="40" height="16">
+            <text><![CDATA[Turma:]]></text>
+        </element>
+        <element kind="staticText" uuid="3ef75578-1438-4c77-998c-fa68ed8c333f" x="0" y="19" width="60" height="16">
+            <text><![CDATA[Estado civil:]]></text>
+        </element>
+        <element kind="staticText" uuid="0d048f47-55d3-4659-97c2-d7ee5814398d" x="280" y="0" width="40" height="16">
+            <text><![CDATA[Gênero:]]></text>
+        </element>
+        <element kind="staticText" uuid="e7669036-3041-44bc-a961-a02d0e1273cf" x="280" y="19" width="70" height="16">
+            <text><![CDATA[Escolaridade:]]></text>
+        </element>
+        <element kind="staticText" uuid="e05299dd-28d7-444c-9363-494642eb5aee" x="0" y="40" width="50" height="16">
+            <text><![CDATA[Endereço:]]></text>
+        </element>
+        <element kind="staticText" uuid="dab89172-84ef-4a53-b99b-543c62c25ad5" x="0" y="60" width="40" height="16">
+            <text><![CDATA[Bairro:]]></text>
+        </element>
+        <element kind="staticText" uuid="2d5b827d-c4e2-4ea8-8202-18e167cc9f2f" x="180" y="60" width="40" height="16">
+            <text><![CDATA[Cidade:]]></text>
+        </element>
+        <element kind="staticText" uuid="4b622af6-3b45-4a69-90ed-af2b3ae01907" x="380" y="60" width="20" height="16">
+            <text><![CDATA[UF:]]></text>
+        </element>
+        <element kind="staticText" uuid="b6c324cd-bf0e-4941-b19f-0ef65287d90f" x="440" y="60" width="30" height="16">
+            <text><![CDATA[CEP:]]></text>
+        </element>
+        <element kind="textField" uuid="7fb8d092-5bf0-4f27-a647-5faa04771972" x="60" y="19" width="220" height="16"
+                 bold="true">
+            <expression><![CDATA[$P{maritalStatus}]]></expression>
+        </element>
+        <element kind="textField" uuid="2de01226-b0f9-4ca0-ac13-4308871561a3" x="320" y="0" width="80" height="16"
+                 bold="true">
+            <expression><![CDATA[$P{gender}]]></expression>
+        </element>
+        <element kind="textField" uuid="f564a5f5-aeb2-41f3-b5b5-1410bf88c1c0" x="350" y="19" width="204" height="16"
+                 bold="true">
+            <expression><![CDATA[$P{educationLevel}]]></expression>
+        </element>
+        <element kind="textField" uuid="51e089fa-f25d-44f0-ad33-4d4373844742" x="50" y="40" width="504" height="16"
+                 bold="true">
+            <expression>
+                <![CDATA[$P{addressStreet} + ", " + $P{addressNumber} + (($P{addressComplement} != null) ? ", " + $P{addressComplement} : "")]]></expression>
+        </element>
+        <element kind="textField" uuid="22345305-2d29-4d61-83ec-3510490df5d5" x="40" y="60" width="140" height="16"
+                 bold="true">
+            <expression><![CDATA[$P{addressNeighborhood}]]></expression>
+        </element>
+        <element kind="textField" uuid="cecb94e5-8a7a-455e-8a2d-ce22ace67873" x="220" y="60" width="160" height="16"
+                 bold="true">
+            <expression><![CDATA[$P{addressCity}]]></expression>
+        </element>
+        <element kind="textField" uuid="a703bebc-70f0-4e11-9720-74dffaf1d7a3" x="400" y="60" width="40" height="16"
+                 bold="true">
+            <expression><![CDATA[$P{addressState}]]></expression>
+        </element>
+        <element kind="textField" uuid="b3e0f6e3-c3c3-4ec1-b121-ed9ebf46e5b2" x="470" y="60" width="84" height="16"
+                 bold="true">
+            <expression><![CDATA[$P{addressZipCode}]]></expression>
+        </element>
+        <element kind="staticText" uuid="99e584ac-edf1-48e1-aa07-223ca4e166cb" x="0" y="76" width="130" height="16">
+            <text><![CDATA[Data da criação do cadastro:]]></text>
+        </element>
+        <element kind="textField" uuid="5560b1c2-e952-4566-bd42-0ca8a50001e8" x="130" y="76" width="140" height="16"
+                 bold="true">
+            <expression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm")
+   .format(java.util.Date.from($P{createdAt}.atZone(java.time.ZoneId.of("America/Sao_Paulo")).toInstant()))]]></expression>
+        </element>
+        <element kind="staticText" uuid="51e48374-3293-4264-9512-08041b784482" x="270" y="76" width="130" height="16">
+            <text><![CDATA[Última atualização cadastro:]]></text>
+        </element>
+        <element kind="textField" uuid="0604f2c4-605b-4270-8329-cfe309890b3d" x="400" y="76" width="154" height="16"
+                 bold="true">
+            <expression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm")
+   .format(java.util.Date.from($P{updatedAt}.atZone(java.time.ZoneId.of("America/Sao_Paulo")).toInstant()))]]></expression>
+        </element>
+        <element kind="line" uuid="9e4277c9-35ad-435b-9303-9534bc7a166b" x="0" y="100" width="555" height="1"/>
+    </pageHeader>
+    <columnHeader height="210" splitType="Stretch"/>
+    <detail>
+        <band height="125" splitType="Stretch"/>
+    </detail>
+    <columnFooter height="45" splitType="Stretch"/>
+    <pageFooter height="54" splitType="Stretch"/>
+    <summary height="42" splitType="Stretch"/>
+</jasperReport>
