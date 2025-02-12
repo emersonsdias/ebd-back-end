@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.mappers;
 
 import br.com.emersondias.ebd.dtos.ClassroomDTO;
+import br.com.emersondias.ebd.dtos.SimpleClassroomDTO;
 import br.com.emersondias.ebd.entities.Classroom;
 
 import java.util.stream.Collectors;
@@ -30,6 +31,17 @@ public class ClassroomMapper {
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())
+                .build();
+    }
+
+    public static SimpleClassroomDTO toSimpleDTO(Classroom entity) {
+        return SimpleClassroomDTO.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .ageRange(AgeRangeMapper.toDTO(entity.getAgeRange()))
+                .active(entity.isActive())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 }

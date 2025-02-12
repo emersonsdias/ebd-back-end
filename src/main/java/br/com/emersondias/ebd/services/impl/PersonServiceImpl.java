@@ -1,7 +1,9 @@
 package br.com.emersondias.ebd.services.impl;
 
+import br.com.emersondias.ebd.controllers.ClassroomAttendanceDTO;
 import br.com.emersondias.ebd.dtos.AddressDTO;
 import br.com.emersondias.ebd.dtos.PersonDTO;
+import br.com.emersondias.ebd.dtos.PersonReportDTO;
 import br.com.emersondias.ebd.entities.Address;
 import br.com.emersondias.ebd.entities.Person;
 import br.com.emersondias.ebd.entities.PhoneNumber;
@@ -9,10 +11,9 @@ import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.CityMapper;
 import br.com.emersondias.ebd.mappers.PersonMapper;
 import br.com.emersondias.ebd.mappers.PhoneNumberMapper;
-import br.com.emersondias.ebd.repositories.ClassroomRepository;
 import br.com.emersondias.ebd.repositories.PersonRepository;
-import br.com.emersondias.ebd.repositories.StudentRepository;
-import br.com.emersondias.ebd.repositories.TeacherRepository;
+import br.com.emersondias.ebd.services.interfaces.IAttendanceService;
+import br.com.emersondias.ebd.services.interfaces.IClassroomService;
 import br.com.emersondias.ebd.services.interfaces.IPersonService;
 import br.com.emersondias.ebd.services.interfaces.IReportService;
 import br.com.emersondias.ebd.utils.LogHelper;
@@ -37,9 +38,8 @@ public class PersonServiceImpl implements IPersonService {
     private static final LogHelper LOG = LogHelper.getInstance();
 
     private final PersonRepository repository;
-    private final ClassroomRepository classroomRepository;
-    private final StudentRepository studentRepository;
-    private final TeacherRepository teacherRepository;
+    private final IClassroomService classroomService;
+    private final IAttendanceService attendanceService;
     private final IReportService reportService;
 
     @Transactional
@@ -99,12 +99,28 @@ public class PersonServiceImpl implements IPersonService {
         return repository.findAll().stream().map(PersonMapper::toDTO).toList();
     }
 
+    @Override
+    public PersonReportDTO generatePersonReport(UUID id) {
+        requireNonNull(id);
+        var personDTO = findById(id);
+        var classrooms = classroomService.findByStudentsPersonId(id);
+        var attendances = attendanceService.findByStudentPersonId(id);
+        Map<Long, ClassroomAttendanceDTO> attendanceByClassroom = new HashMap<>();
+
+        classrooms.forEach(classroom -> {
+            var attendacesFiltered = attendances.stream()
+                    .filter(a -> a.getLesson().getClassroomId().equals(classroom.getId())).toList();
+            attendanceByClassroom.put(classroom.getId(), new ClassroomAttendanceDTO(classroom, attendacesFiltered));
+        });
+
+        PersonReportDTO report = new PersonReportDTO(personDTO, attendanceByClassroom);
+        return report;
+    }
+
     @Transactional(readOnly = true)
     @Override
-    public byte[] generatePersonPdf(UUID id) {
+    public byte[] generatePersonReportPdf(UUID id) {
         var person = findEntityById(id);
-        var studentClassrooms = classroomRepository.findByStudentsPersonId(id);
-        var teacherClassrooms = classroomRepository.findByTeachersPersonId(id);
         Map<String, Object> params = new HashMap<>();
         params.put("personId", person.getId());
         params.put("name", person.getName());

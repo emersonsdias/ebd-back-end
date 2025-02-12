@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
 
-    List<Classroom> findByStudentsPersonId(UUID id);
+    List<Classroom> findByStudentsPersonId(UUID personId);
 
-    List<Classroom> findByTeachersPersonId(UUID id);
+    List<Classroom> findByTeachersPersonId(UUID personId);
 
 }

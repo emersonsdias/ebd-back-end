@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,7 +27,6 @@ public class LessonItem implements Serializable {
     @ManyToOne
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
-    @EqualsAndHashCode.Include
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
@@ -37,4 +37,15 @@ public class LessonItem implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        LessonItem that = (LessonItem) o;
+        return Objects.equals(lesson, that.lesson) && Objects.equals(item, that.item);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lesson, item);
+    }
 }

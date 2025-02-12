@@ -36,7 +36,7 @@ public class AttendanceValidatorServiceImpl implements Validator<AttendanceDTO>,
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
         var studentOpt = studentRepository.findById(attendanceDTO.getStudentId());
-        var lessonOpt = lessonRepository.findById(attendanceDTO.getLessonId());
+        var lessonOpt = lessonRepository.findById(attendanceDTO.getLesson().getId());
 
         validateStudentId(attendanceDTO, errors, studentOpt.orElse(null), lessonOpt.orElse(null));
         validateLessonId(attendanceDTO, errors, lessonOpt.orElse(null));
@@ -45,10 +45,10 @@ public class AttendanceValidatorServiceImpl implements Validator<AttendanceDTO>,
     }
 
     private void validateLessonId(AttendanceDTO attendanceDTO, List<FieldMessageDTO> errors, Lesson lessonEntity) {
-        final var FIELD_NAME = "lessonId";
-        final var FIELD_VALUE = attendanceDTO.getLessonId();
+        final var FIELD_NAME = "lesson";
+        final var FIELD_VALUE = attendanceDTO.getLesson();
 
-        if (isNull(FIELD_VALUE)) {
+        if (isNull(FIELD_VALUE) || isNull(FIELD_VALUE.getId())) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A aula não pode ser nula");
             return;
         }

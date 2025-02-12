@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.mappers;
 
 import br.com.emersondias.ebd.dtos.LessonDTO;
+import br.com.emersondias.ebd.dtos.SimpleLessonDTO;
 import br.com.emersondias.ebd.entities.Classroom;
 import br.com.emersondias.ebd.entities.Lesson;
 
@@ -19,6 +20,15 @@ public class LessonMapper {
                 .offers(entity.getOffers().stream().map(OfferMapper::toDTO).toList())
                 .items(entity.getItems().stream().map(LessonItemMapper::toDTO).collect(Collectors.toSet()))
                 .attendances(entity.getAttendances().stream().map(AttendanceMapper::toDTO).collect(Collectors.toSet()))
+                .build();
+    }
+
+    public static SimpleLessonDTO toSimpleDTO(Lesson entity) {
+        return SimpleLessonDTO.builder()
+                .id(entity.getId())
+                .lessonNumber(entity.getLessonNumber())
+                .notes(entity.getNotes())
+                .classroomId(Optional.ofNullable(entity.getClassroom()).map(Classroom::getId).orElse(null))
                 .build();
     }
 

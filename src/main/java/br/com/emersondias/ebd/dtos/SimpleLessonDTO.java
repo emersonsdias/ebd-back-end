@@ -1,24 +1,23 @@
 package br.com.emersondias.ebd.dtos;
 
-import br.com.emersondias.ebd.validations.annotations.AttendanceDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.UUID;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-@AttendanceDTOValidator
-public class AttendanceDTO implements Serializable {
+public class SimpleLessonDTO implements Serializable {
 
     private Long id;
-    private boolean present;
-    private UUID studentId;
-    private SimpleLessonDTO lesson;
+    private Integer lessonNumber;
+    private LocalDate lessonDate;
+    private String notes;
+    private Long classroomId;
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;

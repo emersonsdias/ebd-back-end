@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.mappers;
 
 import br.com.emersondias.ebd.dtos.AttendanceDTO;
+import br.com.emersondias.ebd.dtos.SimpleLessonDTO;
 import br.com.emersondias.ebd.entities.Attendance;
 import br.com.emersondias.ebd.entities.Lesson;
 import br.com.emersondias.ebd.entities.Student;
@@ -14,7 +15,7 @@ public class AttendanceMapper {
                 .id(entity.getId())
                 .present(entity.isPresent())
                 .studentId(Optional.ofNullable(entity.getStudent()).map(Student::getId).orElse(null))
-                .lessonId(Optional.ofNullable(entity.getLesson()).map(Lesson::getId).orElse(null))
+                .lesson(Optional.ofNullable(entity.getLesson()).map(LessonMapper::toSimpleDTO).orElse(null))
                 .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
@@ -26,7 +27,7 @@ public class AttendanceMapper {
                 .id(dto.getId())
                 .present(dto.isPresent())
                 .student(Student.builder().id(dto.getStudentId()).build())
-                .lesson(Lesson.builder().id(dto.getLessonId()).build())
+                .lesson(Lesson.builder().id(Optional.ofNullable(dto.getLesson()).map(SimpleLessonDTO::getId).orElse(null)).build())
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())

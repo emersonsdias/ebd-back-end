@@ -18,7 +18,6 @@ import static java.util.Objects.isNull;
 @Table(schema = "app", name = "classrooms")
 public class Classroom implements Serializable {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -94,6 +93,18 @@ public class Classroom implements Serializable {
             this.teachers = new HashSet<>();
         }
         this.teachers.add(teacher);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Classroom classroom = (Classroom) o;
+        return Objects.equals(id, classroom.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
 

@@ -2,6 +2,7 @@ package br.com.emersondias.ebd.controllers;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.dtos.PersonDTO;
+import br.com.emersondias.ebd.dtos.PersonReportDTO;
 import br.com.emersondias.ebd.services.interfaces.IPersonService;
 import br.com.emersondias.ebd.utils.URIUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,16 +77,24 @@ public class PersonController {
         return ResponseEntity.ok(personService.findAll());
     }
 
-    @Operation(summary = "Generate person pdf")
+    @Operation(summary = "Generate person report")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200")})
+    @GetMapping(value = "/{id}/report")
+    public ResponseEntity<PersonReportDTO> generatePersonReport(@PathVariable UUID id) {
+        PersonReportDTO report = personService.generatePersonReport(id);
+        return ResponseEntity.ok(report);
+    }
+
+    @Operation(summary = "Generate person report pdf")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     content = @Content(mediaType = "application/pdf",
                             schema = @Schema(type = "string", format = "binary")))
     })
-    @GetMapping(value = "/{id}/pdf")
+    @GetMapping(value = "/{id}/report/pdf")
     public ResponseEntity<byte[]> generatePersonPdf(@PathVariable UUID id) {
-        byte[] pdf = personService.generatePersonPdf(id);
+        byte[] pdf = personService.generatePersonReportPdf(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("filename", "pessoa_" + id + ".pdf");

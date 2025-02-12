@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.services.impl;
 
 import br.com.emersondias.ebd.dtos.ClassroomDTO;
+import br.com.emersondias.ebd.dtos.SimpleClassroomDTO;
 import br.com.emersondias.ebd.entities.Classroom;
 import br.com.emersondias.ebd.entities.Person;
 import br.com.emersondias.ebd.entities.Student;
@@ -105,6 +106,13 @@ public class ClassroomServiceImpl implements IClassroomService {
         classroom.addStudent(student);
         classroom = repository.save(classroom);
         return ClassroomMapper.toDTO(classroom);
+    }
+
+    @Override
+    public List<SimpleClassroomDTO> findByStudentsPersonId(UUID personId) {
+        requireNonNull(personId);
+        var classrooms = repository.findByStudentsPersonId(personId);
+        return classrooms.stream().map(ClassroomMapper::toSimpleDTO).toList();
     }
 
     private Classroom findEntityById(Long id) {

@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -18,7 +19,6 @@ import java.util.UUID;
 @Table(schema = "app", name = "teachers")
 public class Teacher implements Serializable {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -37,4 +37,16 @@ public class Teacher implements Serializable {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Teacher teacher = (Teacher) o;
+        return Objects.equals(person, teacher.person) && Objects.equals(classroom, teacher.classroom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(person, classroom);
+    }
 }
