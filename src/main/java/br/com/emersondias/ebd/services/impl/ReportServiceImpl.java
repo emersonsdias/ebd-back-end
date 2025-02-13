@@ -17,11 +17,16 @@ public class ReportServiceImpl implements IReportService {
 
     @Override
     public byte[] generatePdf(String fileName, Map<String, Object> params) throws IOException, JRException {
+        return this.generatePdf(fileName, params, new JREmptyDataSource());
+    }
+
+    @Override
+    public byte[] generatePdf(String fileName, Map<String, Object> params, JRDataSource dataSource) throws IOException, JRException {
         var reportStream = new ClassPathResource(
                 REPORTS_PATH.concat("/").concat(fileName).concat(JASPER_EXTENSION)
         ).getInputStream();
         var jasperReport = (JasperReport) JRLoader.loadObject(reportStream);
-        var jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
+        var jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
 
         return JasperExportManager.exportReportToPdf(jasperPrint);
     }

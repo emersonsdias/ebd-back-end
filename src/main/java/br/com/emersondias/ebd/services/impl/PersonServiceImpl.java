@@ -1,12 +1,12 @@
 package br.com.emersondias.ebd.services.impl;
 
+import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.controllers.ClassroomAttendanceDTO;
 import br.com.emersondias.ebd.dtos.AddressDTO;
 import br.com.emersondias.ebd.dtos.PersonDTO;
 import br.com.emersondias.ebd.dtos.PersonReportDTO;
 import br.com.emersondias.ebd.entities.Address;
 import br.com.emersondias.ebd.entities.Person;
-import br.com.emersondias.ebd.entities.PhoneNumber;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.CityMapper;
 import br.com.emersondias.ebd.mappers.PersonMapper;
@@ -19,16 +19,13 @@ import br.com.emersondias.ebd.services.interfaces.IReportService;
 import br.com.emersondias.ebd.utils.LogHelper;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 @Service
@@ -105,49 +102,35 @@ public class PersonServiceImpl implements IPersonService {
         var personDTO = findById(id);
         var classrooms = classroomService.findByStudentsPersonId(id);
         var attendances = attendanceService.findByStudentPersonId(id);
-        Map<Long, ClassroomAttendanceDTO> attendanceByClassroom = new HashMap<>();
+        List<ClassroomAttendanceDTO> attendancesByClassroom = new ArrayList<>();
 
         classrooms.forEach(classroom -> {
             var attendacesFiltered = attendances.stream()
                     .filter(a -> a.getLesson().getClassroomId().equals(classroom.getId())).toList();
-            attendanceByClassroom.put(classroom.getId(), new ClassroomAttendanceDTO(classroom, attendacesFiltered));
+            attendancesByClassroom.add(new ClassroomAttendanceDTO(classroom, attendacesFiltered));
         });
 
-        PersonReportDTO report = new PersonReportDTO(personDTO, attendanceByClassroom);
-        return report;
+        return new PersonReportDTO(personDTO, attendancesByClassroom);
     }
 
     @Transactional(readOnly = true)
     @Override
     public byte[] generatePersonReportPdf(UUID id) {
-        var person = findEntityById(id);
+        requireNonNull(id);
+        var personReport = generatePersonReport(id);
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(List.of(personReport));
+
         Map<String, Object> params = new HashMap<>();
-        params.put("personId", person.getId());
-        params.put("name", person.getName());
-        params.put("birthdate", person.getBirthdate());
-        params.put("email", person.getEmail());
-        params.put("phoneNumbers", person.getPhoneNumbers()
-                .stream()
-                .map(PhoneNumber::getFormattedPhoneNumber)
-                .reduce((a, b) -> a.concat(" / ").concat(b))
-                .orElse("")
+        params.put("qrCodeValue",
+                "http://localhost:8080/"
+                        .concat(RouteConstants.PEOPLE_ROUTE)
+                        .concat("/")
+                        .concat(personReport.getPerson().getId().toString())
         );
-        params.put("gender", nonNull(person.getGender()) ? person.getGender().getTranslate() : "");
-        params.put("educationLevel", nonNull(person.getEducationLevel()) ? person.getEducationLevel().getTranslate() : "");
-        params.put("maritalStatus", nonNull(person.getMaritalStatus()) ? person.getMaritalStatus().getTranslate() : "");
-        params.put("createdAt", person.getCreatedAt());
-        params.put("updatedAt", person.getUpdatedAt());
-        params.put("addressStreet", person.getAddress().getStreet());
-        params.put("addressNumber", person.getAddress().getNumber());
-        params.put("addressComplement", person.getAddress().getComplement());
-        params.put("addressNeighborhood", person.getAddress().getNeighborhood());
-        params.put("addressCity", person.getAddress().getCity().getName());
-        params.put("addressState", person.getAddress().getCity().getState().getAbbreviation());
-        params.put("addressZipCode", person.getAddress().getZipCode());
-        params.put("qrCodeValue", "http://localhost:8080/".concat(person.getId().toString()));
+        params.put("attendancesByClassroom", new JRBeanCollectionDataSource(personReport.getAttendancesByClassroom()));
 
         try {
-            return reportService.generatePdf("person_report", params);
+            return reportService.generatePdf("person_report", params, dataSource);
         } catch (JRException | IOException e) {
             var error = "Failed to build person pdf, person id: '" + id + "'";
             LOG.error(error);

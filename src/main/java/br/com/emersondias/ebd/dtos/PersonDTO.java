@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,5 +35,14 @@ public class PersonDTO implements Serializable {
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
+
+    public String getFormattedPhoneNumbers() {
+        if (this.getPhoneNumbers() == null || this.getPhoneNumbers().isEmpty()) {
+            return "";
+        }
+        return this.getPhoneNumbers().stream()
+                .map(PhoneNumberDTO::getFormattedPhoneNumber)
+                .collect(Collectors.joining(" / "));
+    }
 
 }

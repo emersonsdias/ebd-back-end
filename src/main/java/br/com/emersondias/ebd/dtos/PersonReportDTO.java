@@ -4,9 +4,8 @@ import br.com.emersondias.ebd.controllers.ClassroomAttendanceDTO;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Objects.nonNull;
 
@@ -14,20 +13,20 @@ import static java.util.Objects.nonNull;
 public class PersonReportDTO implements Serializable {
 
     private final PersonDTO person;
-    private final Map<Long, ClassroomAttendanceDTO> attendanceByClassroom;
+    private final List<ClassroomAttendanceDTO> attendancesByClassroom;
     private final Integer totalLessons;
     private final Integer attendedLessons;
     private final Integer missedLessons;
 
-    public PersonReportDTO(PersonDTO person, Map<Long, ClassroomAttendanceDTO> attendanceByClassroom) {
+    public PersonReportDTO(PersonDTO person, List<ClassroomAttendanceDTO> attendancesByClassroom) {
         this.person = person;
-        this.attendanceByClassroom = nonNull(attendanceByClassroom) ? attendanceByClassroom : new HashMap<>();
-        this.totalLessons = attendanceByClassroom.values()
+        this.attendancesByClassroom = nonNull(attendancesByClassroom) ? attendancesByClassroom : new ArrayList<>();
+        this.totalLessons = attendancesByClassroom
                 .stream()
                 .map(ClassroomAttendanceDTO::getAttendances)
                 .mapToInt(List::size)
                 .sum();
-        this.attendedLessons = (int) attendanceByClassroom.values()
+        this.attendedLessons = (int) attendancesByClassroom
                 .stream()
                 .map(ClassroomAttendanceDTO::getAttendances)
                 .flatMap(List::stream)
