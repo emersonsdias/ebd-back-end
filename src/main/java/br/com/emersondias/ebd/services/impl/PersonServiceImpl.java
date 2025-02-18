@@ -7,6 +7,7 @@ import br.com.emersondias.ebd.dtos.PersonDTO;
 import br.com.emersondias.ebd.dtos.PersonReportDTO;
 import br.com.emersondias.ebd.entities.Address;
 import br.com.emersondias.ebd.entities.Person;
+import br.com.emersondias.ebd.exceptions.ReportGenerationException;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.CityMapper;
 import br.com.emersondias.ebd.mappers.PersonMapper;
@@ -18,12 +19,9 @@ import br.com.emersondias.ebd.services.interfaces.IPersonService;
 import br.com.emersondias.ebd.services.interfaces.IReportService;
 import br.com.emersondias.ebd.utils.LogHelper;
 import lombok.RequiredArgsConstructor;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.*;
 
 import static java.util.Objects.requireNonNull;
@@ -118,20 +116,18 @@ public class PersonServiceImpl implements IPersonService {
     public byte[] generatePersonReportPdf(UUID id) {
         requireNonNull(id);
         var personReport = generatePersonReport(id);
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(List.of(personReport));
 
         Map<String, Object> params = new HashMap<>();
-        params.put("qrCodeValue",
-                "http://localhost:8080/"
+        params.put("person_id", id.toString());
+        params.put("qr_code_value",
+                "http://localhost:8080"
                         .concat(RouteConstants.PEOPLE_ROUTE)
                         .concat("/")
                         .concat(personReport.getPerson().getId().toString())
         );
-        params.put("attendancesByClassroom", new JRBeanCollectionDataSource(personReport.getAttendancesByClassroom()));
-
         try {
-            return reportService.generatePdf("person_report", params, dataSource);
-        } catch (JRException | IOException e) {
+            return reportService.generatePdf("person_report/person_report", params);
+        } catch (ReportGenerationException e) {
             var error = "Failed to build person pdf, person id: '" + id + "'";
             LOG.error(error);
             throw new RuntimeException(error, e);

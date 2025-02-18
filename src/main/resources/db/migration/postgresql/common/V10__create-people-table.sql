@@ -26,39 +26,42 @@ create table app.phone_numbers (
 create table enums.genders (
     cod int,
     description varchar(255) not null,
+    translation varchar(255) not null,
     primary key (cod)
 );
 
-insert into enums.genders (cod, description) values
-    (1, 'MALE'),
-    (2, 'FEMALE');
+insert into enums.genders (cod, description, translation) values
+    (1, 'MALE', 'Masculino'),
+    (2, 'FEMALE', 'Feminino');
 
 create table enums.education_levels (
     cod int,
     description varchar(255) not null,
+    translation varchar(255) not null,
     primary key (cod)
 );
 
-insert into enums.education_levels (cod, description) values
-    (1, 'ELEMENTARY'),
-    (2, 'MIDDLE_SCHOOL'),
-    (3, 'HIGH_SCHOOL'),
-    (4, 'TECHNICAL'),
-    (5, 'INCOMPLETE_HIGHER_EDUCATION'),
-    (6, 'HIGHER_EDUCATION'),
-    (7, 'POSTGRADUATE');
+insert into enums.education_levels (cod, description, translation) values
+    (1, 'ELEMENTARY', 'Ensino fundamento incompleto'),
+    (2, 'MIDDLE_SCHOOL', 'Ensino fundamental'),
+    (3, 'HIGH_SCHOOL', 'Ensino médio'),
+    (4, 'TECHNICAL', 'Ensino técnico'),
+    (5, 'INCOMPLETE_HIGHER_EDUCATION', 'Superior incompleto'),
+    (6, 'HIGHER_EDUCATION', 'Superior completo'),
+    (7, 'POSTGRADUATE', 'Pós graduação');
 
 create table enums.marital_status (
     cod int,
     description varchar(255) not null,
+    translation varchar(255) not null,
     primary key (cod)
 );
 
-insert into enums.marital_status (cod, description) values
-    (1, 'SINGLE'),
-    (2, 'MARRIED'),
-    (3, 'DIVORCED'),
-    (4, 'WIDOWED');
+insert into enums.marital_status (cod, description, translation) values
+    (1, 'SINGLE', 'Solteiro(a)'),
+    (2, 'MARRIED', 'Casado(a)'),
+    (3, 'DIVORCED', 'Divorciado(a)'),
+    (4, 'WIDOWED', 'Viúvo(a)');
 
 alter table app.phone_numbers add constraint fk_phone_numbers_person foreign key (person_id) references app.people;
 alter table app.people add constraint fk_people_addresses foreign key (address_id) references app.addresses;

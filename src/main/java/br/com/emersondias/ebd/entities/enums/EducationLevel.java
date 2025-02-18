@@ -20,7 +20,7 @@ public enum EducationLevel {
 
     private final int cod;
     private final String description;
-    private final String translate;
+    private final String translation;
 
     public static EducationLevel toEnum(Integer cod) {
         if (Objects.isNull(cod)) {

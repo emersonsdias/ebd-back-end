@@ -188,5 +188,13 @@ insert into app.teachers (person_id, classroom_id, active)
     ORDER BY RANDOM()
     LIMIT (select count(*) from app.classrooms);
 
-
+insert into app.teachings (active, teacher_id, lesson_id)
+select
+    true,
+    t.id,
+    l.id
+from app.lessons l
+join app.classrooms c on c.id = l.classroom_id
+join app.teachers t on t.classroom_id = c.id
+where l.lesson_date < CURRENT_DATE;
 

@@ -17,7 +17,7 @@ public enum MaritalStatus {
 
     private final int cod;
     private final String description;
-    private final String translate;
+    private final String translation;
 
     public static MaritalStatus toEnum(Integer cod) {
         if (Objects.isNull(cod)) {

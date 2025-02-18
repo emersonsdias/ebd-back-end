@@ -1,0 +1,220 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="person_report" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c50e1be9-d137-4fff-be67-c24bf00fcce1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="qr_code_value" class="java.lang.String"/>
+	<parameter name="person_id" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[select 
+	p.id,
+	p.name,
+	p.birthdate,
+	p.email,
+	g.translation as gender,
+	ms.translation as marital_status,
+	el.translation as education_level,
+	p.created_at,
+	p.updated_at,
+	a.street,
+	a.number,
+	a.complement,
+	a.neighborhood,
+	a.zip_code,
+	c.name as city_name,
+	s.abbreviation as state,
+	(
+	    select STRING_AGG(
+	        '(' || pn.area_code || ') ' || 
+	        SUBSTRING(pn.phone_number, 1, LENGTH(pn.phone_number) - 4) || '-' || 
+	        SUBSTRING(pn.phone_number, LENGTH(pn.phone_number) - 3, 4), 
+	        ' / '
+	    ) 
+	    from app.phone_numbers pn 
+	    where pn.person_id = p.id
+	) as phone_numbers
+from
+	app.people p
+left join enums.genders g on g.cod = p.gender
+left join enums.marital_status ms on ms.cod = p.marital_status
+left join enums.education_levels el on el.cod = p.education_level
+left join app.addresses a on a.id = p.address_id
+left join location.cities c on c.id = a.city_id
+left join location.states s on s.id = c.state_id
+where p.id = CAST($P{person_id} AS UUID)]]></query>
+	<field name="id" class="java.util.UUID">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="people"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="people"/>
+	</field>
+	<field name="birthdate" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="birthdate"/>
+		<property name="com.jaspersoft.studio.field.label" value="birthdate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="people"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="email"/>
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="people"/>
+	</field>
+	<field name="gender" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gender"/>
+		<property name="com.jaspersoft.studio.field.label" value="gender"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="genders"/>
+	</field>
+	<field name="marital_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marital_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="marital_status"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="marital_status"/>
+	</field>
+	<field name="education_level" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="education_level"/>
+		<property name="com.jaspersoft.studio.field.label" value="education_level"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="education_levels"/>
+	</field>
+	<field name="created_at" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="created_at"/>
+		<property name="com.jaspersoft.studio.field.label" value="created_at"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="people"/>
+	</field>
+	<field name="updated_at" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="updated_at"/>
+		<property name="com.jaspersoft.studio.field.label" value="updated_at"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="people"/>
+	</field>
+	<field name="street" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="street"/>
+		<property name="com.jaspersoft.studio.field.label" value="street"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="addresses"/>
+	</field>
+	<field name="number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="number"/>
+		<property name="com.jaspersoft.studio.field.label" value="number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="addresses"/>
+	</field>
+	<field name="complement" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="complement"/>
+		<property name="com.jaspersoft.studio.field.label" value="complement"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="addresses"/>
+	</field>
+	<field name="neighborhood" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="neighborhood"/>
+		<property name="com.jaspersoft.studio.field.label" value="neighborhood"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="addresses"/>
+	</field>
+	<field name="zip_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="zip_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="zip_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="addresses"/>
+	</field>
+	<field name="city_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="city_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="city_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cities"/>
+	</field>
+	<field name="state" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="state"/>
+		<property name="com.jaspersoft.studio.field.label" value="state"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="states"/>
+	</field>
+	<field name="phone_numbers" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="phone_numbers"/>
+		<property name="com.jaspersoft.studio.field.label" value="phone_numbers"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="243" splitType="Stretch">
+		<element kind="component" uuid="47bc8d5b-21b0-4aab-abcd-98d6ae15cc57" x="0" y="0" width="107" height="93">
+			<printWhenExpression><![CDATA[true]]></printWhenExpression>
+			<component kind="barcode4j:QRCode" evaluationTime="Report">
+				<codeExpression><![CDATA[$P{qr_code_value}]]></codeExpression>
+			</component>
+		</element>
+		<element kind="textField" uuid="747c2d14-3ab4-4493-b2c2-627fb2fec24c" x="106" y="0" width="439" height="30" hTextAlign="Right">
+			<expression><![CDATA["Id: " + $F{id}]]></expression>
+		</element>
+		<element kind="textField" uuid="faee319a-0ac6-4fbf-ba86-e1beb87f2868" x="106" y="20" width="439" height="40" fontSize="28.0" bold="true" hTextAlign="Left" vTextAlign="Bottom">
+			<expression><![CDATA[$F{name}]]></expression>
+		</element>
+		<element kind="textField" uuid="e875a284-537c-44cd-84e3-dde155e55781" x="106" y="59" width="439" height="21" fontSize="12.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$F{email}]]></expression>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="line" uuid="e02f0b8d-39ed-488b-8281-19dd5c5993cb" x="0" y="104" width="555" height="1"/>
+		<element kind="textField" uuid="7fb8d092-5bf0-4f27-a647-5faa04771972" x="180" y="114" width="160" height="16" markup="html" bold="false">
+			<expression><![CDATA["Estado civel: <b>" + $F{marital_status} + "</b>"]]></expression>
+		</element>
+		<element kind="textField" uuid="2de01226-b0f9-4ca0-ac13-4308871561a3" x="10" y="114" width="170" height="16" markup="html" linkType="None" linkTarget="Self" bold="false">
+			<expression><![CDATA["Gênero: <b>" + $F{gender} + "</b>"]]></expression>
+		</element>
+		<element kind="textField" uuid="f564a5f5-aeb2-41f3-b5b5-1410bf88c1c0" x="340" y="114" width="205" height="16" markup="html" evaluationTime="Report" bold="false">
+			<expression><![CDATA["Escolaridade: <b>" + $F{education_level} + "</b>"]]></expression>
+		</element>
+		<element kind="textField" uuid="51e089fa-f25d-44f0-ad33-4d4373844742" x="10" y="154" width="535" height="16" markup="html" bold="false">
+			<expression><![CDATA["Endereço: <b>" 
++ $F{street} 
++ ($F{number} != null ? ", " + $F{number} : "" ) 
++ ($F{complement} != null ? ", " + $F{complement} : "" ) 
++ "</b>"]]></expression>
+		</element>
+		<element kind="textField" uuid="22345305-2d29-4d61-83ec-3510490df5d5" x="10" y="174" width="180" height="16" markup="html" bold="false">
+			<expression><![CDATA["Bairro: <b>" + $F{neighborhood} + "</b>"]]></expression>
+		</element>
+		<element kind="textField" uuid="cecb94e5-8a7a-455e-8a2d-ce22ace67873" x="190" y="174" width="220" height="16" markup="html" bold="false">
+			<expression><![CDATA["Cidade / UF: <b>" + $F{city_name} + " / " + $F{state} + "</b>"]]></expression>
+		</element>
+		<element kind="textField" uuid="b3e0f6e3-c3c3-4ec1-b121-ed9ebf46e5b2" x="410" y="174" width="135" height="16" markup="html" bold="false">
+			<expression><![CDATA["CEP: <b>" + $F{zip_code} + "</b>"]]></expression>
+		</element>
+		<element kind="textField" uuid="5560b1c2-e952-4566-bd42-0ca8a50001e8" x="10" y="194" width="270" height="16" markup="html" bold="false">
+			<expression><![CDATA["Data de criação do cadastro: <b>" + 
+   new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm")
+   .format(new java.util.Date($F{created_at}.getTime())) + "</b>"]]></expression>
+		</element>
+		<element kind="textField" uuid="0604f2c4-605b-4270-8329-cfe309890b3d" x="10" y="214" width="270" height="16" markup="html" evaluationTime="Report" bold="false">
+			<expression><![CDATA["Data de criação do cadastro: <b>" + 
+   new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm")
+   .format(new java.util.Date($F{updated_at}.getTime())) + "</b>"
+]]></expression>
+		</element>
+		<element kind="textField" uuid="4ae2075e-58f7-42fe-ae4f-e5667e33cd55" x="10" y="134" width="210" height="16" markup="html" bold="false">
+			<expression><![CDATA["Data de nascimento: <b>" + new java.text.SimpleDateFormat("dd/MM/yyyy")
+   .format(new java.util.Date($F{birthdate}.getTime())) + "</b>"]]></expression>
+		</element>
+		<element kind="textField" uuid="a7802e05-64bf-4220-b6ce-48a189e739fe" x="220" y="134" width="325" height="16" markup="html" bold="false">
+			<expression><![CDATA["E-mail: <b>" + $F{email} + "</b>"]]></expression>
+		</element>
+		<element kind="line" uuid="9e4277c9-35ad-435b-9303-9534bc7a166b" x="0" y="242" width="555" height="1"/>
+		<element kind="textField" uuid="e5611824-cd4c-4efa-8226-d5ca4b68a88e" x="106" y="80" width="439" height="21" fontSize="12.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$F{phone_numbers}]]></expression>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+	</title>
+	<columnHeader height="30" splitType="Stretch"/>
+	<detail>
+		<band height="85">
+			<element kind="subreport" uuid="3e06f456-e911-44ab-ac60-f2f46219a666" x="0" y="0" width="555" height="40">
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<expression><![CDATA["reports/person_report/sub_person_student.jasper"]]></expression>
+				<parameter name="person_id">
+					<expression><![CDATA[$P{person_id}]]></expression>
+				</parameter>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="31" splitType="Stretch">
+		<element kind="line" uuid="414c12e8-b47e-4442-892a-586371a3de3d" x="0" y="0" width="555" height="1"/>
+		<element kind="textField" uuid="a5b05bf0-3b7b-4a51-9777-97e95a0d86b8" x="30" y="1" width="100" height="30" pattern="dd/MM/yyyy HH:mm" hTextAlign="Left" vTextAlign="Middle">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+		<element kind="textField" uuid="35456c83-ed90-4a99-a855-c5c93bf3bba5" x="380" y="0" width="100" height="30" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Página " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="af97cc22-531f-4e5c-8313-af1dcfe63999" x="480" y="0" width="75" height="30" evaluationTime="Report" hTextAlign="Left" vTextAlign="Middle">
+			<expression><![CDATA[" de " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+</jasperReport>

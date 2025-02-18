@@ -56,3 +56,15 @@ create table app.attendances (
     constraint fk_attendances_lessons foreign key (lesson_id) references app.lessons,
     primary key (id)
 );
+
+create table app.teachings (
+    id bigserial not null,
+    teacher_id uuid not null,
+    lesson_id bigint not null,
+    active boolean not null,
+    created_at timestamp(6) with time zone default now(),
+    updated_at timestamp(6) with time zone default now(),
+    constraint fk_teachings_teachers foreign key (teacher_id) references app.teachers,
+    constraint fk_teachings_lessons foreign key (lesson_id) references app.lessons,
+    primary key (id)
+);

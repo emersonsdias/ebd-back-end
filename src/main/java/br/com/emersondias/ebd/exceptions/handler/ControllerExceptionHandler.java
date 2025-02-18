@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @ControllerAdvice
 @ApiResponses(value = {
@@ -61,6 +63,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardErrorDTO> genericHandler(Exception e, HttpServletRequest request) {
+        String uuid = UUID.randomUUID().toString();
         var status = HttpStatus.BAD_REQUEST;
         var error = StandardErrorDTO.builder()
                 .timestamp(Instant.now())
@@ -68,8 +71,9 @@ public class ControllerExceptionHandler {
                 .error("Erro inesperado")
                 .message("Ocorreu um erro inesperado, por favor tente novamente mais tarde ou comunique o administrador do sistema")
                 .path(request.getRequestURI())
+                .additionalInfo(List.of("Identificação do erro: [" + uuid + "]"))
                 .build();
-        LOG.stackTrace("An unexpected error has occurred", e);
+        LOG.stackTrace("An unexpected error has occurred. Error identification: [" + uuid + "]", e);
         return ResponseEntity.status(status).body(error);
     }
 
