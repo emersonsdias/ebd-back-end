@@ -11,18 +11,6 @@ create table app.lessons (
     primary key (id)
 );
 
-create table app.lesson_items (
-    id bigserial not null,
-    quantity int not null,
-    lesson_id bigint not null,
-    item_id bigint not null,
-    created_at timestamp(6) with time zone default now(),
-    updated_at timestamp(6) with time zone default now(),
-    constraint fk_lesson_items_lessons foreign key (lesson_id) references app.lessons,
-    constraint fk_lesson_items_items foreign key (item_id) references app.items,
-    primary key (id)
-);
-
 create table app.visitors (
     id bigserial not null,
     name varchar(255) not null,
@@ -54,6 +42,18 @@ create table app.attendances (
     updated_at timestamp(6) with time zone default now(),
     constraint fk_attendances_students foreign key (student_id) references app.students,
     constraint fk_attendances_lessons foreign key (lesson_id) references app.lessons,
+    primary key (id)
+);
+
+create table app.attendances_items (
+    id bigserial not null,
+    quantity int not null,
+    attendance_id bigint not null,
+    item_id bigint not null,
+    created_at timestamp(6) with time zone default now(),
+    updated_at timestamp(6) with time zone default now(),
+    constraint fk_attendances_items_attendances foreign key (attendance_id) references app.attendances,
+    constraint fk_lesson_items_items foreign key (item_id) references app.items,
     primary key (id)
 );
 

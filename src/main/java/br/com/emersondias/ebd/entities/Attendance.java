@@ -7,7 +7,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import static java.util.Objects.isNull;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +35,10 @@ public class Attendance implements Serializable {
     @ManyToOne
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
+    @Setter(AccessLevel.NONE)
+    @Builder.Default
+    @OneToMany(mappedBy = "attendance", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AttendanceItem> items = new HashSet<>();
     @Column(name = "active", nullable = false)
     private boolean active;
     @CreationTimestamp
@@ -38,6 +47,26 @@ public class Attendance implements Serializable {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+
+    public void setItems(Collection<AttendanceItem> items) {
+        if (isNull(items)) {
+            this.items.clear();
+            return;
+        }
+        this.items.removeIf(s -> !items.contains(s));
+        for (AttendanceItem newItem : items) {
+            var itemOpt = this.items.stream()
+                    .filter(newItem::equals)
+                    .findFirst();
+            if (itemOpt.isPresent()) {
+                itemOpt.get().setItem(newItem.getItem());
+                itemOpt.get().setQuantity(newItem.getQuantity());
+            } else {
+                this.items.add(newItem);
+            }
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

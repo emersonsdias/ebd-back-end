@@ -1,30 +1,30 @@
 package br.com.emersondias.ebd.mappers;
 
-import br.com.emersondias.ebd.dtos.LessonItemDTO;
+import br.com.emersondias.ebd.dtos.AttendanceItemDTO;
+import br.com.emersondias.ebd.entities.Attendance;
+import br.com.emersondias.ebd.entities.AttendanceItem;
 import br.com.emersondias.ebd.entities.Item;
-import br.com.emersondias.ebd.entities.Lesson;
-import br.com.emersondias.ebd.entities.LessonItem;
 
 import java.util.Optional;
 
-public class LessonItemMapper {
+public class AttendanceItemMapper {
 
-    public static LessonItemDTO toDTO(LessonItem entity) {
-        return LessonItemDTO.builder()
+    public static AttendanceItemDTO toDTO(AttendanceItem entity) {
+        return AttendanceItemDTO.builder()
                 .id(entity.getId())
                 .quantity(entity.getQuantity())
-                .lessonId(Optional.ofNullable(entity.getLesson()).map(Lesson::getId).orElse(null))
+                .attendanceId(Optional.ofNullable(entity.getAttendance()).map(Attendance::getId).orElse(null))
                 .itemId(Optional.ofNullable(entity.getItem()).map(Item::getId).orElse(null))
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 
-    public static LessonItem toEntity(LessonItemDTO dto) {
-        return LessonItem.builder()
+    public static AttendanceItem toEntity(AttendanceItemDTO dto) {
+        return AttendanceItem.builder()
                 .id(dto.getId())
                 .quantity(dto.getQuantity())
-                .lesson(Lesson.builder().id(dto.getLessonId()).build())
+                .attendance(Attendance.builder().id(dto.getAttendanceId()).build())
                 .item(Item.builder().id(dto.getItemId()).build())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())

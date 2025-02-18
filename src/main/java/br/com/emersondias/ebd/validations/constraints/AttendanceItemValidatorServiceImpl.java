@@ -1,13 +1,13 @@
 package br.com.emersondias.ebd.validations.constraints;
 
-import br.com.emersondias.ebd.dtos.LessonItemDTO;
+import br.com.emersondias.ebd.dtos.AttendanceItemDTO;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
 import br.com.emersondias.ebd.repositories.ItemRepository;
 import br.com.emersondias.ebd.repositories.LessonRepository;
 import br.com.emersondias.ebd.validations.DefaultValidationResult;
 import br.com.emersondias.ebd.validations.ValidationResult;
 import br.com.emersondias.ebd.validations.Validator;
-import br.com.emersondias.ebd.validations.annotations.LessonItemDTOValidator;
+import br.com.emersondias.ebd.validations.annotations.AttendanceItemDTOValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -20,25 +20,25 @@ import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
-public class LessonItemValidatorServiceImpl implements Validator<LessonItemDTO>, ConstraintValidator<LessonItemDTOValidator, LessonItemDTO> {
+public class AttendanceItemValidatorServiceImpl implements Validator<AttendanceItemDTO>, ConstraintValidator<AttendanceItemDTOValidator, AttendanceItemDTO> {
 
     private final LessonRepository lessonRepository;
     private final ItemRepository itemRepository;
 
     @Override
-    public ValidationResult<LessonItemDTO> validate(LessonItemDTO lessonItemDTO) {
+    public ValidationResult<AttendanceItemDTO> validate(AttendanceItemDTO attendanceItemDTO) {
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
-        validateQuantity(lessonItemDTO, errors);
-        validateLessonId(lessonItemDTO, errors);
-        validateItemId(lessonItemDTO, errors);
+        validateQuantity(attendanceItemDTO, errors);
+        validateAttendanceId(attendanceItemDTO, errors);
+        validateItemId(attendanceItemDTO, errors);
 
-        return new DefaultValidationResult<>(lessonItemDTO, errors);
+        return new DefaultValidationResult<>(attendanceItemDTO, errors);
     }
 
     @Override
-    public boolean isValid(LessonItemDTO lessonItemDTO, ConstraintValidatorContext context) {
-        var validationResult = validate(lessonItemDTO);
+    public boolean isValid(AttendanceItemDTO attendanceItemDTO, ConstraintValidatorContext context) {
+        var validationResult = validate(attendanceItemDTO);
 
         validationResult.getErrors().forEach(error -> {
             context.disableDefaultConstraintViolation();
@@ -50,9 +50,9 @@ public class LessonItemValidatorServiceImpl implements Validator<LessonItemDTO>,
         return validationResult.isValid();
     }
 
-    private void validateItemId(LessonItemDTO lessonItemDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "lessonId";
-        final var FIELD_VALUE = lessonItemDTO.getLessonId();
+    private void validateItemId(AttendanceItemDTO attendanceItemDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "itemId";
+        final var FIELD_VALUE = attendanceItemDTO.getItemId();
 
         if (isNull(FIELD_VALUE)) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O item da aula não pode ser nulo");
@@ -63,9 +63,9 @@ public class LessonItemValidatorServiceImpl implements Validator<LessonItemDTO>,
         }
     }
 
-    private void validateLessonId(LessonItemDTO lessonItemDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "lessonId";
-        final var FIELD_VALUE = lessonItemDTO.getLessonId();
+    private void validateAttendanceId(AttendanceItemDTO attendanceItemDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "attendanceId";
+        final var FIELD_VALUE = attendanceItemDTO.getAttendanceId();
 
         if (isNull(FIELD_VALUE)) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A aula associada ao item não pode ser nula");
@@ -77,9 +77,9 @@ public class LessonItemValidatorServiceImpl implements Validator<LessonItemDTO>,
         }
     }
 
-    private void validateQuantity(LessonItemDTO lessonItemDTO, List<FieldMessageDTO> errors) {
+    private void validateQuantity(AttendanceItemDTO attendanceItemDTO, List<FieldMessageDTO> errors) {
         final var FIELD_NAME = "quantity";
-        final var FIELD_VALUE = lessonItemDTO.getQuantity();
+        final var FIELD_VALUE = attendanceItemDTO.getQuantity();
 
         final var QUANTITY_MIN = 0;
         final var QUANTITY_MAX = 1000;

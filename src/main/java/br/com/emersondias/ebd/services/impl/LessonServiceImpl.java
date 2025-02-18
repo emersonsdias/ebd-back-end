@@ -46,8 +46,8 @@ public class LessonServiceImpl implements ILessonService {
         lessonEntity.setClassroom(Classroom.builder().id(lessonDTO.getClassroomId()).build());
         lessonEntity.setVisitors(lessonDTO.getVisitors().stream().map(VisitorMapper::toEntity).toList());
         lessonEntity.setOffers(lessonDTO.getOffers().stream().map(OfferMapper::toEntity).toList());
-        lessonEntity.setItems(lessonDTO.getItems().stream().map(LessonItemMapper::toEntity).toList());
         lessonEntity.setAttendances(lessonDTO.getAttendances().stream().map(AttendanceMapper::toEntity).toList());
+        lessonEntity.setTeachings(lessonDTO.getTeachings().stream().map(TeachingMapper::toEntity).toList());
         lessonEntity.setActive(lessonDTO.isActive());
     }
 

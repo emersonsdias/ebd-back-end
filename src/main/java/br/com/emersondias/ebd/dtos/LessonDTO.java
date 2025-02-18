@@ -29,9 +29,9 @@ public class LessonDTO implements Serializable {
     @Builder.Default
     private List<OfferDTO> offers = new ArrayList<>();
     @Builder.Default
-    private Set<LessonItemDTO> items = new HashSet<>();
-    @Builder.Default
     private Set<AttendanceDTO> attendances = new HashSet<>();
+    @Builder.Default
+    private Set<TeachingDTO> teachings = new HashSet<>();
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;

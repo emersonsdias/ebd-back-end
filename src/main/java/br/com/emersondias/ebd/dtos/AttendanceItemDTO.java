@@ -1,6 +1,6 @@
 package br.com.emersondias.ebd.dtos;
 
-import br.com.emersondias.ebd.validations.annotations.LessonItemDTOValidator;
+import br.com.emersondias.ebd.validations.annotations.AttendanceItemDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,12 +11,12 @@ import java.time.Instant;
 @Getter
 @Setter
 @Builder
-@LessonItemDTOValidator
-public class LessonItemDTO implements Serializable {
+@AttendanceItemDTOValidator
+public class AttendanceItemDTO implements Serializable {
 
     private Long id;
     private Integer quantity;
-    private Long lessonId;
+    private Long attendanceId;
     private Long itemId;
     private Instant createdAt;
     private Instant updatedAt;

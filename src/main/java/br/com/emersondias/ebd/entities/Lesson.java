@@ -45,11 +45,11 @@ public class Lesson implements Serializable {
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<LessonItem> items = new HashSet<>();
+    private Set<Attendance> attendances = new HashSet<>();
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Attendance> attendances = new HashSet<>();
+    private Set<Teaching> teachings = new HashSet<>();
     @Column(name = "active", nullable = false)
     private boolean active;
     @CreationTimestamp
@@ -96,25 +96,6 @@ public class Lesson implements Serializable {
         }
     }
 
-    public void setItems(Collection<LessonItem> items) {
-        if (isNull(items)) {
-            this.items.clear();
-            return;
-        }
-        this.items.removeIf(s -> !items.contains(s));
-        for (LessonItem newItem : items) {
-            var itemOpt = this.items.stream()
-                    .filter(newItem::equals)
-                    .findFirst();
-            if (itemOpt.isPresent()) {
-                itemOpt.get().setItem(newItem.getItem());
-                itemOpt.get().setQuantity(newItem.getQuantity());
-            } else {
-                this.items.add(newItem);
-            }
-        }
-    }
-
     public void setAttendances(Collection<Attendance> attendances) {
         if (isNull(attendances)) {
             this.attendances.clear();
@@ -128,9 +109,29 @@ public class Lesson implements Serializable {
             if (attendanceOpt.isPresent()) {
                 attendanceOpt.get().setPresent(newAttendance.isPresent());
                 attendanceOpt.get().setStudent(newAttendance.getStudent());
+                attendanceOpt.get().setItems(newAttendance.getItems());
                 attendanceOpt.get().setActive(newAttendance.isActive());
             } else {
                 this.attendances.add(newAttendance);
+            }
+        }
+    }
+
+    public void setTeachings(Collection<Teaching> teachings) {
+        if (isNull(teachings)) {
+            this.teachings.clear();
+            return;
+        }
+        this.teachings.removeIf(s -> !teachings.contains(s));
+        for (Teaching newTeaching : teachings) {
+            var teachingOpt = this.teachings.stream()
+                    .filter(newTeaching::equals)
+                    .findFirst();
+            if (teachingOpt.isPresent()) {
+                teachingOpt.get().setTeacher(newTeaching.getTeacher());
+                teachingOpt.get().setActive(newTeaching.isActive());
+            } else {
+                this.teachings.add(newTeaching);
             }
         }
     }

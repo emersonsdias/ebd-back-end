@@ -15,8 +15,8 @@ import java.util.Objects;
 @Setter
 @Builder
 @Entity
-@Table(schema = "app", name = "lesson_items")
-public class LessonItem implements Serializable {
+@Table(schema = "app", name = "attendances_items")
+public class AttendanceItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +25,8 @@ public class LessonItem implements Serializable {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
     @ManyToOne
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+    @JoinColumn(name = "attendance_id")
+    private Attendance attendance;
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
@@ -40,12 +40,12 @@ public class LessonItem implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        LessonItem that = (LessonItem) o;
-        return Objects.equals(lesson, that.lesson) && Objects.equals(item, that.item);
+        AttendanceItem that = (AttendanceItem) o;
+        return Objects.equals(attendance, that.attendance) && Objects.equals(item, that.item);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(lesson, item);
+        return Objects.hash(attendance, item);
     }
 }
