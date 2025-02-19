@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
@@ -111,6 +112,23 @@ public class Lesson implements Serializable {
                 this.teachings.add(newTeaching);
             }
         }
+    }
+
+    public BigDecimal offerTotal() {
+        var offerTotal = this.attendances.stream()
+                .flatMap(a -> a.getOffers().stream())
+                .map(AttendanceOffer::getOffer)
+                .map(Offer::getAmount)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        offerTotal = this.visitors.stream().flatMap(v -> v.getOffers().stream())
+                .map(VisitorOffer::getOffer)
+                .map(Offer::getAmount)
+                .filter(Objects::nonNull)
+                .reduce(offerTotal, BigDecimal::add);
+
+        return offerTotal;
     }
 
     @Override
