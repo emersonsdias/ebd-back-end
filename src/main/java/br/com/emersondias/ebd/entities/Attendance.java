@@ -39,6 +39,10 @@ public class Attendance implements Serializable {
     @Builder.Default
     @OneToMany(mappedBy = "attendance", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttendanceItem> items = new HashSet<>();
+    @Setter(AccessLevel.NONE)
+    @Builder.Default
+    @OneToMany(mappedBy = "attendance", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AttendanceOffer> offers = new HashSet<>();
     @Column(name = "active", nullable = false)
     private boolean active;
     @CreationTimestamp
@@ -64,6 +68,24 @@ public class Attendance implements Serializable {
                 itemOpt.get().setQuantity(newItem.getQuantity());
             } else {
                 this.items.add(newItem);
+            }
+        }
+    }
+
+    public void setOffers(Collection<AttendanceOffer> offers) {
+        if (isNull(offers)) {
+            this.offers.clear();
+            return;
+        }
+        this.offers.removeIf(s -> !offers.contains(s));
+        for (AttendanceOffer newOffer : offers) {
+            var offerOpt = this.offers.stream()
+                    .filter(newOffer::equals)
+                    .findFirst();
+            if (offerOpt.isPresent()) {
+                offerOpt.get().setOffer(newOffer.getOffer());
+            } else {
+                this.offers.add(newOffer);
             }
         }
     }

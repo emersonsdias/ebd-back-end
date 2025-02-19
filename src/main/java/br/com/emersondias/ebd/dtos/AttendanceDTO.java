@@ -23,6 +23,8 @@ public class AttendanceDTO implements Serializable {
     private SimpleLessonDTO lesson;
     @Builder.Default
     private Set<AttendanceItemDTO> items = new HashSet<>();
+    @Builder.Default
+    private Set<AttendanceOfferDTO> offers = new HashSet<>();
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;

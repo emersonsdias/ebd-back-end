@@ -17,7 +17,6 @@ public class LessonMapper {
                 .notes(entity.getNotes())
                 .classroomId(Optional.ofNullable(entity.getClassroom()).map(Classroom::getId).orElse(null))
                 .visitors(entity.getVisitors().stream().map(VisitorMapper::toDTO).toList())
-                .offers(entity.getOffers().stream().map(OfferMapper::toDTO).toList())
                 .attendances(entity.getAttendances().stream().map(AttendanceMapper::toDTO).collect(Collectors.toSet()))
                 .build();
     }
@@ -38,7 +37,6 @@ public class LessonMapper {
                 .notes(dto.getNotes())
                 .classroom(Classroom.builder().id(dto.getClassroomId()).build())
                 .visitors(dto.getVisitors().stream().map(VisitorMapper::toEntity).toList())
-                .offers(dto.getOffers().stream().map(OfferMapper::toEntity).toList())
                 .attendances(dto.getAttendances().stream().map(AttendanceMapper::toEntity).collect(Collectors.toSet()))
                 .build();
     }

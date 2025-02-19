@@ -1,10 +1,9 @@
 package br.com.emersondias.ebd.dtos;
 
-import br.com.emersondias.ebd.validations.annotations.OfferDTOValidator;
+import br.com.emersondias.ebd.validations.annotations.AttendanceOfferDTOValidator;
 import lombok.*;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @NoArgsConstructor
@@ -12,12 +11,12 @@ import java.time.Instant;
 @Getter
 @Setter
 @Builder
-@OfferDTOValidator
-public class OfferDTO implements Serializable {
+@AttendanceOfferDTOValidator
+public class AttendanceOfferDTO implements Serializable {
 
     private Long id;
-    private BigDecimal amount;
-    private boolean active;
+    private Long attendanceId;
+    private OfferDTO offer;
     private Instant createdAt;
     private Instant updatedAt;
 

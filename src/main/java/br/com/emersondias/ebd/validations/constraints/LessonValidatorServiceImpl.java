@@ -3,7 +3,6 @@ package br.com.emersondias.ebd.validations.constraints;
 import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.dtos.AttendanceDTO;
 import br.com.emersondias.ebd.dtos.LessonDTO;
-import br.com.emersondias.ebd.dtos.OfferDTO;
 import br.com.emersondias.ebd.dtos.VisitorDTO;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
 import br.com.emersondias.ebd.repositories.ClassroomRepository;
@@ -32,7 +31,6 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
     private final HttpServletRequest request;
     private final ClassroomRepository classroomRepository;
     private final Validator<VisitorDTO> visitorValidator;
-    private final Validator<OfferDTO> offerValidator;
     private final Validator<AttendanceDTO> attendanceValidator;
 
     @Override
@@ -44,7 +42,6 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
         validateNotes(lessonDTO, errors);
         validateClassroomId(lessonDTO, errors);
         validateVisitors(lessonDTO, errors);
-        validateOffers(lessonDTO, errors);
         validateAttendance(lessonDTO, errors);
 
         return new DefaultValidationResult<>(lessonDTO, errors);
@@ -60,22 +57,6 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
 
         FIELD_VALUE.stream()
                 .map(attendanceValidator::validate)
-                .filter(v -> !v.isValid())
-                .map(ValidationResult::getErrors)
-                .peek(e -> e.forEach(fm -> fm.setFieldName(FIELD_NAME)))
-                .forEach(errors::addAll);
-    }
-
-    private void validateOffers(LessonDTO lessonDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "offers";
-        final var FIELD_VALUE = lessonDTO.getOffers();
-
-        if (isNull(FIELD_VALUE)) {
-            return;
-        }
-
-        FIELD_VALUE.stream()
-                .map(offerValidator::validate)
                 .filter(v -> !v.isValid())
                 .map(ValidationResult::getErrors)
                 .peek(e -> e.forEach(fm -> fm.setFieldName(FIELD_NAME)))

@@ -24,9 +24,6 @@ public class Offer implements Serializable {
     private Long id;
     @Column(name = "amount", precision = 11, scale = 2, nullable = false)
     private BigDecimal amount;
-    @ManyToOne
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
     @Column(name = "active", nullable = false)
     private boolean active;
     @CreationTimestamp

@@ -41,10 +41,6 @@ public class Lesson implements Serializable {
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Offer> offers = new ArrayList<>();
-    @Setter(AccessLevel.NONE)
-    @Builder.Default
-    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Attendance> attendances = new HashSet<>();
     @Setter(AccessLevel.NONE)
     @Builder.Default
@@ -73,25 +69,6 @@ public class Lesson implements Serializable {
                 visitorOpt.get().setName(newVisitor.getName());
             } else {
                 this.visitors.add(newVisitor);
-            }
-        }
-    }
-
-    public void setOffers(Collection<Offer> offers) {
-        if (isNull(offers)) {
-            this.offers.clear();
-            return;
-        }
-        this.offers.removeIf(s -> !offers.contains(s));
-        for (Offer newOffer : offers) {
-            var offerOpt = this.offers.stream()
-                    .filter(newOffer::equals)
-                    .findFirst();
-            if (offerOpt.isPresent()) {
-                offerOpt.get().setAmount(newOffer.getAmount());
-                offerOpt.get().setActive(newOffer.isActive());
-            } else {
-                this.offers.add(newOffer);
             }
         }
     }

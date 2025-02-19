@@ -24,11 +24,9 @@ create table app.visitors (
 create table app.offers (
     id bigserial not null,
     amount numeric(11,2) not null,
-    lesson_id bigint not null,
     active boolean not null,
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now(),
-    constraint fk_offers_lessons foreign key (lesson_id) references app.lessons,
     primary key (id)
 );
 
@@ -53,7 +51,18 @@ create table app.attendances_items (
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now(),
     constraint fk_attendances_items_attendances foreign key (attendance_id) references app.attendances,
-    constraint fk_lesson_items_items foreign key (item_id) references app.items,
+    constraint fk_attendances_items_items foreign key (item_id) references app.items,
+    primary key (id)
+);
+
+create table app.attendances_offers (
+    id bigserial not null,
+    attendance_id bigint not null,
+    offer_id bigint not null,
+    created_at timestamp(6) with time zone default now(),
+    updated_at timestamp(6) with time zone default now(),
+    constraint fk_attendances_offers_attendances foreign key (attendance_id) references app.attendances,
+    constraint fk_attendances_offers_offers foreign key (offer_id) references app.offers,
     primary key (id)
 );
 

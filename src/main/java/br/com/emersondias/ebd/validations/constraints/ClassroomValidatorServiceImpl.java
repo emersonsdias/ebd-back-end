@@ -2,6 +2,7 @@ package br.com.emersondias.ebd.validations.constraints;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.dtos.ClassroomDTO;
+import br.com.emersondias.ebd.dtos.StudentDTO;
 import br.com.emersondias.ebd.dtos.TeacherDTO;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
 import br.com.emersondias.ebd.repositories.AgeRangeRepository;
@@ -28,7 +29,8 @@ public class ClassroomValidatorServiceImpl implements Validator<ClassroomDTO>, C
 
     private final HttpServletRequest request;
     private final AgeRangeRepository ageRangeRepository;
-    private final Validator<TeacherDTO> classroomPersonValidator;
+    private final Validator<TeacherDTO> teacherValidator;
+    private final Validator<StudentDTO> studentValidator;
 
     @Override
     public ValidationResult<ClassroomDTO> validate(ClassroomDTO classroomDTO) {
@@ -44,14 +46,14 @@ public class ClassroomValidatorServiceImpl implements Validator<ClassroomDTO>, C
 
     private void validateStudents(ClassroomDTO classroomDTO, List<FieldMessageDTO> errors) {
         final var FIELD_NAME = "students";
-        final var FIELD_VALUE = classroomDTO.getTeachers();
+        final var FIELD_VALUE = classroomDTO.getStudents();
 
         if (isNull(FIELD_VALUE)) {
             return;
         }
 
         FIELD_VALUE.stream()
-                .map(classroomPersonValidator::validate)
+                .map(studentValidator::validate)
                 .filter(v -> !v.isValid())
                 .map(ValidationResult::getErrors)
                 .peek(e -> e.forEach(fm -> fm.setFieldName(FIELD_NAME)))
@@ -67,7 +69,7 @@ public class ClassroomValidatorServiceImpl implements Validator<ClassroomDTO>, C
         }
 
         FIELD_VALUE.stream()
-                .map(classroomPersonValidator::validate)
+                .map(teacherValidator::validate)
                 .filter(v -> !v.isValid())
                 .map(ValidationResult::getErrors)
                 .peek(e -> e.forEach(fm -> fm.setFieldName(FIELD_NAME)))

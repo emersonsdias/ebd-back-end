@@ -1,17 +1,18 @@
 package br.com.emersondias.ebd.validations.constraints;
 
-import br.com.emersondias.ebd.dtos.OfferDTO;
+import br.com.emersondias.ebd.dtos.TeachingDTO;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
+import br.com.emersondias.ebd.repositories.TeacherRepository;
 import br.com.emersondias.ebd.validations.DefaultValidationResult;
 import br.com.emersondias.ebd.validations.ValidationResult;
 import br.com.emersondias.ebd.validations.Validator;
-import br.com.emersondias.ebd.validations.annotations.OfferDTOValidator;
+import br.com.emersondias.ebd.validations.annotations.TeachingDTOValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,20 +20,23 @@ import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
-public class OfferValidatorServiceImpl implements Validator<OfferDTO>, ConstraintValidator<OfferDTOValidator, OfferDTO> {
+public class TeachingValidatorServiceImpl implements Validator<TeachingDTO>, ConstraintValidator<TeachingDTOValidator, TeachingDTO> {
 
+    private final TeacherRepository teacherRepository;
+
+    @Transactional(readOnly = true)
     @Override
-    public ValidationResult<OfferDTO> validate(OfferDTO offerDTO) {
+    public ValidationResult<TeachingDTO> validate(TeachingDTO teachingDTO) {
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
-        validateAmount(offerDTO, errors);
+        validateTeacherId(teachingDTO, errors);
 
-        return new DefaultValidationResult<>(offerDTO, errors);
+        return new DefaultValidationResult<>(teachingDTO, errors);
     }
 
     @Override
-    public boolean isValid(OfferDTO offerDTO, ConstraintValidatorContext context) {
-        var validationResult = validate(offerDTO);
+    public boolean isValid(TeachingDTO teachingDTO, ConstraintValidatorContext context) {
+        var validationResult = validate(teachingDTO);
 
         validationResult.getErrors().forEach(error -> {
             context.disableDefaultConstraintViolation();
@@ -44,23 +48,18 @@ public class OfferValidatorServiceImpl implements Validator<OfferDTO>, Constrain
         return validationResult.isValid();
     }
 
-    private void validateAmount(OfferDTO offerDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "amount";
-        final var FIELD_VALUE = offerDTO.getAmount();
 
-        final var AMOUNT_MIN = BigDecimal.ZERO;
-        final var AMOUNT_MAX = BigDecimal.valueOf(999999999);
+    private void validateTeacherId(TeachingDTO teachingDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "teacherId";
+        final var FIELD_VALUE = teachingDTO.getTeacherId();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O valor da oferta não pode ser nulo");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O professor não pode ser nulo");
             return;
         }
 
-        if (FIELD_VALUE.compareTo(AMOUNT_MIN) < 0) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O valor da oferta não pode ser menor que '" + AMOUNT_MIN + "'");
-        }
-        if (FIELD_VALUE.compareTo(AMOUNT_MAX) > 0) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O valor da oferta não pode ser maior que '" + AMOUNT_MAX + "'");
+        if (teacherRepository.findById(FIELD_VALUE).isEmpty()) {
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O professor com id '" + FIELD_VALUE + "' não foi encontrado");
         }
     }
 
