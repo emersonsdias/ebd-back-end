@@ -17,6 +17,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
+import static java.util.Objects.nonNull;
+
 @Service
 @RequiredArgsConstructor
 public class ReportServiceImpl implements IReportService {
@@ -26,22 +28,29 @@ public class ReportServiceImpl implements IReportService {
 
     private final DataSource dataSource;
 
-    private Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
-    }
-
     @Override
     public byte[] generatePdf(String fileName, Map<String, Object> params) throws ReportGenerationException {
+        Connection connection = null;
         try {
+            connection = dataSource.getConnection();
             var reportStream = new ClassPathResource(
                     REPORTS_PATH.concat("/").concat(fileName).concat(JASPER_EXTENSION)
             ).getInputStream();
             var jasperReport = (JasperReport) JRLoader.loadObject(reportStream);
-            var jasperPrint = JasperFillManager.fillReport(jasperReport, params, getConnection());
+            var jasperPrint = JasperFillManager.fillReport(jasperReport, params, connection);
 
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (JRException | SQLException | IOException e) {
             throw new ReportGenerationException("Failed to generate PDF report, params: [" + params + "]", e, fileName);
+        } finally {
+            if (nonNull(connection)) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new ReportGenerationException("Failed to close SQL connection while generating PDF report, params: [" + params + "]", e, fileName);
+                }
+            }
+
         }
     }
 }
