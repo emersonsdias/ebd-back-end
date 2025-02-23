@@ -1,32 +1,28 @@
 <!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
-<jasperReport name="sub_lesson_teacher" language="java" columnCount="1" pageWidth="138" pageHeight="30"
-              columnWidth="138" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0"
-              uuid="ee4be4c5-35bb-48b6-b990-230607c7ee3b">
-    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql"/>
-    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-    <parameter name="lesson_id" class="java.lang.Long"/>
-    <query language="sql"><![CDATA[select
+<jasperReport name="sub_lesson_teacher" language="java" columnCount="1" pageWidth="138" pageHeight="30" columnWidth="138" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ee4be4c5-35bb-48b6-b990-230607c7ee3b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="lesson_id" class="java.lang.Long"/>
+	<query language="sql"><![CDATA[select
 	p.name as teacher_name
 from app.teachings teaching
 left join app.teachers t on t.id = teaching.teacher_id
 left join app.people p on p.id = t.person_id
 where teaching.lesson_id =  $P{lesson_id} 
 ]]></query>
-    <field name="teacher_name" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="teacher_name"/>
-        <property name="com.jaspersoft.studio.field.label" value="teacher_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="people"/>
-    </field>
-    <background splitType="Stretch"/>
-    <detail>
-        <band height="30" splitType="Stretch">
-            <element kind="textField" uuid="08080341-c229-4e36-8429-3f1d45230876" x="0" y="0" width="138" height="30"
-                     hTextAlign="Center" vTextAlign="Middle">
-                <expression><![CDATA[$F{teacher_name}]]></expression>
-                <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                          value="6902ac8c-b3be-4091-b9bf-b3c09fbc4bcd"/>
-                <property name="com.jaspersoft.studio.unit.width" value="px"/>
-            </element>
-        </band>
-    </detail>
+	<field name="teacher_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="teacher_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="teacher_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="people"/>
+	</field>
+	<background splitType="Stretch"/>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<element kind="textField" uuid="08080341-c229-4e36-8429-3f1d45230876" x="0" y="0" width="138" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{teacher_name}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6902ac8c-b3be-4091-b9bf-b3c09fbc4bcd"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+		</band>
+	</detail>
 </jasperReport>
