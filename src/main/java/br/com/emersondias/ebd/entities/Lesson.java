@@ -63,6 +63,7 @@ public class Lesson implements Serializable {
         }
         this.visitors.removeIf(s -> !visitors.contains(s));
         for (Visitor newVisitor : visitors) {
+            newVisitor.setLesson(this);
             var visitorOpt = this.visitors.stream()
                     .filter(newVisitor::equals)
                     .findFirst();
@@ -81,6 +82,7 @@ public class Lesson implements Serializable {
         }
         this.attendances.removeIf(s -> !attendances.contains(s));
         for (Attendance newAttendance : attendances) {
+            newAttendance.setLesson(this);
             var attendanceOpt = this.attendances.stream()
                     .filter(newAttendance::equals)
                     .findFirst();
@@ -102,6 +104,7 @@ public class Lesson implements Serializable {
         }
         this.teachings.removeIf(s -> !teachings.contains(s));
         for (Teaching newTeaching : teachings) {
+            newTeaching.setLesson(this);
             var teachingOpt = this.teachings.stream()
                     .filter(newTeaching::equals)
                     .findFirst();

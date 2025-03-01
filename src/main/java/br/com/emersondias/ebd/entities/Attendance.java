@@ -60,6 +60,7 @@ public class Attendance implements Serializable {
         }
         this.items.removeIf(s -> !items.contains(s));
         for (AttendanceItem newItem : items) {
+            newItem.setAttendance(this);
             var itemOpt = this.items.stream()
                     .filter(newItem::equals)
                     .findFirst();
@@ -79,6 +80,7 @@ public class Attendance implements Serializable {
         }
         this.offers.removeIf(s -> !offers.contains(s));
         for (AttendanceOffer newOffer : offers) {
+            newOffer.setAttendance(this);
             var offerOpt = this.offers.stream()
                     .filter(newOffer::equals)
                     .findFirst();

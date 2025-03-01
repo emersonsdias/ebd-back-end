@@ -1,9 +1,11 @@
 package br.com.emersondias.ebd.dtos;
 
+import br.com.emersondias.ebd.deserializer.CustomLocalDateDeserializer;
 import br.com.emersondias.ebd.entities.enums.EducationLevel;
 import br.com.emersondias.ebd.entities.enums.Gender;
 import br.com.emersondias.ebd.entities.enums.MaritalStatus;
 import br.com.emersondias.ebd.validations.annotations.PersonDTOValidator;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 
 import java.io.Serializable;
@@ -24,6 +26,7 @@ public class PersonDTO implements Serializable {
 
     private UUID id;
     private String name;
+    @JsonDeserialize(using = CustomLocalDateDeserializer.class)
     private LocalDate birthdate;
     private String email;
     private Gender gender;
@@ -35,14 +38,5 @@ public class PersonDTO implements Serializable {
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
-
-    public String getFormattedPhoneNumbers() {
-        if (this.getPhoneNumbers() == null || this.getPhoneNumbers().isEmpty()) {
-            return "";
-        }
-        return this.getPhoneNumbers().stream()
-                .map(PhoneNumberDTO::getFormattedPhoneNumber)
-                .collect(Collectors.joining(" / "));
-    }
 
 }

@@ -71,6 +71,7 @@ public class Person implements Serializable {
         }
         this.phoneNumbers.removeIf(phoneNumber -> !phoneNumbers.contains(phoneNumber));
         for (PhoneNumber phoneNumber : phoneNumbers) {
+            phoneNumber.setPerson(this);
             var phoneOpt = this.phoneNumbers.stream()
                     .filter(phoneNumber::equals)
                     .findFirst();

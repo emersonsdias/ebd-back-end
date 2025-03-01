@@ -52,6 +52,7 @@ public class Classroom implements Serializable {
         }
         this.teachers.removeIf(t -> !teachers.contains(t));
         for (Teacher newTeacher : teachers) {
+            newTeacher.setClassroom(this);
             var teacherOpt = this.teachers.stream()
                     .filter(newTeacher::equals)
                     .findFirst();
@@ -70,6 +71,7 @@ public class Classroom implements Serializable {
         }
         this.students.removeIf(s -> !students.contains(s));
         for (Student newStudent : students) {
+            newStudent.setClassroom(this);
             var studentOpt = this.students.stream()
                     .filter(newStudent::equals)
                     .findFirst();

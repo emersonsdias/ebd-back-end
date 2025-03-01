@@ -74,7 +74,7 @@ public class LocationServiceImpl implements ILocationService {
 
     @Override
     public List<StateDTO> findAllStates() {
-        return stateRepository.findByActiveTrue().stream().map(StateMapper::toDTO).toList();
+        return stateRepository.findByActiveTrueOrderByName().stream().map(StateMapper::toDTO).toList();
     }
 
     @Override
