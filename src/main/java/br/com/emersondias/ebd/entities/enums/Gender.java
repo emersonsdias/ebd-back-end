@@ -1,5 +1,6 @@
 package br.com.emersondias.ebd.entities.enums;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,6 +9,7 @@ import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Getter
+@Schema(enumAsRef = true)
 public enum Gender {
 
     MALE(1, "MALE", "Masculino"),
