@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Tag(name = "Lesson", description = "the lesson API")
@@ -74,14 +72,15 @@ public class LessonController {
     @GetMapping
     public ResponseEntity<List<LessonDTO>> findAll(
             @RequestParam(value = "startDate", required = false) LocalDate startDate,
-            @RequestParam(value = "endDate", required = false) LocalDate endDate
+            @RequestParam(value = "endDate", required = false) LocalDate endDate,
+            @RequestParam(value = "maxRecentLessons", required = false) Integer maxRecentLessons
     ) {
-        List<LessonDTO> lessons;
-        if (nonNull(startDate) || nonNull(endDate)) {
-            lessons = lessonService.findByPeriod(startDate, endDate);
-        } else {
-            lessons = lessonService.findAll();
+        if (nonNull(maxRecentLessons)) {
+            return ResponseEntity.ok(lessonService.findRecentLessons(maxRecentLessons));
         }
-        return ResponseEntity.ok(lessons);
+        if (nonNull(startDate) || nonNull(endDate)) {
+            return ResponseEntity.ok(lessonService.findByPeriod(startDate, endDate));
+        }
+        return ResponseEntity.ok(lessonService.findAll());
     }
 }

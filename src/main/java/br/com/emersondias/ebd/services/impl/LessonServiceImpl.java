@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Objects.*;
 
@@ -74,12 +75,18 @@ public class LessonServiceImpl implements ILessonService {
     @Override
     public List<LessonDTO> findByPeriod(LocalDate startDate, LocalDate endDate) {
         if (isNull(startDate)) {
-            startDate = (nonNull(endDate)? endDate : LocalDate.now()).minusDays(15);
+            startDate = (nonNull(endDate) ? endDate : LocalDate.now()).minusDays(15);
         }
         if (isNull(endDate)) {
             endDate = startDate.plusDays(15);
         }
-        return repository.findByLessonDateBetween(startDate, endDate).stream().map(LessonMapper::toDTO).toList();
+        return repository.findByActiveTrueAndLessonDateBetween(startDate, endDate).stream().map(LessonMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<LessonDTO> findRecentLessons(Integer limit) {
+        requireNonNull(limit);
+        return repository.findRecentLessons(limit).stream().map(LessonMapper::toDTO).toList();
     }
 
     private Lesson findEntityById(Long id) {

@@ -5,6 +5,7 @@ import br.com.emersondias.ebd.dtos.SimpleLessonDTO;
 import br.com.emersondias.ebd.entities.Classroom;
 import br.com.emersondias.ebd.entities.Lesson;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -46,9 +47,9 @@ public class LessonMapper {
                 .lessonDate(dto.getLessonDate())
                 .notes(dto.getNotes())
                 .classroom(Classroom.builder().id(dto.getClassroomId()).build())
-                .visitors(dto.getVisitors().stream().map(VisitorMapper::toEntity).toList())
-                .attendances(dto.getAttendances().stream().map(AttendanceMapper::toEntity).collect(Collectors.toSet()))
-                .teachings(dto.getTeachings().stream().map(TeachingMapper::toEntity).collect(Collectors.toSet()))
+                .visitors(Optional.ofNullable(dto.getVisitors()).orElse(Collections.emptyList()).stream().map(VisitorMapper::toEntity).toList())
+                .attendances(Optional.ofNullable(dto.getAttendances()).orElse(Collections.emptySet()).stream().map(AttendanceMapper::toEntity).collect(Collectors.toSet()))
+                .teachings(Optional.ofNullable(dto.getTeachings()).orElse(Collections.emptySet()).stream().map(TeachingMapper::toEntity).collect(Collectors.toSet()))
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())
