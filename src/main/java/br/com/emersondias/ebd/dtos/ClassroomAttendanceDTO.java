@@ -1,7 +1,5 @@
-package br.com.emersondias.ebd.controllers;
+package br.com.emersondias.ebd.dtos;
 
-import br.com.emersondias.ebd.dtos.AttendanceDTO;
-import br.com.emersondias.ebd.dtos.SimpleClassroomDTO;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -27,10 +25,4 @@ public class ClassroomAttendanceDTO implements Serializable {
         this.missedLessons = this.totalLessons - this.attendedLessons;
     }
 
-    public Double getAttendanceRate() {
-        if (this.totalLessons == 0) {
-            return 0.0;
-        }
-        return ((double) this.attendedLessons / this.totalLessons) * 100;
-    }
 }

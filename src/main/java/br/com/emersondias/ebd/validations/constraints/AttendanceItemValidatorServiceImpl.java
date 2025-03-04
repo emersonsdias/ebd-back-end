@@ -31,7 +31,7 @@ public class AttendanceItemValidatorServiceImpl implements Validator<AttendanceI
 
         validateQuantity(attendanceItemDTO, errors);
         validateAttendanceId(attendanceItemDTO, errors);
-        validateItemId(attendanceItemDTO, errors);
+        validateItem(attendanceItemDTO, errors);
 
         return new DefaultValidationResult<>(attendanceItemDTO, errors);
     }
@@ -50,15 +50,15 @@ public class AttendanceItemValidatorServiceImpl implements Validator<AttendanceI
         return validationResult.isValid();
     }
 
-    private void validateItemId(AttendanceItemDTO attendanceItemDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "itemId";
-        final var FIELD_VALUE = attendanceItemDTO.getItemId();
+    private void validateItem(AttendanceItemDTO attendanceItemDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "item";
+        final var FIELD_VALUE = attendanceItemDTO.getItem();
 
-        if (isNull(FIELD_VALUE)) {
+        if (isNull(FIELD_VALUE) || isNull(FIELD_VALUE.getId())) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O item da chamada não pode ser nulo");
             return;
         }
-        if (itemRepository.findById(FIELD_VALUE).isEmpty()) {
+        if (itemRepository.findById(FIELD_VALUE.getId()).isEmpty()) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada o item com o id '" + FIELD_VALUE + "'");
         }
     }

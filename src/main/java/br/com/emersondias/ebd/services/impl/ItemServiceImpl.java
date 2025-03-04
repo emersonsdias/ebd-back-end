@@ -58,7 +58,7 @@ public class ItemServiceImpl implements IItemService {
 
     @Override
     public List<ItemDTO> findAll() {
-        return repository.findAll().stream().map(ItemMapper::toDTO).toList();
+        return repository.findByActiveTrue().stream().map(ItemMapper::toDTO).toList();
     }
 
     private Item findEntityById(Long id) {

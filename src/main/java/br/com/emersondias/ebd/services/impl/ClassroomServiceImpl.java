@@ -69,7 +69,7 @@ public class ClassroomServiceImpl implements IClassroomService {
 
     @Override
     public List<ClassroomDTO> findAll() {
-        return repository.findAll().stream().map(ClassroomMapper::toDTO).toList();
+        return repository.findByActiveTrue().stream().map(ClassroomMapper::toDTO).toList();
     }
 
     @Transactional

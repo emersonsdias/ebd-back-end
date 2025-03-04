@@ -1,6 +1,5 @@
 package br.com.emersondias.ebd.dtos;
 
-import br.com.emersondias.ebd.controllers.ClassroomAttendanceDTO;
 import lombok.Getter;
 
 import java.io.Serializable;

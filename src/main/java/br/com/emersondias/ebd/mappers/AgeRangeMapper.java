@@ -8,6 +8,7 @@ public class AgeRangeMapper {
     public static AgeRangeDTO toDTO(AgeRange entity) {
         return AgeRangeDTO.builder()
                 .id(entity.getId())
+                .name(entity.getName())
                 .minAge(entity.getMinAge())
                 .maxAge(entity.getMaxAge())
                 .active(entity.isActive())
@@ -19,6 +20,7 @@ public class AgeRangeMapper {
     public static AgeRange toEntity(AgeRangeDTO dto) {
         return AgeRange.builder()
                 .id(dto.getId())
+                .name(dto.getName())
                 .minAge(dto.getMinAge())
                 .maxAge(dto.getMaxAge())
                 .active(dto.isActive())

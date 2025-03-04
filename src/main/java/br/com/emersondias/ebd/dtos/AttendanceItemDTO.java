@@ -17,7 +17,7 @@ public class AttendanceItemDTO implements Serializable {
     private Long id;
     private Integer quantity;
     private Long attendanceId;
-    private Long itemId;
+    private ItemDTO item;
     private Instant createdAt;
     private Instant updatedAt;
 

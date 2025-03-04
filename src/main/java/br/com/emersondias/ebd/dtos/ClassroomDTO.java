@@ -5,7 +5,9 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -24,6 +26,8 @@ public class ClassroomDTO implements Serializable {
     private Set<TeacherDTO> teachers = new HashSet<>();
     @Builder.Default
     private Set<StudentDTO> students = new HashSet<>();
+    @Builder.Default
+    private List<SimpleLessonDTO> lessons = new ArrayList<>();
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;

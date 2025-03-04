@@ -2,7 +2,7 @@ package br.com.emersondias.ebd.validations.constraints;
 
 import br.com.emersondias.ebd.dtos.StudentDTO;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
-import br.com.emersondias.ebd.repositories.StudentRepository;
+import br.com.emersondias.ebd.repositories.PersonRepository;
 import br.com.emersondias.ebd.validations.DefaultValidationResult;
 import br.com.emersondias.ebd.validations.ValidationResult;
 import br.com.emersondias.ebd.validations.Validator;
@@ -21,7 +21,7 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class StudentValidatorServiceImpl implements Validator<StudentDTO>, ConstraintValidator<StudentDTOValidator, StudentDTO> {
 
-    private final StudentRepository studentRepository;
+    private final PersonRepository personRepository;
 
     @Override
     public ValidationResult<StudentDTO> validate(StudentDTO studentDTO) {
@@ -41,7 +41,7 @@ public class StudentValidatorServiceImpl implements Validator<StudentDTO>, Const
             return;
         }
 
-        if (studentRepository.findById(FIELD_VALUE).isEmpty()) {
+        if (personRepository.findById(FIELD_VALUE).isEmpty()) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A pessoa com o id '" + FIELD_VALUE + "' não foi encontrada");
         }
     }

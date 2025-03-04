@@ -1,8 +1,8 @@
 package br.com.emersondias.ebd.services.impl;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
-import br.com.emersondias.ebd.controllers.ClassroomAttendanceDTO;
 import br.com.emersondias.ebd.dtos.AddressDTO;
+import br.com.emersondias.ebd.dtos.ClassroomAttendanceDTO;
 import br.com.emersondias.ebd.dtos.PersonDTO;
 import br.com.emersondias.ebd.dtos.PersonReportDTO;
 import br.com.emersondias.ebd.entities.Address;

@@ -67,7 +67,7 @@ public class LessonServiceImpl implements ILessonService {
 
     @Override
     public List<LessonDTO> findAll() {
-        return repository.findAll().stream().map(LessonMapper::toDTO).toList();
+        return repository.findByActiveTrue().stream().map(LessonMapper::toDTO).toList();
     }
 
     private Lesson findEntityById(Long id) {

@@ -59,7 +59,7 @@ public class AgeRangeServiceImpl implements IAgeRangeService {
 
     @Override
     public List<AgeRangeDTO> findAll() {
-        return repository.findAll().stream().map(AgeRangeMapper::toDTO).toList();
+        return repository.findByActiveTrue().stream().map(AgeRangeMapper::toDTO).toList();
     }
 
     private AgeRange findEntityById(Long id) {

@@ -14,10 +14,15 @@ public class LessonMapper {
         return LessonDTO.builder()
                 .id(entity.getId())
                 .lessonNumber(entity.getLessonNumber())
+                .lessonDate(entity.getLessonDate())
                 .notes(entity.getNotes())
                 .classroomId(Optional.ofNullable(entity.getClassroom()).map(Classroom::getId).orElse(null))
                 .visitors(entity.getVisitors().stream().map(VisitorMapper::toDTO).toList())
                 .attendances(entity.getAttendances().stream().map(AttendanceMapper::toDTO).collect(Collectors.toSet()))
+                .teachings(entity.getTeachings().stream().map(TeachingMapper::toDTO).collect(Collectors.toSet()))
+                .active(entity.isActive())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 
@@ -25,8 +30,12 @@ public class LessonMapper {
         return SimpleLessonDTO.builder()
                 .id(entity.getId())
                 .lessonNumber(entity.getLessonNumber())
+                .lessonDate(entity.getLessonDate())
                 .notes(entity.getNotes())
                 .classroomId(Optional.ofNullable(entity.getClassroom()).map(Classroom::getId).orElse(null))
+                .active(entity.isActive())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 
@@ -34,10 +43,28 @@ public class LessonMapper {
         return Lesson.builder()
                 .id(dto.getId())
                 .lessonNumber(dto.getLessonNumber())
+                .lessonDate(dto.getLessonDate())
                 .notes(dto.getNotes())
                 .classroom(Classroom.builder().id(dto.getClassroomId()).build())
                 .visitors(dto.getVisitors().stream().map(VisitorMapper::toEntity).toList())
                 .attendances(dto.getAttendances().stream().map(AttendanceMapper::toEntity).collect(Collectors.toSet()))
+                .teachings(dto.getTeachings().stream().map(TeachingMapper::toEntity).collect(Collectors.toSet()))
+                .active(dto.isActive())
+                .createdAt(dto.getCreatedAt())
+                .updatedAt(dto.getUpdatedAt())
+                .build();
+    }
+
+    public static Lesson toEntity(SimpleLessonDTO dto) {
+        return Lesson.builder()
+                .id(dto.getId())
+                .lessonNumber(dto.getLessonNumber())
+                .lessonDate(dto.getLessonDate())
+                .notes(dto.getNotes())
+                .classroom(Classroom.builder().id(dto.getClassroomId()).build())
+                .active(dto.isActive())
+                .createdAt(dto.getCreatedAt())
+                .updatedAt(dto.getUpdatedAt())
                 .build();
     }
 

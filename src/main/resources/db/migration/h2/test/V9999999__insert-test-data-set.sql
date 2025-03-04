@@ -117,13 +117,13 @@ insert into app.classrooms (name, age_range_id, active, created_at, updated_at) 
 INSERT INTO app.lessons (lesson_number, lesson_date, notes, active, classroom_id)
 SELECT
     gs.lesson_number,
-    DATEADD('DAY', -15 + (gs.lesson_number - 1) * 3, CURRENT_DATE),
+    DATEADD('DAY', -40 + (gs.lesson_number - 1) * 2, CURRENT_DATE),
     NULL,
     TRUE,
     id
 FROM
     app.classrooms
-CROSS JOIN SYSTEM_RANGE(1,20) AS gs(lesson_number);
+CROSS JOIN SYSTEM_RANGE(1,60) AS gs(lesson_number);
 
 
 insert into app.students (person_id, classroom_id, active)
