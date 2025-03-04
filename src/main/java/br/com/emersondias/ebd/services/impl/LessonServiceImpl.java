@@ -13,9 +13,10 @@ import br.com.emersondias.ebd.services.interfaces.ILessonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import static java.util.Objects.requireNonNull;
+import static java.util.Objects.*;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +69,17 @@ public class LessonServiceImpl implements ILessonService {
     @Override
     public List<LessonDTO> findAll() {
         return repository.findByActiveTrue().stream().map(LessonMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<LessonDTO> findByPeriod(LocalDate startDate, LocalDate endDate) {
+        if (isNull(startDate)) {
+            startDate = (nonNull(endDate)? endDate : LocalDate.now()).minusDays(15);
+        }
+        if (isNull(endDate)) {
+            endDate = startDate.plusDays(15);
+        }
+        return repository.findByLessonDateBetween(startDate, endDate).stream().map(LessonMapper::toDTO).toList();
     }
 
     private Lesson findEntityById(Long id) {

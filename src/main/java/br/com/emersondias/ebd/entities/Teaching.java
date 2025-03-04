@@ -23,7 +23,7 @@ public class Teaching implements Serializable {
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
     @ManyToOne
     @JoinColumn(name = "lesson_id")

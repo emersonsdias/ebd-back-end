@@ -13,7 +13,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Tag(name = "Lesson", description = "the lesson API")
 @RestController
@@ -67,7 +72,16 @@ public class LessonController {
             @ApiResponse(responseCode = "200")
     })
     @GetMapping
-    public ResponseEntity<List<LessonDTO>> findAll() {
-        return ResponseEntity.ok(lessonService.findAll());
+    public ResponseEntity<List<LessonDTO>> findAll(
+            @RequestParam(value = "startDate", required = false) LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) LocalDate endDate
+    ) {
+        List<LessonDTO> lessons;
+        if (nonNull(startDate) || nonNull(endDate)) {
+            lessons = lessonService.findByPeriod(startDate, endDate);
+        } else {
+            lessons = lessonService.findAll();
+        }
+        return ResponseEntity.ok(lessons);
     }
 }
