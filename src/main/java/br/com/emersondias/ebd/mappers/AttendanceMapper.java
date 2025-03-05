@@ -6,16 +6,19 @@ import br.com.emersondias.ebd.entities.Attendance;
 import br.com.emersondias.ebd.entities.Lesson;
 import br.com.emersondias.ebd.entities.Student;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class AttendanceMapper {
 
     public static AttendanceDTO toDTO(Attendance entity) {
-        return AttendanceDTO.builder()
+        var attendance = AttendanceDTO.builder()
                 .id(entity.getId())
                 .present(entity.isPresent())
-                .studentId(Optional.ofNullable(entity.getStudent()).map(Student::getId).orElse(null))
                 .lesson(Optional.ofNullable(entity.getLesson()).map(LessonMapper::toSimpleDTO).orElse(null))
                 .items(entity.getItems().stream().map(AttendanceItemMapper::toDTO).collect(Collectors.toSet()))
                 .offers(entity.getOffers().stream().map(AttendanceOfferMapper::toDTO).collect(Collectors.toSet()))
@@ -23,6 +26,13 @@ public class AttendanceMapper {
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
+        if (nonNull(entity.getStudent())) {
+            attendance.setStudentId(entity.getStudent().getId());
+            if (nonNull(entity.getStudent().getPerson())) {
+                attendance.setStudentName(entity.getStudent().getPerson().getName());
+            }
+        }
+        return attendance;
     }
 
     public static Attendance toEntity(AttendanceDTO dto) {

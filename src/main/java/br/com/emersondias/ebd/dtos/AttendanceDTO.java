@@ -20,6 +20,7 @@ public class AttendanceDTO implements Serializable {
     private Long id;
     private boolean present;
     private UUID studentId;
+    private String studentName;
     private SimpleLessonDTO lesson;
     @Builder.Default
     private Set<AttendanceItemDTO> items = new HashSet<>();
