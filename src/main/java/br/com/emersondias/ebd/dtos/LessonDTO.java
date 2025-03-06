@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.dtos;
 
 import br.com.emersondias.ebd.deserializer.CustomLocalDateDeserializer;
+import br.com.emersondias.ebd.entities.enums.LessonStatus;
 import br.com.emersondias.ebd.validations.annotations.LessonDTOValidator;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
@@ -25,6 +26,7 @@ public class LessonDTO implements Serializable {
     private Integer lessonNumber;
     @JsonDeserialize(using = CustomLocalDateDeserializer.class)
     private LocalDate lessonDate;
+    private LessonStatus status;
     private String notes;
     private Long classroomId;
     @Builder.Default

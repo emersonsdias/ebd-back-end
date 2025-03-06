@@ -10,6 +10,7 @@ alter table app.attendances_offers add constraint fk_attendances_offers_offers f
 alter table app.classrooms add constraint fk_classrooms_age_ranges foreign key (age_range_id) references app.age_ranges;
 
 alter table app.lessons add constraint fk_lessons_classrooms foreign key (classroom_id) references app.classrooms;
+alter table app.lessons add constraint fk_enum_lesson_status foreign key (status) references enums.lesson_status;
 
 alter table app.people add constraint fk_enum_education_levels foreign key (gender) references enums.education_levels;
 alter table app.people add constraint fk_enum_genders_people foreign key (gender) references enums.genders;

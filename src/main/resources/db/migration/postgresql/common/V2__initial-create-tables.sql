@@ -75,6 +75,7 @@ create table app.lessons (
     id bigserial not null,
     lesson_number int not null,
     lesson_date date,
+    status int,
     notes varchar(255),
     classroom_id bigint not null,
     active boolean not null,
@@ -210,6 +211,13 @@ create table enums.education_levels (
 );
 
 create table enums.genders (
+    cod int,
+    description varchar(255) not null,
+    translation varchar(255) not null,
+    primary key (cod)
+);
+
+create table enums.lesson_status (
     cod int,
     description varchar(255) not null,
     translation varchar(255) not null,

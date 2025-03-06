@@ -114,10 +114,11 @@ insert into app.phone_numbers (id, area_code, phone_number, person_id, created_a
 insert into app.classrooms (name, age_range_id, active, created_at, updated_at) select name, id, true, created_at, updated_at from app.age_ranges;
 
 
-INSERT INTO app.lessons (lesson_number, lesson_date, notes, active, classroom_id)
+INSERT INTO app.lessons (lesson_number, lesson_date, status, notes, active, classroom_id)
 SELECT
     gs.lesson_number,
     DATEADD('DAY', -40 + (gs.lesson_number + 1), CURRENT_DATE),
+    FLOOR(RAND() * 3) + 1,
     NULL,
     TRUE,
     id

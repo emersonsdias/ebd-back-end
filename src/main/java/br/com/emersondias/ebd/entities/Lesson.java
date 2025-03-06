@@ -1,5 +1,7 @@
 package br.com.emersondias.ebd.entities;
 
+import br.com.emersondias.ebd.entities.enums.LessonStatus;
+import br.com.emersondias.ebd.entities.enums.converters.LessonStatusConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -47,6 +49,9 @@ public class Lesson implements Serializable {
     @Builder.Default
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Teaching> teachings = new HashSet<>();
+    @Convert(converter = LessonStatusConverter.class)
+    @Column(name = "status")
+    private LessonStatus status;
     @Column(name = "active", nullable = false)
     private boolean active;
     @CreationTimestamp

@@ -22,6 +22,11 @@ insert into enums.education_levels (cod, description, translation) values
     (6, 'HIGHER_EDUCATION', 'Superior completo'),
     (7, 'POSTGRADUATE', 'Pós graduação');
 
+insert into enums.lesson_status (cod, description, translation) values
+    (1, 'OPEN', 'Aberta'),
+    (2, 'CLOSED', 'Fechada'),
+    (3, 'REPORTED', 'Relatório enviado');
+
 insert into enums.marital_status (cod, description, translation) values
     (1, 'SINGLE', 'Solteiro(a)'),
     (2, 'MARRIED', 'Casado(a)'),
