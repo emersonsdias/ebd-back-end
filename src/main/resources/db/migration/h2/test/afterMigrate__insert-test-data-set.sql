@@ -1,4 +1,4 @@
--- Apenas dados para testes, por isso a versão do SQL alta, para ser sempre o último a ser executado
+-- Apenas dados para testes, será executado após as outras migrations
 
 insert into app.users (id, name, email, password, active, created_at, updated_at) values
     ('677ee01b-c521-4681-aa1f-f1f4fe229d77', 'Christian', 'trent_harber32@hotmail.com', '$2a$10$qfd7liQUAdszSQiwmf8lc./MGBFQoyzBonSd66bb.CurEsHitVdfS', true, timestamp with time zone '2025-02-04 21:35:04.369685+00', timestamp with time zone '2025-02-04 21:35:04.369685+00'),
@@ -117,7 +117,7 @@ insert into app.classrooms (name, age_range_id, active, created_at, updated_at) 
 INSERT INTO app.lessons (lesson_number, lesson_date, notes, active, classroom_id)
 SELECT
     gs.lesson_number,
-    DATEADD('DAY', -40 + (gs.lesson_number - 1) * 2, CURRENT_DATE),
+    DATEADD('DAY', -40 + (gs.lesson_number + 1), CURRENT_DATE),
     NULL,
     TRUE,
     id

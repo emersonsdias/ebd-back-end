@@ -1,3 +1,76 @@
+insert into enums.users_roles (cod, description) values
+    (1, 'ADMIN'),
+    (2, 'TEACHER');
+
+insert into app.users (name, email, password, active, created_at, updated_at) values
+    ('Admin', 'admin@admin.com', '$2a$10$7f2fJbhQD10By8uHEQiCbOHT1fNhljKbMw4sIBgdE58a3uTV8bGCy', true, current_timestamp at time zone 'UTC', current_timestamp at time zone 'UTC');
+
+insert into app.users_roles (role, user_id) values
+    (1, (select id from app.users where email like 'admin@admin.com')),
+    (2, (select id from app.users where email like 'admin@admin.com'));
+
+insert into enums.genders (cod, description, translation) values
+    (1, 'MALE', 'Masculino'),
+    (2, 'FEMALE', 'Feminino');
+
+insert into enums.education_levels (cod, description, translation) values
+    (1, 'ELEMENTARY', 'Ensino fundamento incompleto'),
+    (2, 'MIDDLE_SCHOOL', 'Ensino fundamental'),
+    (3, 'HIGH_SCHOOL', 'Ensino médio'),
+    (4, 'TECHNICAL', 'Ensino técnico'),
+    (5, 'INCOMPLETE_HIGHER_EDUCATION', 'Superior incompleto'),
+    (6, 'HIGHER_EDUCATION', 'Superior completo'),
+    (7, 'POSTGRADUATE', 'Pós graduação');
+
+insert into enums.marital_status (cod, description, translation) values
+    (1, 'SINGLE', 'Solteiro(a)'),
+    (2, 'MARRIED', 'Casado(a)'),
+    (3, 'DIVORCED', 'Divorciado(a)'),
+    (4, 'WIDOWED', 'Viúvo(a)');
+
+insert into app.age_ranges (name, min_age, max_age, active, created_at, updated_at) values
+    ('Berçário', 0, 1, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Maternal', 2, 3, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Jardim de Infância', 4, 5, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Primários', 6, 8, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Juniores', 9, 11, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Pré Adolescentes', 11, 13, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Adolescentes', 14, 17, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Juvenis', 16, 20, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Jovens', 18, 29, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Adultos', 30, null, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Coordenação (sec./superintendentes)', 16, null, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
+    ('Discipulados', 10, null, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00');
+
+insert into location.states (id, name, abbreviation, active, created_at, updated_at) values
+    (11, U&'Rond\00f4nia', 'RO', true, timestamp with time zone '2025-02-05 21:36:20.618228+00', timestamp with time zone '2025-02-05 21:36:20.618228+00'),
+    (12, 'Acre', 'AC', true, timestamp with time zone '2025-02-05 21:36:20.626225+00', timestamp with time zone '2025-02-05 21:36:20.626225+00'),
+    (13, 'Amazonas', 'AM', true, timestamp with time zone '2025-02-05 21:36:20.627227+00', timestamp with time zone '2025-02-05 21:36:20.627227+00'),
+    (14, 'Roraima', 'RR', true, timestamp with time zone '2025-02-05 21:36:20.627227+00', timestamp with time zone '2025-02-05 21:36:20.627227+00'),
+    (15, U&'Par\00e1', 'PA', true, timestamp with time zone '2025-02-05 21:36:20.627227+00', timestamp with time zone '2025-02-05 21:36:20.627227+00'),
+    (16, U&'Amap\00e1', 'AP', true, timestamp with time zone '2025-02-05 21:36:20.628227+00', timestamp with time zone '2025-02-05 21:36:20.628227+00'),
+    (17, 'Tocantins', 'TO', true, timestamp with time zone '2025-02-05 21:36:20.628227+00', timestamp with time zone '2025-02-05 21:36:20.628227+00'),
+    (21, U&'Maranh\00e3o', 'MA', true, timestamp with time zone '2025-02-05 21:36:20.628227+00', timestamp with time zone '2025-02-05 21:36:20.628227+00'),
+    (22, U&'Piau\00ed', 'PI', true, timestamp with time zone '2025-02-05 21:36:20.629227+00', timestamp with time zone '2025-02-05 21:36:20.629227+00'),
+    (23, U&'Cear\00e1', 'CE', true, timestamp with time zone '2025-02-05 21:36:20.629227+00', timestamp with time zone '2025-02-05 21:36:20.629227+00'),
+    (24, 'Rio Grande do Norte', 'RN', true, timestamp with time zone '2025-02-05 21:36:20.629227+00', timestamp with time zone '2025-02-05 21:36:20.629227+00'),
+    (25, U&'Para\00edba', 'PB', true, timestamp with time zone '2025-02-05 21:36:20.630228+00', timestamp with time zone '2025-02-05 21:36:20.630228+00'),
+    (26, 'Pernambuco', 'PE', true, timestamp with time zone '2025-02-05 21:36:20.630228+00', timestamp with time zone '2025-02-05 21:36:20.630228+00'),
+    (27, 'Alagoas', 'AL', true, timestamp with time zone '2025-02-05 21:36:20.631227+00', timestamp with time zone '2025-02-05 21:36:20.631227+00'),
+    (28, 'Sergipe', 'SE', true, timestamp with time zone '2025-02-05 21:36:20.631227+00', timestamp with time zone '2025-02-05 21:36:20.631227+00'),
+    (29, 'Bahia', 'BA', true, timestamp with time zone '2025-02-05 21:36:20.631227+00', timestamp with time zone '2025-02-05 21:36:20.631227+00'),
+    (31, 'Minas Gerais', 'MG', true, timestamp with time zone '2025-02-05 21:36:20.632228+00', timestamp with time zone '2025-02-05 21:36:20.632228+00'),
+    (32, U&'Esp\00edrito Santo', 'ES', true, timestamp with time zone '2025-02-05 21:36:20.632228+00', timestamp with time zone '2025-02-05 21:36:20.632228+00'),
+    (33, 'Rio de Janeiro', 'RJ', true, timestamp with time zone '2025-02-05 21:36:20.633228+00', timestamp with time zone '2025-02-05 21:36:20.633228+00'),
+    (35, U&'S\00e3o Paulo', 'SP', true, timestamp with time zone '2025-02-05 21:36:20.633228+00', timestamp with time zone '2025-02-05 21:36:20.633228+00'),
+    (41, U&'Paran\00e1', 'PR', true, timestamp with time zone '2025-02-05 21:36:20.633228+00', timestamp with time zone '2025-02-05 21:36:20.633228+00'),
+    (42, 'Santa Catarina', 'SC', true, timestamp with time zone '2025-02-05 21:36:20.633228+00', timestamp with time zone '2025-02-05 21:36:20.633228+00'),
+    (43, 'Rio Grande do Sul', 'RS', true, timestamp with time zone '2025-02-05 21:36:20.634226+00', timestamp with time zone '2025-02-05 21:36:20.634226+00'),
+    (50, 'Mato Grosso do Sul', 'MS', true, timestamp with time zone '2025-02-05 21:36:20.634226+00', timestamp with time zone '2025-02-05 21:36:20.634226+00'),
+    (51, 'Mato Grosso', 'MT', true, timestamp with time zone '2025-02-05 21:36:20.634226+00', timestamp with time zone '2025-02-05 21:36:20.634226+00'),
+    (52, U&'Goi\00e1s', 'GO', true, timestamp with time zone '2025-02-05 21:36:20.634226+00', timestamp with time zone '2025-02-05 21:36:20.634226+00'),
+    (53, 'Distrito Federal', 'DF', true, timestamp with time zone '2025-02-05 21:36:20.635226+00', timestamp with time zone '2025-02-05 21:36:20.635226+00');
+
 insert into location.cities (id, name, state_id, active, created_at, updated_at) values
     (1100015, 'Alta Floresta D''Oeste', 11, true, timestamp with time zone '2025-02-05 21:36:21.428177+00', timestamp with time zone '2025-02-05 21:36:21.428177+00'),
     (1100023, 'Ariquemes', 11, true, timestamp with time zone '2025-02-05 21:36:21.429179+00', timestamp with time zone '2025-02-05 21:36:21.429179+00'),
@@ -5569,3 +5642,4 @@ insert into location.cities (id, name, state_id, active, created_at, updated_at)
     (5222203, 'Vila Boa', 52, true, timestamp with time zone '2025-02-05 21:36:21.633643+00', timestamp with time zone '2025-02-05 21:36:21.633643+00'),
     (5222302, U&'Vila Prop\00edcio', 52, true, timestamp with time zone '2025-02-05 21:36:21.633643+00', timestamp with time zone '2025-02-05 21:36:21.633643+00'),
     (5300108, U&'Bras\00edlia', 53, true, timestamp with time zone '2025-02-05 21:36:21.634642+00', timestamp with time zone '2025-02-05 21:36:21.634642+00');
+
