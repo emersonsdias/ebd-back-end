@@ -9,6 +9,11 @@ insert into app.users_roles (role, user_id) values
     (1, (select id from app.users where email like 'admin@admin.com')),
     (2, (select id from app.users where email like 'admin@admin.com'));
 
+insert into app.items (name, icon, active) values
+    ('Bíblia', 'svg:bible', true),
+    ('Revista', 'menu_book', true),
+    ('Doação de alimentos', 'soup_kitchen', true);
+
 insert into enums.genders (cod, description, translation) values
     (1, 'MALE', 'Masculino'),
     (2, 'FEMALE', 'Feminino');

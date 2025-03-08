@@ -17,7 +17,7 @@ public class VisitorItemDTO implements Serializable {
     private Long id;
     private Integer quantity;
     private Long visitorId;
-    private Long itemId;
+    private ItemDTO item;
     private Instant createdAt;
     private Instant updatedAt;
 

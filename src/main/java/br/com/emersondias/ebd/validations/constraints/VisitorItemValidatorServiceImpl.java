@@ -28,7 +28,7 @@ public class VisitorItemValidatorServiceImpl implements Validator<VisitorItemDTO
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
         validateQuantity(visitorItemDTO, errors);
-        validateItemId(visitorItemDTO, errors);
+        validateItem(visitorItemDTO, errors);
 
         return new DefaultValidationResult<>(visitorItemDTO, errors);
     }
@@ -47,16 +47,16 @@ public class VisitorItemValidatorServiceImpl implements Validator<VisitorItemDTO
         return validationResult.isValid();
     }
 
-    private void validateItemId(VisitorItemDTO visitorItemDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "itemId";
-        final var FIELD_VALUE = visitorItemDTO.getItemId();
+    private void validateItem(VisitorItemDTO visitorItemDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "item";
+        final var FIELD_VALUE = visitorItemDTO.getItem();
 
-        if (isNull(FIELD_VALUE)) {
+        if (isNull(FIELD_VALUE) || isNull(FIELD_VALUE.getId())) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O item do visitante não pode ser nulo");
             return;
         }
-        if (itemRepository.findById(FIELD_VALUE).isEmpty()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada o item com o id '" + FIELD_VALUE + "'");
+        if (itemRepository.findById(FIELD_VALUE.getId()).isEmpty()) {
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada o item com o id '" + FIELD_VALUE.getId() + "'");
         }
     }
 

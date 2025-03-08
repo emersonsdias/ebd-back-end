@@ -17,7 +17,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
             select *
             from app.lessons l
             where l.lesson_date < current_date
-            order by l.lesson_date desc
+            order by l.lesson_date desc, l.id desc
             limit :limit
             """, nativeQuery = true)
     List<Lesson> findRecentLessons(Integer limit);
