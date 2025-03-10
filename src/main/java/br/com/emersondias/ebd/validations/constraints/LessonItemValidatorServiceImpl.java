@@ -1,13 +1,13 @@
 package br.com.emersondias.ebd.validations.constraints;
 
-import br.com.emersondias.ebd.dtos.AttendanceItemDTO;
+import br.com.emersondias.ebd.dtos.LessonItemDTO;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
-import br.com.emersondias.ebd.repositories.AttendanceRepository;
 import br.com.emersondias.ebd.repositories.ItemRepository;
+import br.com.emersondias.ebd.repositories.LessonRepository;
 import br.com.emersondias.ebd.validations.DefaultValidationResult;
 import br.com.emersondias.ebd.validations.ValidationResult;
 import br.com.emersondias.ebd.validations.Validator;
-import br.com.emersondias.ebd.validations.annotations.AttendanceItemDTOValidator;
+import br.com.emersondias.ebd.validations.annotations.LessonItemDTOValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -20,25 +20,25 @@ import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
-public class AttendanceItemValidatorServiceImpl implements Validator<AttendanceItemDTO>, ConstraintValidator<AttendanceItemDTOValidator, AttendanceItemDTO> {
+public class LessonItemValidatorServiceImpl implements Validator<LessonItemDTO>, ConstraintValidator<LessonItemDTOValidator, LessonItemDTO> {
 
-    private final AttendanceRepository attendanceRepository;
+    private final LessonRepository lessonRepository;
     private final ItemRepository itemRepository;
 
     @Override
-    public ValidationResult<AttendanceItemDTO> validate(AttendanceItemDTO attendanceItemDTO) {
+    public ValidationResult<LessonItemDTO> validate(LessonItemDTO lessonItemDTO) {
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
-        validateQuantity(attendanceItemDTO, errors);
-        validateAttendanceId(attendanceItemDTO, errors);
-        validateItem(attendanceItemDTO, errors);
+        validateQuantity(lessonItemDTO, errors);
+        validateLessonId(lessonItemDTO, errors);
+        validateItem(lessonItemDTO, errors);
 
-        return new DefaultValidationResult<>(attendanceItemDTO, errors);
+        return new DefaultValidationResult<>(lessonItemDTO, errors);
     }
 
     @Override
-    public boolean isValid(AttendanceItemDTO attendanceItemDTO, ConstraintValidatorContext context) {
-        var validationResult = validate(attendanceItemDTO);
+    public boolean isValid(LessonItemDTO lessonItemDTO, ConstraintValidatorContext context) {
+        var validationResult = validate(lessonItemDTO);
 
         validationResult.getErrors().forEach(error -> {
             context.disableDefaultConstraintViolation();
@@ -50,9 +50,9 @@ public class AttendanceItemValidatorServiceImpl implements Validator<AttendanceI
         return validationResult.isValid();
     }
 
-    private void validateItem(AttendanceItemDTO attendanceItemDTO, List<FieldMessageDTO> errors) {
+    private void validateItem(LessonItemDTO lessonItemDTO, List<FieldMessageDTO> errors) {
         final var FIELD_NAME = "item";
-        final var FIELD_VALUE = attendanceItemDTO.getItem();
+        final var FIELD_VALUE = lessonItemDTO.getItem();
 
         if (isNull(FIELD_VALUE) || isNull(FIELD_VALUE.getId())) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O item da chamada não pode ser nulo");
@@ -63,23 +63,23 @@ public class AttendanceItemValidatorServiceImpl implements Validator<AttendanceI
         }
     }
 
-    private void validateAttendanceId(AttendanceItemDTO attendanceItemDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "attendanceId";
-        final var FIELD_VALUE = attendanceItemDTO.getAttendanceId();
+    private void validateLessonId(LessonItemDTO lessonItemDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "lessonId";
+        final var FIELD_VALUE = lessonItemDTO.getLessonId();
 
         if (isNull(FIELD_VALUE)) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A chamada associada ao item não pode ser nula");
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A lição associada ao item não pode ser nula");
             return;
         }
 
-        if (attendanceRepository.findById(FIELD_VALUE).isEmpty()) {
-            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada a chamada com o id '" + FIELD_VALUE + "' para associar ao item");
+        if (lessonRepository.findById(FIELD_VALUE).isEmpty()) {
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada a lição com o id '" + FIELD_VALUE + "' para associar ao item");
         }
     }
 
-    private void validateQuantity(AttendanceItemDTO attendanceItemDTO, List<FieldMessageDTO> errors) {
+    private void validateQuantity(LessonItemDTO lessonItemDTO, List<FieldMessageDTO> errors) {
         final var FIELD_NAME = "quantity";
-        final var FIELD_VALUE = attendanceItemDTO.getQuantity();
+        final var FIELD_VALUE = lessonItemDTO.getQuantity();
 
         final var QUANTITY_MIN = 0;
         final var QUANTITY_MAX = 1000;

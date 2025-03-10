@@ -4,10 +4,7 @@ import br.com.emersondias.ebd.dtos.LessonDTO;
 import br.com.emersondias.ebd.entities.Classroom;
 import br.com.emersondias.ebd.entities.Lesson;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
-import br.com.emersondias.ebd.mappers.AttendanceMapper;
-import br.com.emersondias.ebd.mappers.LessonMapper;
-import br.com.emersondias.ebd.mappers.TeachingMapper;
-import br.com.emersondias.ebd.mappers.VisitorMapper;
+import br.com.emersondias.ebd.mappers.*;
 import br.com.emersondias.ebd.repositories.LessonRepository;
 import br.com.emersondias.ebd.services.interfaces.ILessonService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.*;
 
@@ -44,13 +42,15 @@ public class LessonServiceImpl implements ILessonService {
     }
 
     private void updateData(Lesson lessonEntity, LessonDTO lessonDTO) {
-        lessonEntity.setLessonNumber(lessonDTO.getLessonNumber());
-        lessonEntity.setLessonDate(lessonDTO.getLessonDate());
+        lessonEntity.setNumber(lessonDTO.getNumber());
+        lessonEntity.setDate(lessonDTO.getDate());
         lessonEntity.setNotes(lessonDTO.getNotes());
         lessonEntity.setClassroom(Classroom.builder().id(lessonDTO.getClassroomId()).build());
         lessonEntity.setVisitors(lessonDTO.getVisitors().stream().map(VisitorMapper::toEntity).toList());
         lessonEntity.setAttendances(lessonDTO.getAttendances().stream().map(AttendanceMapper::toEntity).toList());
         lessonEntity.setTeachings(lessonDTO.getTeachings().stream().map(TeachingMapper::toEntity).toList());
+        lessonEntity.setItems(lessonDTO.getItems().stream().map(LessonItemMapper::toEntity).collect(Collectors.toSet()));
+        lessonEntity.setOffers(lessonDTO.getOffers().stream().map(LessonOfferMapper::toEntity).collect(Collectors.toSet()));
         lessonEntity.setActive(lessonDTO.isActive());
     }
 
@@ -79,7 +79,7 @@ public class LessonServiceImpl implements ILessonService {
         if (isNull(endDate)) {
             endDate = startDate.plusDays(15);
         }
-        return repository.findByActiveTrueAndLessonDateBetween(startDate, endDate).stream().map(LessonMapper::toDTO).toList();
+        return repository.findByActiveTrueAndDateBetween(startDate, endDate).stream().map(LessonMapper::toDTO).toList();
     }
 
     @Override

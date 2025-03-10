@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,6 +24,10 @@ public class Teacher implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private UUID id;
+    @Column(name = "teaching_period_start")
+    private LocalDate teachingPeriodStart;
+    @Column(name = "teaching_period_end")
+    private LocalDate teachingPeriodEnd;
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;

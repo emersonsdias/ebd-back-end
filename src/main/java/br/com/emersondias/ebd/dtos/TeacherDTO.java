@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -16,8 +17,9 @@ import java.util.UUID;
 public class TeacherDTO implements Serializable {
 
     private UUID id;
-    private UUID personId;
-    private String personName;
+    private LocalDate teachingPeriodStart;
+    private LocalDate teachingPeriodEnd;
+    private PersonDTO person;
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;

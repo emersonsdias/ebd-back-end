@@ -8,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
@@ -29,9 +28,14 @@ public class Lesson implements Serializable {
     @Column(name = "id")
     private Long id;
     @Column(name = "lesson_number", nullable = false)
-    private Integer lessonNumber;
+    private Integer number;
+    @Column(name = "topic", nullable = false)
+    private String topic;
     @Column(name = "lesson_date")
-    private LocalDate lessonDate;
+    private LocalDate date;
+    @Convert(converter = LessonStatusConverter.class)
+    @Column(name = "status")
+    private LessonStatus status;
     @Column(name = "notes")
     private String notes;
     @ManyToOne
@@ -49,9 +53,14 @@ public class Lesson implements Serializable {
     @Builder.Default
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Teaching> teachings = new HashSet<>();
-    @Convert(converter = LessonStatusConverter.class)
-    @Column(name = "status")
-    private LessonStatus status;
+    @Setter(AccessLevel.NONE)
+    @Builder.Default
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<LessonItem> items = new HashSet<>();
+    @Setter(AccessLevel.NONE)
+    @Builder.Default
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<LessonOffer> offers = new HashSet<>();
     @Column(name = "active", nullable = false)
     private boolean active;
     @CreationTimestamp
@@ -60,6 +69,46 @@ public class Lesson implements Serializable {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+
+    public void setItems(Collection<LessonItem> items) {
+        if (isNull(items)) {
+            this.items.clear();
+            return;
+        }
+        this.items.removeIf(s -> !items.contains(s));
+        for (LessonItem newItem : items) {
+            newItem.setLesson(this);
+            var itemOpt = this.items.stream()
+                    .filter(newItem::equals)
+                    .findFirst();
+            if (itemOpt.isPresent()) {
+                itemOpt.get().setItem(newItem.getItem());
+                itemOpt.get().setQuantity(newItem.getQuantity());
+            } else {
+                this.items.add(newItem);
+            }
+        }
+    }
+
+    public void setOffers(Collection<LessonOffer> offers) {
+        if (isNull(offers)) {
+            this.offers.clear();
+            return;
+        }
+        this.offers.removeIf(s -> !offers.contains(s));
+        for (LessonOffer newOffer : offers) {
+            newOffer.setLesson(this);
+            var offerOpt = this.offers.stream()
+                    .filter(newOffer::equals)
+                    .findFirst();
+            if (offerOpt.isPresent()) {
+                offerOpt.get().setOffer(newOffer.getOffer());
+            } else {
+                this.offers.add(newOffer);
+            }
+        }
+    }
 
     public void setVisitors(Collection<Visitor> visitors) {
         if (isNull(visitors)) {
@@ -94,7 +143,6 @@ public class Lesson implements Serializable {
             if (attendanceOpt.isPresent()) {
                 attendanceOpt.get().setPresent(newAttendance.isPresent());
                 attendanceOpt.get().setStudent(newAttendance.getStudent());
-                attendanceOpt.get().setItems(newAttendance.getItems());
                 attendanceOpt.get().setActive(newAttendance.isActive());
             } else {
                 this.attendances.add(newAttendance);
@@ -120,23 +168,6 @@ public class Lesson implements Serializable {
                 this.teachings.add(newTeaching);
             }
         }
-    }
-
-    public BigDecimal offerTotal() {
-        var offerTotal = this.attendances.stream()
-                .flatMap(a -> a.getOffers().stream())
-                .map(AttendanceOffer::getOffer)
-                .map(Offer::getAmount)
-                .filter(Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        offerTotal = this.visitors.stream().flatMap(v -> v.getOffers().stream())
-                .map(VisitorOffer::getOffer)
-                .map(Offer::getAmount)
-                .filter(Objects::nonNull)
-                .reduce(offerTotal, BigDecimal::add);
-
-        return offerTotal;
     }
 
     @Override

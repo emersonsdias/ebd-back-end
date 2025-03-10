@@ -27,21 +27,21 @@ public class TeacherValidatorServiceImpl implements Validator<TeacherDTO>, Const
     public ValidationResult<TeacherDTO> validate(TeacherDTO teacherDTO) {
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
-        validatePersonId(teacherDTO, errors);
+        validatePerson(teacherDTO, errors);
 
         return new DefaultValidationResult<>(teacherDTO, errors);
     }
 
-    private void validatePersonId(TeacherDTO teacherDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "personId";
-        final var FIELD_VALUE = teacherDTO.getPersonId();
+    private void validatePerson(TeacherDTO teacherDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "person";
+        final var FIELD_VALUE = teacherDTO.getPerson();
 
-        if (isNull(FIELD_VALUE)) {
+        if (isNull(FIELD_VALUE) || isNull(FIELD_VALUE.getId())) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A pessoa não pode ser nula");
             return;
         }
 
-        if (personRepository.findById(FIELD_VALUE).isEmpty()) {
+        if (personRepository.findById(FIELD_VALUE.getId()).isEmpty()) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A pessoa com o id '" + FIELD_VALUE + "' não foi encontrada");
         }
     }

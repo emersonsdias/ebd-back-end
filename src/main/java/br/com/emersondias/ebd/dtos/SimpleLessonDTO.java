@@ -15,8 +15,9 @@ import java.time.LocalDate;
 public class SimpleLessonDTO implements Serializable {
 
     private Long id;
-    private Integer lessonNumber;
-    private LocalDate lessonDate;
+    private Integer number;
+    private String topic;
+    private LocalDate date;
     private LessonStatus status;
     private String notes;
     private Long classroomId;

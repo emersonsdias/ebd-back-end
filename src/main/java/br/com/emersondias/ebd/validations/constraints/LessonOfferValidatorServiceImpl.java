@@ -1,12 +1,13 @@
 package br.com.emersondias.ebd.validations.constraints;
 
+import br.com.emersondias.ebd.dtos.LessonOfferDTO;
 import br.com.emersondias.ebd.dtos.OfferDTO;
-import br.com.emersondias.ebd.dtos.VisitorOfferDTO;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
+import br.com.emersondias.ebd.repositories.LessonRepository;
 import br.com.emersondias.ebd.validations.DefaultValidationResult;
 import br.com.emersondias.ebd.validations.ValidationResult;
 import br.com.emersondias.ebd.validations.Validator;
-import br.com.emersondias.ebd.validations.annotations.VisitorOfferDTOValidator;
+import br.com.emersondias.ebd.validations.annotations.LessonOfferDTOValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -19,22 +20,24 @@ import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
-public class VisitorOfferValidatorServiceImpl implements Validator<VisitorOfferDTO>, ConstraintValidator<VisitorOfferDTOValidator, VisitorOfferDTO> {
+public class LessonOfferValidatorServiceImpl implements Validator<LessonOfferDTO>, ConstraintValidator<LessonOfferDTOValidator, LessonOfferDTO> {
 
+    private final LessonRepository lessonRepository;
     private final Validator<OfferDTO> offerValidator;
 
     @Override
-    public ValidationResult<VisitorOfferDTO> validate(VisitorOfferDTO visitorOfferDTO) {
+    public ValidationResult<LessonOfferDTO> validate(LessonOfferDTO lessonOfferDTO) {
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
-        validateOffer(visitorOfferDTO, errors);
+        validateLessonId(lessonOfferDTO, errors);
+        validateOffer(lessonOfferDTO, errors);
 
-        return new DefaultValidationResult<>(visitorOfferDTO, errors);
+        return new DefaultValidationResult<>(lessonOfferDTO, errors);
     }
 
     @Override
-    public boolean isValid(VisitorOfferDTO visitorOfferDTO, ConstraintValidatorContext context) {
-        var validationResult = validate(visitorOfferDTO);
+    public boolean isValid(LessonOfferDTO lessonOfferDTO, ConstraintValidatorContext context) {
+        var validationResult = validate(lessonOfferDTO);
 
         validationResult.getErrors().forEach(error -> {
             context.disableDefaultConstraintViolation();
@@ -46,9 +49,9 @@ public class VisitorOfferValidatorServiceImpl implements Validator<VisitorOfferD
         return validationResult.isValid();
     }
 
-    private void validateOffer(VisitorOfferDTO visitorOfferDTO, List<FieldMessageDTO> errors) {
+    private void validateOffer(LessonOfferDTO lessonOfferDTO, List<FieldMessageDTO> errors) {
         final var FIELD_NAME = "offer";
-        final var FIELD_VALUE = visitorOfferDTO.getOffer();
+        final var FIELD_VALUE = lessonOfferDTO.getOffer();
 
         if (isNull(FIELD_VALUE)) {
             return;
@@ -58,6 +61,20 @@ public class VisitorOfferValidatorServiceImpl implements Validator<VisitorOfferD
 
         if (!offerValidation.isValid()) {
             offerValidation.getErrors().stream().peek(fm -> fm.setFieldName(FIELD_NAME)).forEach(errors::add);
+        }
+    }
+
+    private void validateLessonId(LessonOfferDTO lessonOfferDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "lessonId";
+        final var FIELD_VALUE = lessonOfferDTO.getLessonId();
+
+        if (isNull(FIELD_VALUE)) {
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A lição associada a oferta não pode ser nula");
+            return;
+        }
+
+        if (lessonRepository.findById(FIELD_VALUE).isEmpty()) {
+            addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrada a lição com o id '" + FIELD_VALUE + "' para associar a oferta");
         }
     }
 

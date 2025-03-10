@@ -15,21 +15,19 @@ import java.util.Objects;
 @Setter
 @Builder
 @Entity
-@Table(schema = "app", name = "attendances_items")
-public class AttendanceItem implements Serializable {
+@Table(schema = "app", name = "lessons_offers")
+public class LessonOffer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
     @ManyToOne
-    @JoinColumn(name = "attendance_id")
-    private Attendance attendance;
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
     @ManyToOne
-    @JoinColumn(name = "item_id")
-    private Item item;
+    @JoinColumn(name = "offer_id")
+    private Offer offer;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -40,12 +38,12 @@ public class AttendanceItem implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        AttendanceItem that = (AttendanceItem) o;
-        return Objects.equals(attendance, that.attendance) && Objects.equals(item, that.item);
+        LessonOffer that = (LessonOffer) o;
+        return Objects.equals(lesson, that.lesson) && Objects.equals(offer, that.offer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(attendance, item);
+        return Objects.hash(lesson, offer);
     }
 }

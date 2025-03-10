@@ -116,19 +116,24 @@ insert into app.classrooms (name, age_range_id, active, created_at, updated_at) 
 
 INSERT INTO app.lessons (lesson_number, lesson_date, status, notes, active, classroom_id)
 SELECT
-    gs.lesson_number,
-    DATEADD('DAY', -40 + (gs.lesson_number + 1), CURRENT_DATE),
+    gs.number,
+    DATEADD('DAY', -40 + (gs.number + 1), CURRENT_DATE),
     FLOOR(RAND() * 3) + 1,
     NULL,
     TRUE,
     id
 FROM
     app.classrooms
-CROSS JOIN SYSTEM_RANGE(1,60) AS gs(lesson_number);
+CROSS JOIN SYSTEM_RANGE(1,60) AS gs(number);
 
 
-insert into app.students (person_id, classroom_id, active)
-    SELECT p.id, c.id, true
+insert into app.students (person_id, academic_period_start, academic_period_end, classroom_id, active)
+    SELECT
+        p.id,
+        DATEADD(YEAR, 0, PARSEDATETIME(YEAR(CURRENT_DATE) || '-01-01', 'yyyy-MM-dd')),
+        DATEADD(YEAR, 0, PARSEDATETIME(YEAR(CURRENT_DATE) || '-12-31', 'yyyy-MM-dd')),
+        c.id,
+        true
     FROM app.people p
     JOIN app.age_ranges ar
         ON TIMESTAMPDIFF(YEAR, p.birthdate, CURRENT_DATE) >= ar.min_age
@@ -175,8 +180,11 @@ insert into app.phone_numbers (id, area_code, phone_number, person_id, created_a
     (UUID '6d8d48d6-008c-461f-a95b-3d542a5f8b51', '41', '990472117', UUID '3cb844b1-5c3e-462a-9380-20655fe78af8', TIMESTAMP WITH TIME ZONE '2025-02-13 00:52:48.785871+00', TIMESTAMP WITH TIME ZONE '2025-02-13 00:52:48.785871+00'),
     (UUID 'f6752955-b14a-4149-9815-551493ab3cc8', '41', '980157453', UUID '3cb844b1-5c3e-462a-9380-20655fe78af8', TIMESTAMP WITH TIME ZONE '2025-02-13 00:52:48.786868+00', TIMESTAMP WITH TIME ZONE '2025-02-13 00:52:48.786868+00');
 
-insert into app.teachers (person_id, classroom_id, active)
-    SELECT p.person_id, c.id, true
+insert into app.teachers (person_id, teaching_period_start, teaching_period_end, classroom_id, active)
+    SELECT p.person_id,
+            DATEADD(YEAR, 0, PARSEDATETIME(YEAR(CURRENT_DATE) || '-01-01', 'yyyy-MM-dd')),
+            DATEADD(YEAR, 0, PARSEDATETIME(YEAR(CURRENT_DATE) || '-12-31', 'yyyy-MM-dd')),
+            c.id, true
     FROM app.classrooms c
     CROSS JOIN (
         select * from (values

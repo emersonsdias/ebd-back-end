@@ -1,7 +1,6 @@
 package br.com.emersondias.ebd.validations.constraints;
 
 import br.com.emersondias.ebd.dtos.AttendanceDTO;
-import br.com.emersondias.ebd.dtos.AttendanceItemDTO;
 import br.com.emersondias.ebd.dtos.errors.FieldMessageDTO;
 import br.com.emersondias.ebd.entities.Lesson;
 import br.com.emersondias.ebd.entities.Student;
@@ -30,7 +29,6 @@ public class AttendanceValidatorServiceImpl implements Validator<AttendanceDTO>,
 
     private final StudentRepository studentRepository;
     private final LessonRepository lessonRepository;
-    private final Validator<AttendanceItemDTO> attendanceItemValidator;
 
     @Transactional(readOnly = true)
     @Override
@@ -42,25 +40,8 @@ public class AttendanceValidatorServiceImpl implements Validator<AttendanceDTO>,
 
         validateStudentId(attendanceDTO, errors, studentOpt.orElse(null), lessonOpt.orElse(null));
         validateLessonId(attendanceDTO, errors, lessonOpt.orElse(null));
-        validateItems(attendanceDTO, errors);
 
         return new DefaultValidationResult<>(attendanceDTO, errors);
-    }
-
-    private void validateItems(AttendanceDTO attendanceDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "items";
-        final var FIELD_VALUE = attendanceDTO.getItems();
-
-        if (isNull(FIELD_VALUE)) {
-            return;
-        }
-
-        FIELD_VALUE.stream()
-                .map(attendanceItemValidator::validate)
-                .filter(v -> !v.isValid())
-                .map(ValidationResult::getErrors)
-                .peek(e -> e.forEach(fm -> fm.setFieldName(FIELD_NAME)))
-                .forEach(errors::addAll);
     }
 
     private void validateLessonId(AttendanceDTO attendanceDTO, List<FieldMessageDTO> errors, Lesson lessonEntity) {
@@ -75,7 +56,7 @@ public class AttendanceValidatorServiceImpl implements Validator<AttendanceDTO>,
         if (isNull(lessonEntity)) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não foi encontrado a aula com o id '" + FIELD_VALUE + "'");
         } else {
-            if (lessonEntity.getLessonDate().isAfter(LocalDate.now())) {
+            if (lessonEntity.getDate().isAfter(LocalDate.now())) {
                 addFieldError(errors, FIELD_NAME, FIELD_VALUE, "Não é possível realizar a chamada de aulas futuras");
             }
         }

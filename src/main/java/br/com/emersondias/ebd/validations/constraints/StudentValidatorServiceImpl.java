@@ -27,21 +27,21 @@ public class StudentValidatorServiceImpl implements Validator<StudentDTO>, Const
     public ValidationResult<StudentDTO> validate(StudentDTO studentDTO) {
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
-        validatePersonId(studentDTO, errors);
+        validatePerson(studentDTO, errors);
 
         return new DefaultValidationResult<>(studentDTO, errors);
     }
 
-    private void validatePersonId(StudentDTO studentDTO, List<FieldMessageDTO> errors) {
-        final var FIELD_NAME = "personId";
-        final var FIELD_VALUE = studentDTO.getPersonId();
+    private void validatePerson(StudentDTO studentDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "person";
+        final var FIELD_VALUE = studentDTO.getPerson();
 
-        if (isNull(FIELD_VALUE)) {
+        if (isNull(FIELD_VALUE) || isNull(FIELD_VALUE.getId())) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A pessoa não pode ser nula");
             return;
         }
 
-        if (personRepository.findById(FIELD_VALUE).isEmpty()) {
+        if (personRepository.findById(FIELD_VALUE.getId()).isEmpty()) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "A pessoa com o id '" + FIELD_VALUE + "' não foi encontrada");
         }
     }

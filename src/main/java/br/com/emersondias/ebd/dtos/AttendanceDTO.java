@@ -5,8 +5,6 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -22,10 +20,6 @@ public class AttendanceDTO implements Serializable {
     private UUID studentId;
     private String studentName;
     private SimpleLessonDTO lesson;
-    @Builder.Default
-    private Set<AttendanceItemDTO> items = new HashSet<>();
-    @Builder.Default
-    private Set<AttendanceOfferDTO> offers = new HashSet<>();
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;

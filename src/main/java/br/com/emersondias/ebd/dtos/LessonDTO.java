@@ -23,9 +23,10 @@ import java.util.Set;
 public class LessonDTO implements Serializable {
 
     private Long id;
-    private Integer lessonNumber;
+    private Integer number;
+    private String topic;
     @JsonDeserialize(using = CustomLocalDateDeserializer.class)
-    private LocalDate lessonDate;
+    private LocalDate date;
     private LessonStatus status;
     private String notes;
     private Long classroomId;
@@ -35,6 +36,10 @@ public class LessonDTO implements Serializable {
     private Set<AttendanceDTO> attendances = new HashSet<>();
     @Builder.Default
     private Set<TeachingDTO> teachings = new HashSet<>();
+    @Builder.Default
+    private Set<LessonItemDTO> items = new HashSet<>();
+    @Builder.Default
+    private Set<LessonOfferDTO> offers = new HashSet<>();
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;

@@ -11,7 +11,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     List<Lesson> findByActiveTrue();
 
-    List<Lesson> findByActiveTrueAndLessonDateBetween(LocalDate startDate, LocalDate endDate);
+    List<Lesson> findByActiveTrueAndDateBetween(LocalDate startDate, LocalDate endDate);
 
     @Query(value = """
             select *

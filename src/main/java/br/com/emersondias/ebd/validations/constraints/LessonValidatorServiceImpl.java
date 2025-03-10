@@ -37,8 +37,8 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
     public ValidationResult<LessonDTO> validate(LessonDTO lessonDTO) {
         final List<FieldMessageDTO> errors = new ArrayList<>();
 
-        validateLessonNumber(lessonDTO, errors);
-        validateLessonDate(lessonDTO, errors);
+        validateNumber(lessonDTO, errors);
+        validateDate(lessonDTO, errors);
         validateNotes(lessonDTO, errors);
         validateClassroomId(lessonDTO, errors);
         validateVisitors(lessonDTO, errors);
@@ -109,9 +109,9 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
 
     }
 
-    private void validateLessonDate(LessonDTO lessonDTO, List<FieldMessageDTO> errors) {
+    private void validateDate(LessonDTO lessonDTO, List<FieldMessageDTO> errors) {
         final var FIELD_NAME = "lessonDate";
-        final var FIELD_VALUE = lessonDTO.getLessonDate();
+        final var FIELD_VALUE = lessonDTO.getDate();
 
         final var YEARS_LIMIT = 2;
         final var DATE_MIN = LocalDate.now().minusYears(YEARS_LIMIT);
@@ -131,9 +131,9 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
 
     }
 
-    private void validateLessonNumber(LessonDTO lessonDTO, List<FieldMessageDTO> errors) {
+    private void validateNumber(LessonDTO lessonDTO, List<FieldMessageDTO> errors) {
         final var FIELD_NAME = "lessonNumber";
-        final var FIELD_VALUE = lessonDTO.getLessonNumber();
+        final var FIELD_VALUE = lessonDTO.getNumber();
 
         if (isNull(FIELD_VALUE)) {
             addFieldError(errors, FIELD_NAME, FIELD_VALUE, "O número da aula não pode ser nulo");

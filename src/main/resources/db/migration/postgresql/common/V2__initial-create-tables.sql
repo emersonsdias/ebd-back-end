@@ -33,25 +33,6 @@ create table app.attendances (
     primary key (id)
 );
 
-create table app.attendances_items (
-    id bigserial not null,
-    quantity int not null,
-    attendance_id bigint not null,
-    item_id bigint not null,
-    created_at timestamp(6) with time zone default now(),
-    updated_at timestamp(6) with time zone default now(),
-    primary key (id)
-);
-
-create table app.attendances_offers (
-    id bigserial not null,
-    attendance_id bigint not null,
-    offer_id bigint not null,
-    created_at timestamp(6) with time zone default now(),
-    updated_at timestamp(6) with time zone default now(),
-    primary key (id)
-);
-
 create table app.classrooms (
     id bigserial primary key,
     name varchar(255) not null,
@@ -74,6 +55,7 @@ create table app.items (
 create table app.lessons (
     id bigserial not null,
     lesson_number int not null,
+    topic varchar(255),
     lesson_date date,
     status int,
     notes varchar(255),
@@ -83,6 +65,26 @@ create table app.lessons (
     updated_at timestamp(6) with time zone default now(),
     primary key (id)
 );
+
+create table app.lessons_items (
+    id bigserial not null,
+    quantity int not null,
+    lesson_id bigint not null,
+    item_id bigint not null,
+    created_at timestamp(6) with time zone default now(),
+    updated_at timestamp(6) with time zone default now(),
+    primary key (id)
+);
+
+create table app.lessons_offers (
+    id bigserial not null,
+    lesson_id bigint not null,
+    offer_id bigint not null,
+    created_at timestamp(6) with time zone default now(),
+    updated_at timestamp(6) with time zone default now(),
+    primary key (id)
+);
+
 
 create table app.offers (
     id bigserial not null,
@@ -131,6 +133,8 @@ create table app.school_profiles (
 
 create table app.students (
     id uuid not null,
+    academic_period_start date,
+    academic_period_end date,
     person_id uuid not null,
     classroom_id bigint not null,
     active boolean not null,
@@ -141,6 +145,8 @@ create table app.students (
 
 create table app.teachers (
     id uuid not null,
+    teaching_period_start date,
+    teaching_period_end date,
     person_id uuid not null,
     classroom_id bigint not null,
     active boolean not null,
@@ -179,25 +185,6 @@ create table app.visitors (
     id bigserial not null,
     name varchar(255) not null,
     lesson_id bigint not null,
-    created_at timestamp(6) with time zone default now(),
-    updated_at timestamp(6) with time zone default now(),
-    primary key (id)
-);
-
-create table app.visitors_items (
-    id bigserial not null,
-    quantity int not null,
-    visitor_id bigint not null,
-    item_id bigint not null,
-    created_at timestamp(6) with time zone default now(),
-    updated_at timestamp(6) with time zone default now(),
-    primary key (id)
-);
-
-create table app.visitors_offers (
-    id bigserial not null,
-    visitor_id bigint not null,
-    offer_id bigint not null,
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now(),
     primary key (id)
