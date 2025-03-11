@@ -1,11 +1,7 @@
 package br.com.emersondias.ebd.entities;
 
-import br.com.emersondias.ebd.entities.enums.EducationLevel;
-import br.com.emersondias.ebd.entities.enums.Gender;
-import br.com.emersondias.ebd.entities.enums.MaritalStatus;
-import br.com.emersondias.ebd.entities.enums.converters.EducationLevelConverter;
-import br.com.emersondias.ebd.entities.enums.converters.GenderConverter;
-import br.com.emersondias.ebd.entities.enums.converters.MaritalStatusConverter;
+import br.com.emersondias.ebd.entities.enums.*;
+import br.com.emersondias.ebd.entities.enums.converters.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnTransformer;
@@ -55,6 +51,12 @@ public class Person implements Serializable {
     @Builder.Default
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PhoneNumber> phoneNumbers = new ArrayList<>();
+    @Singular
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(schema = "app", name = "people_types", joinColumns = @JoinColumn(name = "person_id"))
+    @Convert(converter = PersonTypeConverter.class)
+    @Column(name = "type")
+    private Set<PersonType> types = new HashSet<>();
     @Column(name = "active")
     private boolean active;
     @CreationTimestamp

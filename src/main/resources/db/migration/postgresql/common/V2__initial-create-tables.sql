@@ -110,6 +110,11 @@ create table app.people (
     primary key (id)
 );
 
+create table app.people_types (
+    type integer not null,
+    person_id uuid not null
+);
+
 create table app.phone_numbers (
     id uuid not null,
     area_code varchar(2) not null,
@@ -212,6 +217,13 @@ create table enums.lesson_status (
 );
 
 create table enums.marital_status (
+    cod int,
+    description varchar(255) not null,
+    translation varchar(255) not null,
+    primary key (cod)
+);
+
+create table enums.people_types (
     cod int,
     description varchar(255) not null,
     translation varchar(255) not null,

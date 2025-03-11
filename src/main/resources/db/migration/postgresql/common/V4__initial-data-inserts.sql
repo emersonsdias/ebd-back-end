@@ -38,6 +38,10 @@ insert into enums.marital_status (cod, description, translation) values
     (3, 'DIVORCED', 'Divorciado(a)'),
     (4, 'WIDOWED', 'Viúvo(a)');
 
+insert into enums.people_types (cod, description, translation) values
+    (1, 'STUDENT', 'Estudante'),
+    (2, 'TEACHER', 'Professor(a)');
+
 insert into app.age_ranges (name, min_age, max_age, active, created_at, updated_at) values
     ('Berçário', 0, 1, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),
     ('Maternal', 2, 3, true, timestamp with time zone '2025-02-08 20:14:00.569769+00', timestamp with time zone '2025-02-08 20:14:00.569769+00'),

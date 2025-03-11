@@ -63,6 +63,7 @@ public class PersonServiceImpl implements IPersonService {
         personEntity.setName(personDTO.getName());
         personEntity.setBirthdate(personDTO.getBirthdate());
         personEntity.setEmail(personDTO.getEmail());
+        personEntity.setTypes(personDTO.getTypes());
         personEntity.setActive(personDTO.isActive());
         personEntity.setPhoneNumbers(personDTO.getPhoneNumbers().stream().map(PhoneNumberMapper::toEntity).toList());
         updateAddress(personEntity.getAddress(), personDTO.getAddress());

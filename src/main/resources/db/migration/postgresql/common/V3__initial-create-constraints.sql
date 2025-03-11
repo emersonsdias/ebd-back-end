@@ -17,6 +17,9 @@ alter table app.people add constraint fk_enum_genders_people foreign key (gender
 alter table app.people add constraint fk_enum_marital_status foreign key (marital_status) references enums.marital_status;
 alter table app.people add constraint fk_people_addresses foreign key (address_id) references app.addresses;
 
+alter table app.people_types add constraint fk_enum_people_types foreign key (type) references enums.people_types;
+alter table app.people_types add constraint fk_people_types foreign key (person_id) references app.people;
+
 alter table app.phone_numbers add constraint fk_phone_numbers_person foreign key (person_id) references app.people;
 
 alter table app.students add constraint fk_students_classrooms foreign key (classroom_id) references app.classrooms;
