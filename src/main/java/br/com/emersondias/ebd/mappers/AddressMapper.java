@@ -3,9 +3,14 @@ package br.com.emersondias.ebd.mappers;
 import br.com.emersondias.ebd.dtos.AddressDTO;
 import br.com.emersondias.ebd.entities.Address;
 
+import static java.util.Objects.isNull;
+
 public class AddressMapper {
 
     public static AddressDTO toDTO(Address entity) {
+        if (isNull(entity)) {
+            return null;
+        }
         return AddressDTO.builder()
                 .id(entity.getId())
                 .street(entity.getStreet())
@@ -21,6 +26,9 @@ public class AddressMapper {
     }
 
     public static Address toEntity(AddressDTO dto) {
+        if (isNull(dto)) {
+            return null;
+        }
         return Address.builder()
                 .id(dto.getId())
                 .street(dto.getStreet())

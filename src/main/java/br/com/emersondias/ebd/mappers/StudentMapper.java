@@ -5,9 +5,14 @@ import br.com.emersondias.ebd.entities.Student;
 
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 public class StudentMapper {
 
     public static StudentDTO toDTO(Student entity) {
+        if (isNull(entity)) {
+            return null;
+        }
         return StudentDTO.builder()
                 .id(entity.getId())
                 .academicPeriodStart(entity.getAcademicPeriodStart())
@@ -20,6 +25,9 @@ public class StudentMapper {
     }
 
     public static Student toEntity(StudentDTO dto) {
+        if (isNull(dto)) {
+            return null;
+        }
         return Student.builder()
                 .id(dto.getId())
                 .academicPeriodStart(dto.getAcademicPeriodStart())

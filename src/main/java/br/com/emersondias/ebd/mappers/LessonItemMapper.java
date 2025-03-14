@@ -6,9 +6,14 @@ import br.com.emersondias.ebd.entities.LessonItem;
 
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 public class LessonItemMapper {
 
     public static LessonItemDTO toDTO(LessonItem entity) {
+        if (isNull(entity)) {
+            return null;
+        }
         return LessonItemDTO.builder()
                 .id(entity.getId())
                 .quantity(entity.getQuantity())
@@ -21,6 +26,9 @@ public class LessonItemMapper {
     }
 
     public static LessonItem toEntity(LessonItemDTO dto) {
+        if (isNull(dto)) {
+            return null;
+        }
         return LessonItem.builder()
                 .id(dto.getId())
                 .quantity(dto.getQuantity())

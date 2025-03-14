@@ -8,15 +8,19 @@ import br.com.emersondias.ebd.entities.Student;
 
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class AttendanceMapper {
 
     public static AttendanceDTO toDTO(Attendance entity) {
+        if (isNull(entity)) {
+            return null;
+        }
         var attendance = AttendanceDTO.builder()
                 .id(entity.getId())
                 .present(entity.isPresent())
-                .lesson(Optional.ofNullable(entity.getLesson()).map(LessonMapper::toSimpleDTO).orElse(null))
+                .lesson(LessonMapper.toSimpleDTO(entity.getLesson()))
                 .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
@@ -31,6 +35,9 @@ public class AttendanceMapper {
     }
 
     public static Attendance toEntity(AttendanceDTO dto) {
+        if (isNull(dto)) {
+            return null;
+        }
         return Attendance.builder()
                 .id(dto.getId())
                 .present(dto.isPresent())

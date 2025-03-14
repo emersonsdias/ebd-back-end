@@ -3,11 +3,15 @@ package br.com.emersondias.ebd.mappers;
 import br.com.emersondias.ebd.dtos.PersonDTO;
 import br.com.emersondias.ebd.entities.Person;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class PersonMapper {
 
     public static PersonDTO toDTO(Person entity) {
+        if (isNull(entity)) {
+            return null;
+        }
         var personDTO = PersonDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -30,6 +34,9 @@ public class PersonMapper {
     }
 
     public static Person toEntity(PersonDTO dto) {
+        if (isNull(dto)) {
+            return null;
+        }
         var person = Person.builder()
                 .id(dto.getId())
                 .name(dto.getName())
@@ -38,6 +45,7 @@ public class PersonMapper {
                 .gender(dto.getGender())
                 .educationLevel(dto.getEducationLevel())
                 .maritalStatus(dto.getMaritalStatus())
+                .address(AddressMapper.toEntity(dto.getAddress()))
                 .types(dto.getTypes())
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
@@ -49,9 +57,6 @@ public class PersonMapper {
                         .peek(phoneNumber -> phoneNumber.setPerson(person))
                         .toList()
         );
-        if (nonNull(dto.getAddress())) {
-            person.setAddress(AddressMapper.toEntity(dto.getAddress()));
-        }
         return person;
     }
 

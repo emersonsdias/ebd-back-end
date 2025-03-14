@@ -81,6 +81,7 @@ create table app.lessons_items (
 create table app.offers (
     id bigserial not null,
     amount numeric(11,2) not null,
+    lesson_id bigint not null,
     active boolean not null,
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now(),

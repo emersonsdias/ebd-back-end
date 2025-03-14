@@ -6,9 +6,14 @@ import br.com.emersondias.ebd.entities.Classroom;
 
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
+
 public class ClassroomMapper {
 
     public static ClassroomDTO toDTO(Classroom entity) {
+        if (isNull(entity)) {
+            return null;
+        }
         return ClassroomDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -23,6 +28,9 @@ public class ClassroomMapper {
     }
 
     public static Classroom toEntity(ClassroomDTO dto) {
+        if (isNull(dto)) {
+            return null;
+        }
         return Classroom.builder()
                 .id(dto.getId())
                 .name(dto.getName())
@@ -37,6 +45,9 @@ public class ClassroomMapper {
     }
 
     public static SimpleClassroomDTO toSimpleDTO(Classroom entity) {
+        if (isNull(entity)) {
+            return null;
+        }
         return SimpleClassroomDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())

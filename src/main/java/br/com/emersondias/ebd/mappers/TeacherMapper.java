@@ -5,9 +5,14 @@ import br.com.emersondias.ebd.entities.Teacher;
 
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 public class TeacherMapper {
 
     public static TeacherDTO toDTO(Teacher entity) {
+        if (isNull(entity)) {
+            return null;
+        }
         return TeacherDTO.builder()
                 .id(entity.getId())
                 .person(Optional.ofNullable(entity.getPerson()).map(PersonMapper::toDTO).orElse(null))
@@ -18,6 +23,9 @@ public class TeacherMapper {
     }
 
     public static Teacher toEntity(TeacherDTO dto) {
+        if (isNull(dto)) {
+            return null;
+        }
         return Teacher.builder()
                 .id(dto.getId())
                 .person(Optional.ofNullable(dto.getPerson()).map(PersonMapper::toEntity).orElse(null))

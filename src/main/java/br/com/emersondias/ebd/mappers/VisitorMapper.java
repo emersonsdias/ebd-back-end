@@ -6,9 +6,14 @@ import br.com.emersondias.ebd.entities.Visitor;
 
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 public class VisitorMapper {
 
     public static VisitorDTO toDTO(Visitor entity) {
+        if (isNull(entity)) {
+            return null;
+        }
         return VisitorDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -20,6 +25,9 @@ public class VisitorMapper {
     }
 
     public static Visitor toEntity(VisitorDTO dto) {
+        if (isNull(dto)) {
+            return null;
+        }
         return Visitor.builder()
                 .id(dto.getId())
                 .name(dto.getName())
