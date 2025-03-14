@@ -50,7 +50,7 @@ public class LessonServiceImpl implements ILessonService {
         lessonEntity.setAttendances(lessonDTO.getAttendances().stream().map(AttendanceMapper::toEntity).toList());
         lessonEntity.setTeachings(lessonDTO.getTeachings().stream().map(TeachingMapper::toEntity).toList());
         lessonEntity.setItems(lessonDTO.getItems().stream().map(LessonItemMapper::toEntity).collect(Collectors.toSet()));
-        lessonEntity.setOffers(lessonDTO.getOffers().stream().map(LessonOfferMapper::toEntity).collect(Collectors.toSet()));
+        lessonEntity.setOffers(lessonDTO.getOffers().stream().map(OfferMapper::toEntity).toList());
         lessonEntity.setActive(lessonDTO.isActive());
     }
 

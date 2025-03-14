@@ -30,12 +30,20 @@ public class LessonItem implements Serializable {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
+    @Column(name = "active")
+    private boolean active;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    public void updateFrom(LessonItem other) {
+        this.quantity = other.getQuantity();
+        this.item = other.getItem();
+        this.active = other.isActive();
+    }
 
     @Override
     public boolean equals(Object o) {

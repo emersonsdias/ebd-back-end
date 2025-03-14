@@ -3,6 +3,7 @@ package br.com.emersondias.ebd.controllers;
 import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.dtos.PersonDTO;
 import br.com.emersondias.ebd.dtos.PersonReportDTO;
+import br.com.emersondias.ebd.entities.enums.PersonType;
 import br.com.emersondias.ebd.services.interfaces.IPersonService;
 import br.com.emersondias.ebd.utils.URIUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -75,6 +76,17 @@ public class PersonController {
     @GetMapping
     public ResponseEntity<List<PersonDTO>> findAll() {
         return ResponseEntity.ok(personService.findAll());
+    }
+
+    @Operation(summary = "Find persons by types")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200")
+    })
+    @GetMapping("/by-type")
+    public ResponseEntity<List<PersonDTO>> findByTypes(
+            @RequestParam(value = "personTypes") List<PersonType> types
+    ) {
+        return ResponseEntity.ok(personService.findByPersonType(types));
     }
 
     @Operation(summary = "Generate person report")

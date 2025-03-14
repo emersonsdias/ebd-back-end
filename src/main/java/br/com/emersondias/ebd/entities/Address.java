@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -36,6 +37,8 @@ public class Address implements Serializable {
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
+    @Column(name = "active")
+    private boolean active;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -43,4 +46,25 @@ public class Address implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public void updateFrom(Address other) {
+        this.street = other.getStreet();
+        this.number = other.getNumber();
+        this.complement = other.getComplement();
+        this.neighborhood = other.getNeighborhood();
+        this.zipCode = other.getZipCode();
+        this.city = other.getCity();
+        this.active = other.isActive();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

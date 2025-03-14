@@ -6,6 +6,7 @@ create table app.addresses (
     neighborhood varchar(100),
     zip_code varchar(8),
     city_id bigint not null,
+    active boolean not null,
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now(),
     primary key (id)
@@ -71,20 +72,11 @@ create table app.lessons_items (
     quantity int not null,
     lesson_id bigint not null,
     item_id bigint not null,
+    active boolean not null,
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now(),
     primary key (id)
 );
-
-create table app.lessons_offers (
-    id bigserial not null,
-    lesson_id bigint not null,
-    offer_id bigint not null,
-    created_at timestamp(6) with time zone default now(),
-    updated_at timestamp(6) with time zone default now(),
-    primary key (id)
-);
-
 
 create table app.offers (
     id bigserial not null,
@@ -120,6 +112,7 @@ create table app.phone_numbers (
     area_code varchar(2) not null,
     phone_number varchar(20) not null,
     person_id uuid,
+    active boolean not null,
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now(),
     primary key (id)
@@ -190,6 +183,7 @@ create table app.visitors (
     id bigserial not null,
     name varchar(255) not null,
     lesson_id bigint not null,
+    active boolean not null,
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now(),
     primary key (id)

@@ -10,6 +10,7 @@ public class PhoneNumberMapper {
                 .id(entity.getId())
                 .areaCode(entity.getAreaCode())
                 .phoneNumber(entity.getPhoneNumber())
+                .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
@@ -20,6 +21,7 @@ public class PhoneNumberMapper {
                 .id(dto.getId())
                 .areaCode(dto.getAreaCode())
                 .phoneNumber(dto.getPhoneNumber())
+                .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())
                 .build();

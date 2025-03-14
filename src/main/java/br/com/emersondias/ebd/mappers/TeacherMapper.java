@@ -8,7 +8,6 @@ import java.util.Optional;
 public class TeacherMapper {
 
     public static TeacherDTO toDTO(Teacher entity) {
-        var personOpt = Optional.ofNullable(entity.getPerson());
         return TeacherDTO.builder()
                 .id(entity.getId())
                 .person(Optional.ofNullable(entity.getPerson()).map(PersonMapper::toDTO).orElse(null))

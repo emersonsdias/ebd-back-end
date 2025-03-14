@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -51,6 +52,16 @@ public class User implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public void updateFrom(User other) {
+        this.name = other.getName();
+        this.email = other.getEmail();
+        if (Objects.nonNull(other.getPassword())) {
+            this.password = other.getPassword();
+        }
+        this.roles = other.getRoles();
+        this.active = other.isActive();
+    }
+
     public void addRole(UserRole role) {
         if (isNull(roles)) {
             roles = new HashSet<>();
@@ -58,4 +69,15 @@ public class User implements Serializable {
         roles.add(role);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

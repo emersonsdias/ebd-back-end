@@ -7,6 +7,7 @@ import br.com.emersondias.ebd.dtos.PersonDTO;
 import br.com.emersondias.ebd.dtos.PersonReportDTO;
 import br.com.emersondias.ebd.entities.Address;
 import br.com.emersondias.ebd.entities.Person;
+import br.com.emersondias.ebd.entities.enums.PersonType;
 import br.com.emersondias.ebd.exceptions.ReportGenerationException;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.CityMapper;
@@ -133,6 +134,12 @@ public class PersonServiceImpl implements IPersonService {
             LOG.error(error);
             throw new RuntimeException(error, e);
         }
+    }
+
+    @Override
+    public List<PersonDTO> findByPersonType(List<PersonType> types) {
+        requireNonNull(types);
+        return repository.findByTypesInOrderByName(types).stream().map(PersonMapper::toDTO).toList();
     }
 
     private Person findEntityById(UUID id) {

@@ -39,6 +39,12 @@ public class Attendance implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public void updateFrom(Attendance other) {
+        this.present = other.isPresent();
+        this.lesson = other.getLesson();
+        this.active = other.isActive();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

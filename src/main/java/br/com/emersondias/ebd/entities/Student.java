@@ -43,6 +43,12 @@ public class Student implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public void updateFrom(Student other) {
+        this.academicPeriodStart = other.getAcademicPeriodStart();
+        this.academicPeriodEnd = other.getAcademicPeriodEnd();
+        this.active = other.isActive();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

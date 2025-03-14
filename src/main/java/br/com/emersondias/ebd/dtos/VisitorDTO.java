@@ -17,7 +17,9 @@ public class VisitorDTO implements Serializable {
     private Long id;
     private String name;
     private Long lessonId;
+    private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
+
 
 }

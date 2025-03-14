@@ -35,50 +35,63 @@ public class Classroom implements Serializable {
     @Builder.Default
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Student> students = new HashSet<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "classroom")
+    private List<Lesson> lessons = new ArrayList<>();
     @Column(name = "active")
     private boolean active;
     @Column(name = "created_at")
     private Instant createdAt;
     @Column(name = "updated_at")
     private Instant updatedAt;
-    @Builder.Default
-    @OneToMany(mappedBy = "classroom")
-    private List<Lesson> lessons = new ArrayList<>();
 
-    public void setTeachers(Collection<Teacher> teachers) {
-        if (isNull(teachers)) {
+    public void updateFrom(Classroom other) {
+        this.name = other.getName();
+        this.ageRange = other.getAgeRange();
+        this.setTeachers(other.getTeachers());
+        this.setStudents(other.getStudents());
+        this.setLessons(other.getLessons());
+        this.active = other.isActive();
+    }
+
+    public void setTeachers(Set<Teacher> teachers) {
+        if (isNull(teachers) || teachers.isEmpty()) {
             this.teachers.clear();
             return;
         }
         this.teachers.removeIf(t -> !teachers.contains(t));
         for (Teacher newTeacher : teachers) {
             newTeacher.setClassroom(this);
-            var teacherOpt = this.teachers.stream()
-                    .filter(newTeacher::equals)
-                    .findFirst();
-            if (teacherOpt.isPresent()) {
-                teacherOpt.get().setActive(newTeacher.isActive());
-            } else {
-                this.teachers.add(newTeacher);
+            if (this.teachers.contains(newTeacher)) {
+                var teacherOpt = this.teachers.stream()
+                        .filter(newTeacher::equals)
+                        .findFirst();
+                if (teacherOpt.isPresent()) {
+                    teacherOpt.get().updateFrom(newTeacher);
+                } else {
+                    this.teachers.add(newTeacher);
+                }
             }
         }
     }
 
-    public void setStudents(Collection<Student> students) {
-        if (isNull(students)) {
+    public void setStudents(Set<Student> students) {
+        if (isNull(students) || students.isEmpty()) {
             this.students.clear();
             return;
         }
         this.students.removeIf(s -> !students.contains(s));
         for (Student newStudent : students) {
             newStudent.setClassroom(this);
-            var studentOpt = this.students.stream()
-                    .filter(newStudent::equals)
-                    .findFirst();
-            if (studentOpt.isPresent()) {
-                studentOpt.get().setActive(newStudent.isActive());
-            } else {
-                this.students.add(newStudent);
+            if (this.students.contains(newStudent)) {
+                var studentOpt = this.students.stream()
+                        .filter(newStudent::equals)
+                        .findFirst();
+                if (studentOpt.isPresent()) {
+                    studentOpt.get().updateFrom(newStudent);
+                } else {
+                    this.students.add(newStudent);
+                }
             }
         }
     }

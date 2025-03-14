@@ -37,6 +37,12 @@ public class Teaching implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public void updateFrom(Teaching other) {
+        this.teacher = other.getTeacher();
+        this.lesson = other.getLesson();
+        this.active = other.isActive();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

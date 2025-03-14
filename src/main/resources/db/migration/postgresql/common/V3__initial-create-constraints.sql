@@ -9,9 +9,6 @@ alter table app.lessons add constraint fk_enum_lesson_status foreign key (status
 alter table app.lessons_items add constraint fk_lessons_items_lessons foreign key (lesson_id) references app.lessons;
 alter table app.lessons_items add constraint fk_lessons_items_items foreign key (item_id) references app.items;
 
-alter table app.lessons_offers add constraint fk_lessons_offers_lessons foreign key (lesson_id) references app.lessons;
-alter table app.lessons_offers add constraint fk_lessons_offers_offers foreign key (offer_id) references app.offers;
-
 alter table app.people add constraint fk_enum_education_levels foreign key (gender) references enums.education_levels;
 alter table app.people add constraint fk_enum_genders_people foreign key (gender) references enums.genders;
 alter table app.people add constraint fk_enum_marital_status foreign key (marital_status) references enums.marital_status;

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
@@ -51,8 +52,8 @@ public class ClassroomServiceImpl implements IClassroomService {
     private void updateData(Classroom classroomEntity, ClassroomDTO classroomDTO) {
         classroomEntity.setName(classroomDTO.getName());
         classroomEntity.setActive(classroomDTO.isActive());
-        classroomEntity.setTeachers(classroomDTO.getTeachers().stream().map(TeacherMapper::toEntity).toList());
-        classroomEntity.setStudents(classroomDTO.getStudents().stream().map(StudentMapper::toEntity).toList());
+        classroomEntity.setTeachers(classroomDTO.getTeachers().stream().map(TeacherMapper::toEntity).collect(Collectors.toSet()));
+        classroomEntity.setStudents(classroomDTO.getStudents().stream().map(StudentMapper::toEntity).collect(Collectors.toSet()));
     }
 
     @Override
@@ -61,12 +62,14 @@ public class ClassroomServiceImpl implements IClassroomService {
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ClassroomDTO findById(Long id) {
         requireNonNull(id);
         return ClassroomMapper.toDTO(findEntityById(id));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ClassroomDTO> findAll() {
         return repository.findByActiveTrue().stream().map(ClassroomMapper::toDTO).toList();

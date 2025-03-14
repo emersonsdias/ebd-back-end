@@ -14,6 +14,7 @@ public class LessonItemMapper {
                 .quantity(entity.getQuantity())
                 .lessonId(Optional.ofNullable(entity.getLesson()).map(Lesson::getId).orElse(null))
                 .item(Optional.ofNullable(entity.getItem()).map(ItemMapper::toDTO).orElse(null))
+                .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
@@ -25,6 +26,7 @@ public class LessonItemMapper {
                 .quantity(dto.getQuantity())
                 .lesson(Lesson.builder().id(dto.getLessonId()).build())
                 .item(Optional.ofNullable(dto.getItem()).map(ItemMapper::toEntity).orElse(null))
+                .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())
                 .build();

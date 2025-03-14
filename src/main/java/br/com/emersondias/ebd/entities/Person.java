@@ -1,7 +1,13 @@
 package br.com.emersondias.ebd.entities;
 
-import br.com.emersondias.ebd.entities.enums.*;
-import br.com.emersondias.ebd.entities.enums.converters.*;
+import br.com.emersondias.ebd.entities.enums.EducationLevel;
+import br.com.emersondias.ebd.entities.enums.Gender;
+import br.com.emersondias.ebd.entities.enums.MaritalStatus;
+import br.com.emersondias.ebd.entities.enums.PersonType;
+import br.com.emersondias.ebd.entities.enums.converters.EducationLevelConverter;
+import br.com.emersondias.ebd.entities.enums.converters.GenderConverter;
+import br.com.emersondias.ebd.entities.enums.converters.MaritalStatusConverter;
+import br.com.emersondias.ebd.entities.enums.converters.PersonTypeConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnTransformer;
@@ -65,6 +71,19 @@ public class Person implements Serializable {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    public void updateFrom(Person other) {
+        this.name = other.getName();
+        this.birthdate = other.getBirthdate();
+        this.email = other.getEmail();
+        this.gender = other.getGender();
+        this.educationLevel = other.getEducationLevel();
+        this.maritalStatus = other.getMaritalStatus();
+        this.address = other.getAddress();
+        setPhoneNumbers(other.getPhoneNumbers());
+        this.types = other.getTypes();
+        this.active = other.isActive();
+    }
 
     public void setPhoneNumbers(Collection<PhoneNumber> phoneNumbers) {
         if (isNull(phoneNumbers)) {

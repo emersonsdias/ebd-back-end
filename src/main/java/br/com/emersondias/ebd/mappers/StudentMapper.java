@@ -10,6 +10,8 @@ public class StudentMapper {
     public static StudentDTO toDTO(Student entity) {
         return StudentDTO.builder()
                 .id(entity.getId())
+                .academicPeriodStart(entity.getAcademicPeriodStart())
+                .academicPeriodEnd(entity.getAcademicPeriodEnd())
                 .person(Optional.ofNullable(entity.getPerson()).map(PersonMapper::toDTO).orElse(null))
                 .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
@@ -20,6 +22,8 @@ public class StudentMapper {
     public static Student toEntity(StudentDTO dto) {
         return Student.builder()
                 .id(dto.getId())
+                .academicPeriodStart(dto.getAcademicPeriodStart())
+                .academicPeriodEnd(dto.getAcademicPeriodEnd())
                 .person(Optional.ofNullable(dto.getPerson()).map(PersonMapper::toEntity).orElse(null))
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())

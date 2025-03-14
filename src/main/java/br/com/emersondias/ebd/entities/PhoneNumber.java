@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -29,11 +30,31 @@ public class PhoneNumber implements Serializable {
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
+    @Column(name = "active")
+    private boolean active;
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt;
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public void updateFrom(PhoneNumber other) {
+        this.areaCode = other.getAreaCode();
+        this.phoneNumber = other.getPhoneNumber();
+        this.person = other.getPerson();
+        this.active = other.isActive();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PhoneNumber that = (PhoneNumber) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,4 +37,22 @@ public class SchoolProfile implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public void updateFrom(SchoolProfile other) {
+        this.name = other.getName();
+        this.subtitle = other.getSubtitle();
+        this.address = other.getAddress();
+        this.active = other.isActive();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        SchoolProfile that = (SchoolProfile) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

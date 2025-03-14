@@ -14,6 +14,7 @@ public class AddressMapper {
                 .neighborhood(entity.getNeighborhood())
                 .zipCode(entity.getZipCode())
                 .city(CityMapper.toDTO(entity.getCity()))
+                .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
@@ -28,6 +29,7 @@ public class AddressMapper {
                 .neighborhood(dto.getNeighborhood())
                 .zipCode(dto.getZipCode())
                 .city(CityMapper.toEntity(dto.getCity()))
+                .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())
                 .build();

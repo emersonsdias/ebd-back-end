@@ -13,6 +13,7 @@ public class VisitorMapper {
                 .id(entity.getId())
                 .name(entity.getName())
                 .lessonId(Optional.ofNullable(entity.getLesson()).map(Lesson::getId).orElse(null))
+                .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
@@ -23,6 +24,7 @@ public class VisitorMapper {
                 .id(dto.getId())
                 .name(dto.getName())
                 .lesson(Lesson.builder().id(dto.getLessonId()).build())
+                .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())
                 .build();

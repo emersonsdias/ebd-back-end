@@ -23,6 +23,7 @@ public class AddressDTO implements Serializable {
     private String neighborhood;
     private String zipCode;
     private CityDTO city;
+    private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
 

@@ -18,7 +18,9 @@ public class PhoneNumberDTO implements Serializable {
     private UUID id;
     private String areaCode;
     private String phoneNumber;
+    private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
+
 
 }

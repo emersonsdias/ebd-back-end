@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,4 +37,15 @@ public class AgeRange implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        AgeRange ageRange = (AgeRange) o;
+        return Objects.equals(id, ageRange.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

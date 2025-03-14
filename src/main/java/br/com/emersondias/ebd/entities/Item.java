@@ -35,6 +35,12 @@ public class Item implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public void updateFrom(Item other) {
+        this.name = other.getName();
+        this.icon = other.getIcon();
+        this.active = other.isActive();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

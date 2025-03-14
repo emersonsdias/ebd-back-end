@@ -44,10 +44,6 @@ public class Lesson implements Serializable {
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Visitor> visitors = new ArrayList<>();
-    @Setter(AccessLevel.NONE)
-    @Builder.Default
-    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Attendance> attendances = new HashSet<>();
     @Setter(AccessLevel.NONE)
     @Builder.Default
@@ -60,7 +56,11 @@ public class Lesson implements Serializable {
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<LessonOffer> offers = new HashSet<>();
+    private List<Offer> offers = new ArrayList<>();
+    @Setter(AccessLevel.NONE)
+    @Builder.Default
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Visitor> visitors = new ArrayList<>();
     @Column(name = "active", nullable = false)
     private boolean active;
     @CreationTimestamp
@@ -70,42 +70,60 @@ public class Lesson implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public void updateFrom(Lesson other) {
+        this.number = other.getNumber();
+        this.topic = other.getTopic();
+        this.date = other.getDate();
+        this.status = other.getStatus();
+        this.notes = other.getNotes();
+        this.classroom = other.getClassroom();
+        setAttendances(other.getAttendances());
+        setTeachings(other.getTeachings());
+        setItems(other.getItems());
+        setOffers(other.getOffers());
+        setVisitors(other.getVisitors());
+        this.active = other.isActive();
+    }
 
-    public void setItems(Collection<LessonItem> items) {
+
+    public void setItems(Set<LessonItem> items) {
         if (isNull(items)) {
             this.items.clear();
             return;
         }
-        this.items.removeIf(s -> !items.contains(s));
+        this.items.removeIf(li -> !items.contains(li));
         for (LessonItem newItem : items) {
             newItem.setLesson(this);
-            var itemOpt = this.items.stream()
-                    .filter(newItem::equals)
-                    .findFirst();
-            if (itemOpt.isPresent()) {
-                itemOpt.get().setItem(newItem.getItem());
-                itemOpt.get().setQuantity(newItem.getQuantity());
-            } else {
-                this.items.add(newItem);
+            if (this.items.contains(newItem)) {
+                var itemOpt = this.items.stream()
+                        .filter(newItem::equals)
+                        .findFirst();
+                if (itemOpt.isPresent()) {
+                    itemOpt.get().updateFrom(newItem);
+                } else {
+                    this.items.add(newItem);
+                }
             }
         }
     }
 
-    public void setOffers(Collection<LessonOffer> offers) {
+    public void setOffers(List<Offer> offers) {
         if (isNull(offers)) {
             this.offers.clear();
             return;
         }
-        this.offers.removeIf(s -> !offers.contains(s));
-        for (LessonOffer newOffer : offers) {
+        this.offers.removeIf(li -> !offers.contains(li));
+        for (Offer newOffer : offers) {
             newOffer.setLesson(this);
-            var offerOpt = this.offers.stream()
-                    .filter(newOffer::equals)
-                    .findFirst();
-            if (offerOpt.isPresent()) {
-                offerOpt.get().setOffer(newOffer.getOffer());
-            } else {
-                this.offers.add(newOffer);
+            if (this.offers.contains(newOffer)) {
+                var offerOpt = this.offers.stream()
+                        .filter(newOffer::equals)
+                        .findFirst();
+                if (offerOpt.isPresent()) {
+                    offerOpt.get().updateFrom(newOffer);
+                } else {
+                    this.offers.add(newOffer);
+                }
             }
         }
     }

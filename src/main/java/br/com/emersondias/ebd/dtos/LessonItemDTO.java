@@ -18,6 +18,7 @@ public class LessonItemDTO implements Serializable {
     private Integer quantity;
     private Long lessonId;
     private ItemDTO item;
+    private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
 
