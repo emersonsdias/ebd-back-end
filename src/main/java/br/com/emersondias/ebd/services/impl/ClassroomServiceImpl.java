@@ -7,7 +7,7 @@ import br.com.emersondias.ebd.entities.Person;
 import br.com.emersondias.ebd.entities.Student;
 import br.com.emersondias.ebd.entities.Teacher;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
-import br.com.emersondias.ebd.mappers.*;
+import br.com.emersondias.ebd.mappers.ClassroomMapper;
 import br.com.emersondias.ebd.repositories.ClassroomRepository;
 import br.com.emersondias.ebd.repositories.PersonRepository;
 import br.com.emersondias.ebd.services.interfaces.IClassroomService;
@@ -15,10 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 

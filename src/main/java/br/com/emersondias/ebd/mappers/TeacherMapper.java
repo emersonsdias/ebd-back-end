@@ -16,6 +16,8 @@ public class TeacherMapper {
         }
         return TeacherDTO.builder()
                 .id(entity.getId())
+                .teachingPeriodStart(entity.getTeachingPeriodStart())
+                .teachingPeriodEnd(entity.getTeachingPeriodEnd())
                 .person(Optional.ofNullable(entity.getPerson()).map(PersonMapper::toDTO).orElse(null))
                 .classroomId(Optional.ofNullable(entity.getClassroom()).map(Classroom::getId).orElse(null))
                 .active(entity.isActive())
@@ -30,6 +32,8 @@ public class TeacherMapper {
         }
         return Teacher.builder()
                 .id(dto.getId())
+                .teachingPeriodStart(dto.getTeachingPeriodStart())
+                .teachingPeriodEnd(dto.getTeachingPeriodEnd())
                 .person(Optional.ofNullable(dto.getPerson()).map(PersonMapper::toEntity).orElse(null))
                 .classroom(Classroom.builder().id(dto.getClassroomId()).build())
                 .active(dto.isActive())

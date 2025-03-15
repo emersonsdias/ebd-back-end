@@ -20,6 +20,7 @@ import java.util.UUID;
 @Table(schema = "app", name = "students")
 public class Student implements Serializable {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -28,11 +29,9 @@ public class Student implements Serializable {
     private LocalDate academicPeriodStart;
     @Column(name = "academic_period_end")
     private LocalDate academicPeriodEnd;
-    @EqualsAndHashCode.Include
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;
-    @EqualsAndHashCode.Include
     @ManyToOne
     @JoinColumn(name = "classroom_id", nullable = false)
     private Classroom classroom;
