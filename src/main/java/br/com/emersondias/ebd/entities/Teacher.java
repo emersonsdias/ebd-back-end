@@ -8,9 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.UUID;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -28,9 +28,11 @@ public class Teacher implements Serializable {
     private LocalDate teachingPeriodStart;
     @Column(name = "teaching_period_end")
     private LocalDate teachingPeriodEnd;
+    @EqualsAndHashCode.Include
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;
+    @EqualsAndHashCode.Include
     @ManyToOne
     @JoinColumn(name = "classroom_id", nullable = false)
     private Classroom classroom;
@@ -49,15 +51,4 @@ public class Teacher implements Serializable {
         this.active = other.isActive();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Teacher teacher = (Teacher) o;
-        return Objects.equals(person, teacher.person) && Objects.equals(classroom, teacher.classroom);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(person, classroom);
-    }
 }

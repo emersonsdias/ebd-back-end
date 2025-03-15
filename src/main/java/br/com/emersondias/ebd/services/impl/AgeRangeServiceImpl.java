@@ -8,6 +8,7 @@ import br.com.emersondias.ebd.repositories.AgeRangeRepository;
 import br.com.emersondias.ebd.services.interfaces.IAgeRangeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class AgeRangeServiceImpl implements IAgeRangeService {
 
     private final AgeRangeRepository repository;
 
+    @Transactional
     @Override
     public AgeRangeDTO create(AgeRangeDTO ageRangeDTO) {
         requireNonNull(ageRangeDTO);
@@ -28,6 +30,7 @@ public class AgeRangeServiceImpl implements IAgeRangeService {
         return AgeRangeMapper.toDTO(ageRangeEntity);
     }
 
+    @Transactional
     @Override
     public AgeRangeDTO update(AgeRangeDTO ageRangeDTO) {
         requireNonNull(ageRangeDTO);
@@ -45,12 +48,14 @@ public class AgeRangeServiceImpl implements IAgeRangeService {
         ageRangeEntity.setActive(ageRangeDTO.isActive());
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         requireNonNull(id);
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public AgeRangeDTO findById(Long id) {
         requireNonNull(id);

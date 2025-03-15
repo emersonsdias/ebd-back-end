@@ -8,6 +8,7 @@ import br.com.emersondias.ebd.repositories.ItemRepository;
 import br.com.emersondias.ebd.services.interfaces.IItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class ItemServiceImpl implements IItemService {
 
     private final ItemRepository repository;
 
+    @Transactional
     @Override
     public ItemDTO create(ItemDTO itemDTO) {
         requireNonNull(itemDTO);
@@ -28,6 +30,7 @@ public class ItemServiceImpl implements IItemService {
         return ItemMapper.toDTO(itemEntity);
     }
 
+    @Transactional
     @Override
     public ItemDTO update(ItemDTO itemDTO) {
         requireNonNull(itemDTO);
@@ -44,12 +47,14 @@ public class ItemServiceImpl implements IItemService {
         itemEntity.setActive(itemDTO.isActive());
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         requireNonNull(id);
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ItemDTO findById(Long id) {
         requireNonNull(id);

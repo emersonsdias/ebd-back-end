@@ -8,6 +8,7 @@ import br.com.emersondias.ebd.repositories.SchoolProfileRepository;
 import br.com.emersondias.ebd.services.interfaces.ISchoolProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class SchoolProfileServiceImpl implements ISchoolProfileService {
 
     private final SchoolProfileRepository repository;
 
+    @Transactional
     @Override
     public SchoolProfileDTO create(SchoolProfileDTO schoolProfileDTO) {
         requireNonNull(schoolProfileDTO);
@@ -28,6 +30,7 @@ public class SchoolProfileServiceImpl implements ISchoolProfileService {
         return SchoolProfileMapper.toDTO(schoolProfileEntity);
     }
 
+    @Transactional
     @Override
     public SchoolProfileDTO update(SchoolProfileDTO schoolProfileDTO) {
         requireNonNull(schoolProfileDTO);
@@ -44,12 +47,14 @@ public class SchoolProfileServiceImpl implements ISchoolProfileService {
         schoolProfileEntity.setActive(schoolProfileDTO.isActive());
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         requireNonNull(id);
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public SchoolProfileDTO findById(Long id) {
         requireNonNull(id);

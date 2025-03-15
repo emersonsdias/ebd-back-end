@@ -79,12 +79,14 @@ public class PersonServiceImpl implements IPersonService {
         addressEntity.setCity(CityMapper.toEntity(addressDTO.getCity()));
     }
 
+    @Transactional
     @Override
     public void delete(UUID id) {
         requireNonNull(id);
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PersonDTO findById(UUID id) {
         requireNonNull(id);

@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.mappers;
 
 import br.com.emersondias.ebd.dtos.TeacherDTO;
+import br.com.emersondias.ebd.entities.Classroom;
 import br.com.emersondias.ebd.entities.Teacher;
 
 import java.util.Optional;
@@ -16,6 +17,7 @@ public class TeacherMapper {
         return TeacherDTO.builder()
                 .id(entity.getId())
                 .person(Optional.ofNullable(entity.getPerson()).map(PersonMapper::toDTO).orElse(null))
+                .classroomId(Optional.ofNullable(entity.getClassroom()).map(Classroom::getId).orElse(null))
                 .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
@@ -29,6 +31,7 @@ public class TeacherMapper {
         return Teacher.builder()
                 .id(dto.getId())
                 .person(Optional.ofNullable(dto.getPerson()).map(PersonMapper::toEntity).orElse(null))
+                .classroom(Classroom.builder().id(dto.getClassroomId()).build())
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())

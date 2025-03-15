@@ -14,6 +14,7 @@ import java.util.*;
 
 import static java.util.Objects.isNull;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -23,6 +24,7 @@ import static java.util.Objects.isNull;
 @Table(schema = "app", name = "lessons")
 public class Lesson implements Serializable {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -188,15 +190,4 @@ public class Lesson implements Serializable {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Lesson lesson = (Lesson) o;
-        return Objects.equals(id, lesson.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

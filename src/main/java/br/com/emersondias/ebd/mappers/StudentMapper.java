@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.mappers;
 
 import br.com.emersondias.ebd.dtos.StudentDTO;
+import br.com.emersondias.ebd.entities.Classroom;
 import br.com.emersondias.ebd.entities.Student;
 
 import java.util.Optional;
@@ -18,6 +19,7 @@ public class StudentMapper {
                 .academicPeriodStart(entity.getAcademicPeriodStart())
                 .academicPeriodEnd(entity.getAcademicPeriodEnd())
                 .person(Optional.ofNullable(entity.getPerson()).map(PersonMapper::toDTO).orElse(null))
+                .classroomId(Optional.ofNullable(entity.getClassroom()).map(Classroom::getId).orElse(null))
                 .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
@@ -33,6 +35,7 @@ public class StudentMapper {
                 .academicPeriodStart(dto.getAcademicPeriodStart())
                 .academicPeriodEnd(dto.getAcademicPeriodEnd())
                 .person(Optional.ofNullable(dto.getPerson()).map(PersonMapper::toEntity).orElse(null))
+                .classroom(Classroom.builder().id(dto.getClassroomId()).build())
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())

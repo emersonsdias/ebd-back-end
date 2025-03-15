@@ -20,6 +20,7 @@ public class StudentDTO implements Serializable {
     private LocalDate academicPeriodStart;
     private LocalDate academicPeriodEnd;
     private PersonDTO person;
+    private Long classroomId;
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;

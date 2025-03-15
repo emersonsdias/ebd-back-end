@@ -7,8 +7,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,6 +18,7 @@ import java.util.Objects;
 @Table(schema = "app", name = "attendances")
 public class Attendance implements Serializable {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -45,15 +46,4 @@ public class Attendance implements Serializable {
         this.active = other.isActive();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Attendance that = (Attendance) o;
-        return Objects.equals(student, that.student) && Objects.equals(lesson, that.lesson);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(student, lesson);
-    }
 }

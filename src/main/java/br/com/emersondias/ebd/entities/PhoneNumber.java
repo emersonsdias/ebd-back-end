@@ -7,9 +7,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -23,8 +23,10 @@ public class PhoneNumber implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private UUID id;
+    @EqualsAndHashCode.Include
     @Column(name = "area_code", nullable = false)
     private String areaCode;
+    @EqualsAndHashCode.Include
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
     @ManyToOne
@@ -46,15 +48,4 @@ public class PhoneNumber implements Serializable {
         this.active = other.isActive();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        PhoneNumber that = (PhoneNumber) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

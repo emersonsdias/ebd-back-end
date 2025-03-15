@@ -12,6 +12,7 @@ import br.com.emersondias.ebd.services.interfaces.ILocationService;
 import br.com.emersondias.ebd.utils.LogHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
@@ -31,6 +32,7 @@ public class LocationServiceImpl implements ILocationService {
     private final StateRepository stateRepository;
     private final CityRepository cityRepository;
 
+    @Transactional
     @Override
     public void syncCitiesFromIBGE() {
         var start = Instant.now();
@@ -55,6 +57,7 @@ public class LocationServiceImpl implements ILocationService {
         LOG.info("End sync cities from IBGE. Elapsed time: [" + (Instant.now().toEpochMilli() - start.toEpochMilli()) + "ms]");
     }
 
+    @Transactional
     @Override
     public void syncStatesFromIBGE() {
         var start = Instant.now();

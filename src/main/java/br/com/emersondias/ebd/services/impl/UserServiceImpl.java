@@ -9,6 +9,7 @@ import br.com.emersondias.ebd.services.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements IUserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     @Override
     public UserDTO create(UserDTO userDTO) {
         requireNonNull(userDTO);
@@ -33,6 +35,7 @@ public class UserServiceImpl implements IUserService {
         return UserMapper.toDTO(userEntity);
     }
 
+    @Transactional
     @Override
     public UserDTO update(UserDTO userDTO) {
         requireNonNull(userDTO);
@@ -52,12 +55,14 @@ public class UserServiceImpl implements IUserService {
         userEntity.setActive(userDTO.isActive());
     }
 
+    @Transactional
     @Override
     public void delete(UUID id) {
         requireNonNull(id);
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDTO findById(UUID id) {
         requireNonNull(id);

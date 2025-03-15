@@ -1,18 +1,17 @@
 package br.com.emersondias.ebd.services.impl;
 
 import br.com.emersondias.ebd.dtos.LessonDTO;
-import br.com.emersondias.ebd.entities.Classroom;
 import br.com.emersondias.ebd.entities.Lesson;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
-import br.com.emersondias.ebd.mappers.*;
+import br.com.emersondias.ebd.mappers.LessonMapper;
 import br.com.emersondias.ebd.repositories.LessonRepository;
 import br.com.emersondias.ebd.services.interfaces.ILessonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.*;
 
@@ -22,6 +21,7 @@ public class LessonServiceImpl implements ILessonService {
 
     private final LessonRepository repository;
 
+    @Transactional
     @Override
     public LessonDTO create(LessonDTO lessonDTO) {
         requireNonNull(lessonDTO);
@@ -31,35 +31,25 @@ public class LessonServiceImpl implements ILessonService {
         return LessonMapper.toDTO(lessonEntity);
     }
 
+    @Transactional
     @Override
     public LessonDTO update(LessonDTO lessonDTO) {
         requireNonNull(lessonDTO);
         requireNonNull(lessonDTO.getId());
         Lesson lessonEntity = findEntityById(lessonDTO.getId());
-        updateData(lessonEntity, lessonDTO);
+        lessonEntity.updateFrom(requireNonNull(LessonMapper.toEntity(lessonDTO)));
         lessonEntity = repository.save(lessonEntity);
         return LessonMapper.toDTO(lessonEntity);
     }
 
-    private void updateData(Lesson lessonEntity, LessonDTO lessonDTO) {
-        lessonEntity.setNumber(lessonDTO.getNumber());
-        lessonEntity.setDate(lessonDTO.getDate());
-        lessonEntity.setNotes(lessonDTO.getNotes());
-        lessonEntity.setClassroom(Classroom.builder().id(lessonDTO.getClassroomId()).build());
-        lessonEntity.setVisitors(lessonDTO.getVisitors().stream().map(VisitorMapper::toEntity).toList());
-        lessonEntity.setAttendances(lessonDTO.getAttendances().stream().map(AttendanceMapper::toEntity).toList());
-        lessonEntity.setTeachings(lessonDTO.getTeachings().stream().map(TeachingMapper::toEntity).toList());
-        lessonEntity.setItems(lessonDTO.getItems().stream().map(LessonItemMapper::toEntity).collect(Collectors.toSet()));
-        lessonEntity.setOffers(lessonDTO.getOffers().stream().map(OfferMapper::toEntity).toList());
-        lessonEntity.setActive(lessonDTO.isActive());
-    }
-
+    @Transactional
     @Override
     public void delete(Long id) {
         requireNonNull(id);
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public LessonDTO findById(Long id) {
         requireNonNull(id);

@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import static java.util.Objects.isNull;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -26,6 +27,7 @@ import static java.util.Objects.isNull;
 @Table(schema = "app", name = "users")
 public class User implements Serializable {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -69,15 +71,4 @@ public class User implements Serializable {
         roles.add(role);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

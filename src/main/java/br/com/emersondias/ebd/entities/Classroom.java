@@ -2,13 +2,19 @@ package br.com.emersondias.ebd.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static java.util.Objects.isNull;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,6 +24,7 @@ import static java.util.Objects.isNull;
 @Table(schema = "app", name = "classrooms")
 public class Classroom implements Serializable {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -35,13 +42,16 @@ public class Classroom implements Serializable {
     @Builder.Default
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Student> students = new HashSet<>();
+    @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "classroom")
     private List<Lesson> lessons = new ArrayList<>();
     @Column(name = "active")
     private boolean active;
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
 
@@ -96,6 +106,10 @@ public class Classroom implements Serializable {
         }
     }
 
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = new ArrayList<>(lessons);
+    }
+
     public void addStudent(Student student) {
         if (isNull(this.students)) {
             this.students = new HashSet<>();
@@ -110,16 +124,5 @@ public class Classroom implements Serializable {
         this.teachers.add(teacher);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Classroom classroom = (Classroom) o;
-        return Objects.equals(id, classroom.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }
 
