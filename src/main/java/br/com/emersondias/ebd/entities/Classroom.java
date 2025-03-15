@@ -73,14 +73,11 @@ public class Classroom implements Serializable {
         for (Teacher newTeacher : teachers) {
             newTeacher.setClassroom(this);
             if (this.teachers.contains(newTeacher)) {
-                var teacherOpt = this.teachers.stream()
+                this.teachers.stream()
                         .filter(newTeacher::equals)
-                        .findFirst();
-                if (teacherOpt.isPresent()) {
-                    teacherOpt.get().updateFrom(newTeacher);
-                } else {
-                    this.teachers.add(newTeacher);
-                }
+                        .findFirst().ifPresent(s -> s.updateFrom(newTeacher));
+            } else {
+                this.teachers.add(newTeacher);
             }
         }
     }
@@ -94,14 +91,11 @@ public class Classroom implements Serializable {
         for (Student newStudent : students) {
             newStudent.setClassroom(this);
             if (this.students.contains(newStudent)) {
-                var studentOpt = this.students.stream()
+                this.students.stream()
                         .filter(newStudent::equals)
-                        .findFirst();
-                if (studentOpt.isPresent()) {
-                    studentOpt.get().updateFrom(newStudent);
-                } else {
-                    this.students.add(newStudent);
-                }
+                        .findFirst().ifPresent(s -> s.updateFrom(newStudent));
+            } else {
+                this.students.add(newStudent);
             }
         }
     }
