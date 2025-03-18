@@ -2,6 +2,7 @@ package br.com.emersondias.ebd.controllers;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.dtos.UserDTO;
+import br.com.emersondias.ebd.entities.enums.UserRole;
 import br.com.emersondias.ebd.services.interfaces.IUserService;
 import br.com.emersondias.ebd.utils.URIUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,6 +71,17 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         return ResponseEntity.ok(userService.findAll());
+    }
+
+    @Operation(summary = "Find users by roles")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200")
+    })
+    @GetMapping("/by-role")
+    public ResponseEntity<List<UserDTO>> findByRoles(
+            @RequestParam(value = "userRoles") List<UserRole> roles
+    ) {
+        return ResponseEntity.ok(userService.findByUserRoles(roles));
     }
 
 }

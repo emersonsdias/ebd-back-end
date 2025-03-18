@@ -2,6 +2,7 @@ package br.com.emersondias.ebd.services.impl;
 
 import br.com.emersondias.ebd.dtos.UserDTO;
 import br.com.emersondias.ebd.entities.User;
+import br.com.emersondias.ebd.entities.enums.UserRole;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.UserMapper;
 import br.com.emersondias.ebd.repositories.UserRepository;
@@ -72,6 +73,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<UserDTO> findAll() {
         return repository.findAll().stream().map(UserMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<UserDTO> findByUserRoles(List<UserRole> roles) {
+        requireNonNull(roles);
+        return repository.findByRolesInOrderByName(roles).stream().map(UserMapper::toDTO).toList();
     }
 
     private User findEntityById(UUID id) {
