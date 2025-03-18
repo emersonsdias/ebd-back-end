@@ -144,6 +144,11 @@ public class PersonServiceImpl implements IPersonService {
         return repository.findByTypesInOrderByName(types).stream().map(PersonMapper::toDTO).toList();
     }
 
+    @Override
+    public List<PersonDTO> findInactive() {
+        return repository.findInactive().stream().map(PersonMapper::toDTO).toList();
+    }
+
     private Person findEntityById(UUID id) {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, Person.class));
     }

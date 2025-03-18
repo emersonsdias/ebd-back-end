@@ -24,4 +24,6 @@ public interface IPersonService {
     byte[] generatePersonReportPdf(UUID id);
 
     List<PersonDTO> findByPersonType(List<PersonType> types);
+
+    List<PersonDTO> findInactive();
 }

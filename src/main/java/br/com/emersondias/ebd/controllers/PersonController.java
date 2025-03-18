@@ -113,5 +113,14 @@ public class PersonController {
         return ResponseEntity.ok().headers(headers).body(pdf);
     }
 
+    @Operation(summary = "Find all inactive people")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200")
+    })
+    @GetMapping(value = "/inactive")
+    public ResponseEntity<List<PersonDTO>> findInactivePeople() {
+        return ResponseEntity.ok(personService.findInactive());
+    }
+
 
 }
