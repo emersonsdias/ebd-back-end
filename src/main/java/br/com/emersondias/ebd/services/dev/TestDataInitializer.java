@@ -29,7 +29,7 @@ public class TestDataInitializer {
                 .name("Testing")
                 .email("test@test.com")
                 .password("Test@123")
-                .roles(Set.of(UserRole.ADMIN))
+                .roles(Set.of(UserRole.TEACHER))
                 .active(true)
                 .build();
         userService.create(userDTO);
