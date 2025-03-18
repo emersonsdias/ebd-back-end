@@ -3,6 +3,7 @@ package br.com.emersondias.ebd.services.impl;
 import br.com.emersondias.ebd.dtos.SchoolProfileDTO;
 import br.com.emersondias.ebd.entities.SchoolProfile;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
+import br.com.emersondias.ebd.mappers.AddressMapper;
 import br.com.emersondias.ebd.mappers.SchoolProfileMapper;
 import br.com.emersondias.ebd.repositories.SchoolProfileRepository;
 import br.com.emersondias.ebd.services.interfaces.ISchoolProfileService;
@@ -45,6 +46,7 @@ public class SchoolProfileServiceImpl implements ISchoolProfileService {
         schoolProfileEntity.setName(schoolProfileDTO.getName());
         schoolProfileEntity.setSubtitle(schoolProfileDTO.getSubtitle());
         schoolProfileEntity.setActive(schoolProfileDTO.isActive());
+        schoolProfileEntity.setAddress(AddressMapper.toEntity(schoolProfileDTO.getAddress()));
     }
 
     @Transactional
