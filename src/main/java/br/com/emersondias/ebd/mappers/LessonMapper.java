@@ -17,6 +17,7 @@ public class LessonMapper {
         if (isNull(entity)) {
             return null;
         }
+        var classroomOpt = Optional.ofNullable(entity.getClassroom());
         return LessonDTO.builder()
                 .id(entity.getId())
                 .number(entity.getNumber())
@@ -24,7 +25,8 @@ public class LessonMapper {
                 .date(entity.getDate())
                 .status(entity.getStatus())
                 .notes(entity.getNotes())
-                .classroomId(Optional.ofNullable(entity.getClassroom()).map(Classroom::getId).orElse(null))
+                .classroomId(classroomOpt.map(Classroom::getId).orElse(null))
+                .classroomName(classroomOpt.map(Classroom::getName).orElse(null))
                 .visitors(Optional.ofNullable(entity.getVisitors()).orElse(Collections.emptyList()).stream().map(VisitorMapper::toDTO).toList())
                 .attendances(Optional.ofNullable(entity.getAttendances()).orElse(Collections.emptySet()).stream().map(AttendanceMapper::toDTO).collect(Collectors.toSet()))
                 .teachings(Optional.ofNullable(entity.getTeachings()).orElse(Collections.emptySet()).stream().map(TeachingMapper::toDTO).collect(Collectors.toSet()))
@@ -40,6 +42,7 @@ public class LessonMapper {
         if (isNull(entity)) {
             return null;
         }
+        var classroomOpt = Optional.ofNullable(entity.getClassroom());
         return SimpleLessonDTO.builder()
                 .id(entity.getId())
                 .number(entity.getNumber())
@@ -47,7 +50,8 @@ public class LessonMapper {
                 .date(entity.getDate())
                 .status(entity.getStatus())
                 .notes(entity.getNotes())
-                .classroomId(Optional.ofNullable(entity.getClassroom()).map(Classroom::getId).orElse(null))
+                .classroomId(classroomOpt.map(Classroom::getId).orElse(null))
+                .classroomName(classroomOpt.map(Classroom::getName).orElse(null))
                 .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
@@ -65,7 +69,7 @@ public class LessonMapper {
                 .date(dto.getDate())
                 .status(dto.getStatus())
                 .notes(dto.getNotes())
-                .classroom(Classroom.builder().id(dto.getClassroomId()).build())
+                .classroom(Classroom.builder().id(dto.getClassroomId()).name(dto.getClassroomName()).build())
                 .visitors(Optional.ofNullable(dto.getVisitors()).orElse(Collections.emptyList()).stream().map(VisitorMapper::toEntity).toList())
                 .attendances(Optional.ofNullable(dto.getAttendances()).orElse(Collections.emptySet()).stream().map(AttendanceMapper::toEntity).collect(Collectors.toSet()))
                 .teachings(Optional.ofNullable(dto.getTeachings()).orElse(Collections.emptySet()).stream().map(TeachingMapper::toEntity).collect(Collectors.toSet()))

@@ -25,14 +25,23 @@ public class TestDataInitializer {
 
     public void initializeTestData() {
 
-        var userDTO = UserDTO.builder()
+        var user1 = UserDTO.builder()
+                .name("Emerson Dias")
+                .email("emersondias@hotmail.com")
+                .password("Test@123")
+                .roles(Set.of(UserRole.ADMIN, UserRole.TEACHER))
+                .active(true)
+                .build();
+        userService.create(user1);
+
+        var user2 = UserDTO.builder()
                 .name("Testing")
                 .email("test@test.com")
                 .password("Test@123")
                 .roles(Set.of(UserRole.TEACHER))
                 .active(true)
                 .build();
-        userService.create(userDTO);
+        userService.create(user2);
 
 
         var personDTO = PersonDTO.builder()

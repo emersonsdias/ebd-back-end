@@ -30,6 +30,7 @@ public class LessonDTO implements Serializable {
     private LessonStatus status;
     private String notes;
     private Long classroomId;
+    private String classroomName;
     @Builder.Default
     private Set<AttendanceDTO> attendances = new HashSet<>();
     @Builder.Default

@@ -41,7 +41,7 @@ insert into app.addresses (id, street, number, complement, neighborhood, zip_cod
     (UUID '23e385c9-9e96-4153-8142-b4940794e156', 'Rua Leanne Springs', '1101', 'Bl 1161', 'Bowie', '80035560', 4106902, true, TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:20.227942+00', TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:20.227942+00'),
     (UUID '121de50c-387f-4a47-96b1-d636a9f4672f', 'Avenida Michel Stream', '1746', NULL, 'Pocatello', '80007224', 4119152, true, TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:20.919786+00', TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:20.919786+00'),
     (UUID '830216c1-e301-4a84-b3d0-f919bc0b3ebe', 'Rua Rosenbaum Ports', '1696', NULL, 'Grantfurt', '80098052', 4119152, true, TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:21.844158+00', TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:21.844158+00'),
-    (UUID 'a84d7d8d-bebd-44ac-84a6-46d215924b78', 'Avenida Annalise Centers', '977', NULL, 'Pittsfield', '80051206', 4107652, true, TIMESTAMP WITH TIME ZONE '2025-02-12 23:14:28.052551+00', TIMESTAMP WITH TIME ZONE '2025-02-12 23:14:28.052551+00');
+    (UUID 'a84d7d8d-bebd-44ac-84a6-46d215924b78', 'Rua Vereador Antônio Giacomassi', '25', NULL, 'Alto Boqueirão', '81770240', 4106902, true, TIMESTAMP WITH TIME ZONE '2025-02-12 23:14:28.052551+00', TIMESTAMP WITH TIME ZONE '2025-02-12 23:14:28.052551+00');
 
 insert into app.people (id, name, birthdate, email, gender, education_level, marital_status, address_id, active, created_at, updated_at) values
     (UUID '593fd8f2-f7b0-4f29-bde5-e063f9721b76', 'Ms. Lorraine Satterfield', DATE '1978-12-25', 'unique_mertz@yahoo.com', 1, 5, 1, UUID 'df74cd97-4c1b-4ecf-9448-9c5ff3b84761', TRUE, TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:07.875433+00', TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:07.875433+00'),
@@ -66,7 +66,7 @@ insert into app.people (id, name, birthdate, email, gender, education_level, mar
     (UUID '406f4ec2-221f-43b8-b76f-e037868716d7', 'Johnnie Kunde', DATE '1975-04-21', 'georgette96@hotmail.com', 2, 4, 2, UUID '830216c1-e301-4a84-b3d0-f919bc0b3ebe', TRUE, TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:21.845112+00', TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:21.845112+00');
 
 insert into app.school_profiles (name, subtitle, address_id, active, created_at, updated_at) values
-    ('Igreja de Deus', 'Vila São João', 'a84d7d8d-bebd-44ac-84a6-46d215924b78', true, TIMESTAMP WITH TIME ZONE '2025-02-12 22:58:06.135006+00', TIMESTAMP WITH TIME ZONE '2025-02-12 22:58:06.135006+00');
+    ('Assembleia de Deus', 'Congregação JD Castelo Branco', 'a84d7d8d-bebd-44ac-84a6-46d215924b78', true, TIMESTAMP WITH TIME ZONE '2025-02-12 22:58:06.135006+00', TIMESTAMP WITH TIME ZONE '2025-02-12 22:58:06.135006+00');
 
 insert into app.phone_numbers (id, area_code, phone_number, person_id, active, created_at, updated_at) values
     (UUID 'd7e938c4-5793-4fa9-bb9b-e4a0a226c4e1', '41', '990369310', UUID '593fd8f2-f7b0-4f29-bde5-e063f9721b76', true, TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:07.877449+00', TIMESTAMP WITH TIME ZONE '2025-02-12 22:57:07.877449+00'),

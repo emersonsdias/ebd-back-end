@@ -21,6 +21,7 @@ public class SimpleLessonDTO implements Serializable {
     private LessonStatus status;
     private String notes;
     private Long classroomId;
+    private String classroomName;
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
