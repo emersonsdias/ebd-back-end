@@ -53,6 +53,7 @@ public class UserServiceImpl implements IUserService {
         if (nonNull(userDTO.getPassword()) && !userDTO.getPassword().isBlank()) {
             userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
+        userEntity.setRoles(userDTO.getRoles());
         userEntity.setActive(userDTO.isActive());
     }
 
