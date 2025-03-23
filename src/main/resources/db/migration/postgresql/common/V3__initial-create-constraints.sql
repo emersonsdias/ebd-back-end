@@ -30,6 +30,8 @@ alter table app.teachers add constraint fk_teachers_people foreign key (person_i
 alter table app.teachings add constraint fk_teachings_lessons foreign key (lesson_id) references app.lessons;
 alter table app.teachings add constraint fk_teachings_teachers foreign key (teacher_id) references app.teachers;
 
+alter table app.users add constraint fk_users_people foreign key (person_id) references app.people;
+
 alter table app.users_roles add constraint fk_enum_users_roles foreign key (role) references enums.users_roles;
 alter table app.users_roles add constraint fk_users_roles foreign key (user_id) references app.users;
 

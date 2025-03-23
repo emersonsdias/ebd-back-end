@@ -45,6 +45,9 @@ public class User implements Serializable {
     @Convert(converter = UserRoleConverter.class)
     @Column(name = "role")
     private Set<UserRole> roles = new HashSet<>();
+    @OneToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    private Person person;
     @Column(name = "active")
     private boolean active;
     @CreationTimestamp

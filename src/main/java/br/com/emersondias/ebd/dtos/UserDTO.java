@@ -26,6 +26,7 @@ public class UserDTO implements Serializable {
     private String password;
     @Builder.Default
     private Set<UserRole> roles = new HashSet<>();
+    private PersonDTO person;
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
