@@ -169,7 +169,7 @@ create table app.users (
     name varchar(255) not null,
     email varchar(255) not null unique,
     password varchar(255) not null,
-    person_id uuid,
+    person_id uuid unique,
     active boolean not null,
     created_at timestamp(6) with time zone default now(),
     updated_at timestamp(6) with time zone default now(),

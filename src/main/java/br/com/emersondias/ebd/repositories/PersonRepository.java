@@ -13,4 +13,10 @@ public interface PersonRepository extends JpaRepository<Person, UUID> {
 
     @Query(value = "select p from Person p where p.active = false")
     List<Person> findInactive();
+
+    @Query(value = """
+            select p from Person p
+            where p.id not in (select u.person.id from User u where u.person is not null)
+            """)
+    List<Person> findWithoutUser();
 }

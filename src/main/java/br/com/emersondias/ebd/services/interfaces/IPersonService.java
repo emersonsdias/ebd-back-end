@@ -25,5 +25,7 @@ public interface IPersonService {
 
     List<PersonDTO> findByPersonType(List<PersonType> types);
 
-    List<PersonDTO> findInactive();
+    List<PersonDTO> findAllInactive();
+
+    List<PersonDTO> findAllWithoutUser();
 }

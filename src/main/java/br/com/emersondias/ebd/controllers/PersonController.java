@@ -119,7 +119,16 @@ public class PersonController {
     })
     @GetMapping(value = "/inactive")
     public ResponseEntity<List<PersonDTO>> findInactivePeople() {
-        return ResponseEntity.ok(personService.findInactive());
+        return ResponseEntity.ok(personService.findAllInactive());
+    }
+
+    @Operation(summary = "Find all people without user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200")
+    })
+    @GetMapping(value = "/without-user")
+    public ResponseEntity<List<PersonDTO>> findPeopleWithoutUser() {
+        return ResponseEntity.ok(personService.findAllWithoutUser());
     }
 
 

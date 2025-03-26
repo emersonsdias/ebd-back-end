@@ -145,8 +145,13 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     @Override
-    public List<PersonDTO> findInactive() {
+    public List<PersonDTO> findAllInactive() {
         return repository.findInactive().stream().map(PersonMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<PersonDTO> findAllWithoutUser() {
+        return repository.findWithoutUser().stream().map(PersonMapper::toDTO).toList();
     }
 
     private Person findEntityById(UUID id) {

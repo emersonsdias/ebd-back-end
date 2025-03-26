@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.services.impl;
 
 import br.com.emersondias.ebd.dtos.UserDTO;
+import br.com.emersondias.ebd.entities.Person;
 import br.com.emersondias.ebd.entities.User;
 import br.com.emersondias.ebd.entities.enums.UserRole;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
@@ -15,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.Objects.nonNull;
-import static java.util.Objects.requireNonNull;
+import static java.util.Objects.*;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +54,9 @@ public class UserServiceImpl implements IUserService {
             userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
         userEntity.setRoles(userDTO.getRoles());
+        userEntity.setPerson(
+                isNull(userDTO.getPerson()) ? null : Person.builder().id(userDTO.getPerson().getId()).build()
+        );
         userEntity.setActive(userDTO.isActive());
     }
 
