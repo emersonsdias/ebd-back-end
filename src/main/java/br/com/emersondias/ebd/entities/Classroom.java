@@ -37,11 +37,11 @@ public class Classroom implements Serializable {
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Teacher> teachers = new HashSet<>();
+    private List<Teacher> teachers = new ArrayList<>();
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Student> students = new HashSet<>();
+    private List<Student> students = new ArrayList<>();
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "classroom")
@@ -64,7 +64,7 @@ public class Classroom implements Serializable {
         this.active = other.isActive();
     }
 
-    public void setTeachers(Set<Teacher> teachers) {
+    public void setTeachers(List<Teacher> teachers) {
         if (isNull(teachers) || teachers.isEmpty()) {
             this.teachers.clear();
             return;
@@ -82,7 +82,7 @@ public class Classroom implements Serializable {
         }
     }
 
-    public void setStudents(Set<Student> students) {
+    public void setStudents(List<Student> students) {
         if (isNull(students) || students.isEmpty()) {
             this.students.clear();
             return;
@@ -106,14 +106,14 @@ public class Classroom implements Serializable {
 
     public void addStudent(Student student) {
         if (isNull(this.students)) {
-            this.students = new HashSet<>();
+            this.students = new ArrayList<>();
         }
         this.students.add(student);
     }
 
     public void addTeacher(Teacher teacher) {
         if (isNull(this.teachers)) {
-            this.teachers = new HashSet<>();
+            this.teachers = new ArrayList<>();
         }
         this.teachers.add(teacher);
     }

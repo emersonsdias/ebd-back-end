@@ -23,9 +23,9 @@ public class ClassroomDTO implements Serializable {
     private String name;
     private AgeRangeDTO ageRange;
     @Builder.Default
-    private Set<TeacherDTO> teachers = new HashSet<>();
+    private List<TeacherDTO> teachers = new ArrayList<>();
     @Builder.Default
-    private Set<StudentDTO> students = new HashSet<>();
+    private List<StudentDTO> students = new ArrayList<>();
     @Builder.Default
     private List<SimpleLessonDTO> lessons = new ArrayList<>();
     private boolean active;

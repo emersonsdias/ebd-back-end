@@ -92,7 +92,7 @@ create table app.people (
     id uuid not null,
     name varchar(255) not null,
     birthdate date,
-    email varchar(255),
+    email varchar(255) unique,
     gender int,
     education_level int,
     marital_status int,
