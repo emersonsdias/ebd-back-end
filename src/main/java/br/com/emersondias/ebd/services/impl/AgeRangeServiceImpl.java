@@ -25,7 +25,6 @@ public class AgeRangeServiceImpl implements IAgeRangeService {
     public AgeRangeDTO create(AgeRangeDTO ageRangeDTO) {
         requireNonNull(ageRangeDTO);
         ageRangeDTO.setId(null);
-        ageRangeDTO.setActive(true);
         AgeRange ageRangeEntity = repository.save(AgeRangeMapper.toEntity(ageRangeDTO));
         return AgeRangeMapper.toDTO(ageRangeEntity);
     }
@@ -64,7 +63,7 @@ public class AgeRangeServiceImpl implements IAgeRangeService {
 
     @Override
     public List<AgeRangeDTO> findAll() {
-        return repository.findByActiveTrue().stream().map(AgeRangeMapper::toDTO).toList();
+        return repository.findAll().stream().map(AgeRangeMapper::toDTO).toList();
     }
 
     private AgeRange findEntityById(Long id) {

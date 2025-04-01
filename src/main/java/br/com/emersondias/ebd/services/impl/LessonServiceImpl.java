@@ -26,7 +26,6 @@ public class LessonServiceImpl implements ILessonService {
     public LessonDTO create(LessonDTO lessonDTO) {
         requireNonNull(lessonDTO);
         lessonDTO.setId(null);
-        lessonDTO.setActive(true);
         Lesson lessonEntity = repository.save(LessonMapper.toEntity(lessonDTO));
         return LessonMapper.toDTO(lessonEntity);
     }
@@ -58,7 +57,7 @@ public class LessonServiceImpl implements ILessonService {
 
     @Override
     public List<LessonDTO> findAll() {
-        return repository.findByActiveTrue().stream().map(LessonMapper::toDTO).toList();
+        return repository.findAll().stream().map(LessonMapper::toDTO).toList();
     }
 
     @Override

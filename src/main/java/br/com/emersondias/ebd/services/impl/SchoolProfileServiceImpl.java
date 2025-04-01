@@ -26,7 +26,6 @@ public class SchoolProfileServiceImpl implements ISchoolProfileService {
     public SchoolProfileDTO create(SchoolProfileDTO schoolProfileDTO) {
         requireNonNull(schoolProfileDTO);
         schoolProfileDTO.setId(null);
-        schoolProfileDTO.setActive(true);
         SchoolProfile schoolProfileEntity = repository.save(SchoolProfileMapper.toEntity(schoolProfileDTO));
         return SchoolProfileMapper.toDTO(schoolProfileEntity);
     }

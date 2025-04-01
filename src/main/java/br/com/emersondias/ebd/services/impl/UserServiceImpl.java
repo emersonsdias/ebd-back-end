@@ -31,7 +31,6 @@ public class UserServiceImpl implements IUserService {
         requireNonNull(userDTO);
         userDTO.setId(null);
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        userDTO.setActive(true);
         User userEntity = repository.save(UserMapper.toEntity(userDTO));
         return UserMapper.toDTO(userEntity);
     }

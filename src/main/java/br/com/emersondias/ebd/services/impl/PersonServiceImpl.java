@@ -43,7 +43,6 @@ public class PersonServiceImpl implements IPersonService {
     public PersonDTO create(PersonDTO personDTO) {
         requireNonNull(personDTO);
         personDTO.setId(null);
-        personDTO.setActive(true);
         var personEntity = PersonMapper.toEntity(personDTO);
         personEntity = repository.save(personEntity);
         return PersonMapper.toDTO(personEntity);

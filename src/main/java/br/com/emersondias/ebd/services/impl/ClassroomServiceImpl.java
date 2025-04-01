@@ -32,7 +32,6 @@ public class ClassroomServiceImpl implements IClassroomService {
     public ClassroomDTO create(ClassroomDTO classroomDTO) {
         var classroomEntity = ClassroomMapper.toEntity(requireNonNull(classroomDTO));
         classroomEntity.setId(null);
-        classroomEntity.setActive(true);
         classroomEntity = repository.save(classroomEntity);
         return ClassroomMapper.toDTO(classroomEntity);
     }
@@ -61,7 +60,7 @@ public class ClassroomServiceImpl implements IClassroomService {
     @Transactional(readOnly = true)
     @Override
     public List<ClassroomDTO> findAll() {
-        return repository.findByActiveTrue().stream().map(ClassroomMapper::toDTO).toList();
+        return repository.findAll().stream().map(ClassroomMapper::toDTO).toList();
     }
 
     @Transactional

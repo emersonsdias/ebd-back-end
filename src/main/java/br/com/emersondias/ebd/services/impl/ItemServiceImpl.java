@@ -25,7 +25,6 @@ public class ItemServiceImpl implements IItemService {
     public ItemDTO create(ItemDTO itemDTO) {
         requireNonNull(itemDTO);
         itemDTO.setId(null);
-        itemDTO.setActive(true);
         Item itemEntity = repository.save(ItemMapper.toEntity(itemDTO));
         return ItemMapper.toDTO(itemEntity);
     }
