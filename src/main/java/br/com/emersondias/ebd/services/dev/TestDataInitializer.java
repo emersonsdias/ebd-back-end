@@ -2,8 +2,6 @@ package br.com.emersondias.ebd.services.dev;
 
 import br.com.emersondias.ebd.dtos.*;
 import br.com.emersondias.ebd.dtos.location.CityDTO;
-import br.com.emersondias.ebd.entities.Classroom;
-import br.com.emersondias.ebd.entities.Person;
 import br.com.emersondias.ebd.entities.enums.*;
 import br.com.emersondias.ebd.services.interfaces.IAgeRangeService;
 import br.com.emersondias.ebd.services.interfaces.IClassroomService;
@@ -18,9 +16,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static br.com.emersondias.ebd.utils.RandomUtils.*;
 import static br.com.emersondias.ebd.utils.Utils.removeAccents;
@@ -67,7 +63,7 @@ public class TestDataInitializer {
     }
 
     private List<ClassroomDTO> seedClassrooms(List<PersonDTO> teachers, List<PersonDTO> students) {
-       return ageRangeService.findAll().stream()
+        return ageRangeService.findAll().stream()
                 .map(ageRange -> {
                     var teachersGroup = new HashSet<PersonDTO>();
                     do {
@@ -130,7 +126,7 @@ public class TestDataInitializer {
                 )
                 .map(userService::create)
                 .toList();
-          return users;
+        return users;
     }
 
     private List<PersonDTO> seedTeachers() {
