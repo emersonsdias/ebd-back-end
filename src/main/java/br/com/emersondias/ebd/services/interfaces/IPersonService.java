@@ -4,6 +4,7 @@ import br.com.emersondias.ebd.dtos.PersonDTO;
 import br.com.emersondias.ebd.dtos.PersonReportDTO;
 import br.com.emersondias.ebd.entities.enums.PersonType;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,4 +29,6 @@ public interface IPersonService {
     List<PersonDTO> findAllInactive();
 
     List<PersonDTO> findAllWithoutUser();
+
+    List<PersonDTO> findByBirthdatePeriod(LocalDate startDate, LocalDate endDate);
 }

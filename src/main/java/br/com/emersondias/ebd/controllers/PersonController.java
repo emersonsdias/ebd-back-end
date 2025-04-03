@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -129,6 +130,18 @@ public class PersonController {
     @GetMapping(value = "/without-user")
     public ResponseEntity<List<PersonDTO>> findPeopleWithoutUser() {
         return ResponseEntity.ok(personService.findAllWithoutUser());
+    }
+
+    @Operation(summary = "Find people by birthdate period")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200")
+    })
+    @GetMapping(value = "/birthdate")
+    public ResponseEntity<List<PersonDTO>> findByBirthdatePeriod(
+            @RequestParam(value = "startDate") LocalDate startDate,
+            @RequestParam(value = "endDate") LocalDate endDate
+    ) {
+        return ResponseEntity.ok(personService.findByBirthdatePeriod(startDate, endDate));
     }
 
 

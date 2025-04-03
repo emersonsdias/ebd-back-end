@@ -23,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 
 import static java.util.Objects.requireNonNull;
@@ -151,6 +153,27 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public List<PersonDTO> findAllWithoutUser() {
         return repository.findWithoutUser().stream().map(PersonMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<PersonDTO> findByBirthdatePeriod(LocalDate startDate, LocalDate endDate) {
+        requireNonNull(startDate);
+        requireNonNull(endDate);
+
+        int startDateInt = startDate.getMonth().getValue() * 100 + startDate.getDayOfMonth();
+        int endDateInt = endDate.getMonth().getValue() * 100 + endDate.getDayOfMonth();
+
+        if (startDateInt < endDateInt) {
+            return repository.findByBirthdateCrossingYear(startDate, endDate).stream().map(PersonMapper::toDTO).toList();
+        }
+        var lastDayYear = LocalDate.of(startDate.getYear(), Month.DECEMBER, 31);
+        var firstDayYear = lastDayYear.plusDays(1);
+
+        List<Person> people = new ArrayList<>();
+        people.addAll(repository.findByBirthdateCrossingYear(startDate, lastDayYear));
+        people.addAll(repository.findByBirthdateCrossingYear(firstDayYear, endDate));
+
+        return people.stream().map(PersonMapper::toDTO).toList();
     }
 
     private Person findEntityById(UUID id) {
