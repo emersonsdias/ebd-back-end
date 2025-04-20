@@ -2,12 +2,17 @@ package br.com.emersondias.ebd.utils;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 public class RandomUtils {
 
     private static final Random random = new Random();
+
+    public static boolean generateRandomBoolean() {
+        return random.nextBoolean();
+    }
 
     public static Integer generateRandomInteger(int min, int max) {
         if (min > max) {
@@ -23,6 +28,15 @@ public class RandomUtils {
         }
         int index = random.nextInt(elements.length);
         return elements[index];
+    }
+
+    public static <T> T chooseRandomElement(Collection<T> elements) {
+        if (elements == null || elements.isEmpty()) {
+            throw new IllegalArgumentException("The list cannot be null or empty");
+        }
+        @SuppressWarnings("unchecked")
+        T[] array = (T[]) elements.toArray();
+        return chooseRandomElement(array);
     }
 
     public static <T> T chooseWeightedRandomElement(List<T> elements, List<Integer> weights) {

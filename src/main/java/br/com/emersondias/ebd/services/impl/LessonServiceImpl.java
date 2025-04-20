@@ -77,6 +77,12 @@ public class LessonServiceImpl implements ILessonService {
         return repository.findRecentLessons(limit).stream().map(LessonMapper::toDTO).toList();
     }
 
+    @Override
+    public List<LessonDTO> findByIds(List<Long> ids) {
+        requireNonNull(ids);
+        return repository.findAllById(ids).stream().map(LessonMapper::toDTO).toList();
+    }
+
     private Lesson findEntityById(Long id) {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, Lesson.class));
     }

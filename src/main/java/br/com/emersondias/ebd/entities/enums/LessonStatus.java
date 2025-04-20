@@ -12,9 +12,10 @@ import java.util.stream.Stream;
 @Schema(enumAsRef = true)
 public enum LessonStatus {
 
-    OPEN(1, "OPEN", "Aberta"),
-    CLOSED(2, "CLOSED", "Fechada"),
-    REPORTED(3, "REPORTED", "Relatório enviado");
+    OPEN_SAME_DAY(1, "OPEN_SAME_DAY", "Aberta para edição no dia da aula"),
+    OPEN_ANY_DAY(2, "OPEN_ANY_DAY", "Aberta qualquer dia"),
+    CLOSED(3, "CLOSED", "Fechada"),
+    FINALIZED(4, "FINALIZED", "Finalizada");
 
     private final int cod;
     private final String description;

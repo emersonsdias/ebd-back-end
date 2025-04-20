@@ -11,8 +11,7 @@ insert into app.users_roles (role, user_id) values
 
 insert into app.items (name, icon, active) values
     ('Bíblia', 'svg:bible', true),
-    ('Revista', 'menu_book', true),
-    ('Doação de alimentos', 'soup_kitchen', true);
+    ('Revista', 'menu_book', true);
 
 insert into enums.genders (cod, description, translation) values
     (1, 'MALE', 'Masculino'),
@@ -28,9 +27,10 @@ insert into enums.education_levels (cod, description, translation) values
     (7, 'POSTGRADUATE', 'Pós graduação');
 
 insert into enums.lesson_status (cod, description, translation) values
-    (1, 'OPEN', 'Aberta'),
-    (2, 'CLOSED', 'Fechada'),
-    (3, 'REPORTED', 'Relatório enviado');
+    (1, 'OPEN_SAME_DAY', 'Aberta para edição no dia da aula'),
+    (2, 'OPEN_ANY_DAY', 'Aberta qualquer dia'),
+    (3, 'CLOSED', 'Fechada'),
+    (4, 'FINALIZED', 'Finalizada');
 
 insert into enums.marital_status (cod, description, translation) values
     (1, 'SINGLE', 'Solteiro(a)'),

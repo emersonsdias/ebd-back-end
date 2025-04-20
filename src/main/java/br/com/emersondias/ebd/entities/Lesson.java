@@ -96,15 +96,13 @@ public class Lesson implements Serializable {
         this.items.removeIf(li -> !items.contains(li));
         for (LessonItem newItem : items) {
             newItem.setLesson(this);
-            if (this.items.contains(newItem)) {
-                var itemOpt = this.items.stream()
-                        .filter(newItem::equals)
-                        .findFirst();
-                if (itemOpt.isPresent()) {
-                    itemOpt.get().updateFrom(newItem);
-                } else {
-                    this.items.add(newItem);
-                }
+            var itemOpt = this.items.stream()
+                    .filter(newItem::equals)
+                    .findFirst();
+            if (itemOpt.isPresent()) {
+                itemOpt.get().updateFrom(newItem);
+            } else {
+                this.items.add(newItem);
             }
         }
     }
@@ -117,15 +115,13 @@ public class Lesson implements Serializable {
         this.offers.removeIf(li -> !offers.contains(li));
         for (Offer newOffer : offers) {
             newOffer.setLesson(this);
-            if (this.offers.contains(newOffer)) {
-                var offerOpt = this.offers.stream()
-                        .filter(newOffer::equals)
-                        .findFirst();
-                if (offerOpt.isPresent()) {
-                    offerOpt.get().updateFrom(newOffer);
-                } else {
-                    this.offers.add(newOffer);
-                }
+            var offerOpt = this.offers.stream()
+                    .filter(newOffer::equals)
+                    .findFirst();
+            if (offerOpt.isPresent()) {
+                offerOpt.get().updateFrom(newOffer);
+            } else {
+                this.offers.add(newOffer);
             }
         }
     }

@@ -18,13 +18,13 @@ import java.time.Instant;
 @Table(schema = "app", name = "attendances")
 public class Attendance implements Serializable {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "present", nullable = false)
     private boolean present;
+    @EqualsAndHashCode.Include
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;

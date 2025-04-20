@@ -2,6 +2,7 @@ package br.com.emersondias.ebd.controllers;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.dtos.LessonDTO;
+import br.com.emersondias.ebd.entities.Lesson;
 import br.com.emersondias.ebd.services.interfaces.ILessonService;
 import br.com.emersondias.ebd.utils.URIUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -82,5 +83,14 @@ public class LessonController {
             return ResponseEntity.ok(lessonService.findByPeriod(startDate, endDate));
         }
         return ResponseEntity.ok(lessonService.findAll());
+    }
+
+    @Operation(summary = "Find lessons by list of IDs")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200")
+    })
+    @PostMapping("/batch")
+    public ResponseEntity<List<LessonDTO>> findByIds(@RequestBody List<Long> ids) {
+        return ResponseEntity.ok(lessonService.findByIds(ids));
     }
 }

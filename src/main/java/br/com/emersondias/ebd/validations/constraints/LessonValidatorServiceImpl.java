@@ -72,6 +72,7 @@ public class LessonValidatorServiceImpl implements Validator<LessonDTO>, Constra
         }
 
         FIELD_VALUE.stream()
+                .peek(visitorDTO -> visitorDTO.setLessonId(lessonDTO.getId()))
                 .map(visitorValidator::validate)
                 .filter(v -> !v.isValid())
                 .map(ValidationResult::getErrors)

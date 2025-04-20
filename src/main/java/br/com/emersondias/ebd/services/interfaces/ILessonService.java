@@ -20,4 +20,6 @@ public interface ILessonService {
     List<LessonDTO> findByPeriod(LocalDate startDate, LocalDate endDate);
 
     List<LessonDTO> findRecentLessons(Integer limit);
+
+    List<LessonDTO> findByIds(List<Long> ids);
 }

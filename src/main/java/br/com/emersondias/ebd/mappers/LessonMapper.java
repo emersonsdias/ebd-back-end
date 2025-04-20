@@ -62,7 +62,7 @@ public class LessonMapper {
         if (isNull(dto)) {
             return null;
         }
-        return Lesson.builder()
+        var lesson = Lesson.builder()
                 .id(dto.getId())
                 .number(dto.getNumber())
                 .topic(dto.getTopic())
@@ -70,15 +70,18 @@ public class LessonMapper {
                 .status(dto.getStatus())
                 .notes(dto.getNotes())
                 .classroom(Classroom.builder().id(dto.getClassroomId()).name(dto.getClassroomName()).build())
-                .visitors(Optional.ofNullable(dto.getVisitors()).orElse(Collections.emptyList()).stream().map(VisitorMapper::toEntity).toList())
-                .attendances(Optional.ofNullable(dto.getAttendances()).orElse(Collections.emptySet()).stream().map(AttendanceMapper::toEntity).collect(Collectors.toSet()))
-                .teachings(Optional.ofNullable(dto.getTeachings()).orElse(Collections.emptySet()).stream().map(TeachingMapper::toEntity).collect(Collectors.toSet()))
-                .items(Optional.ofNullable(dto.getItems()).orElse(Collections.emptySet()).stream().map(LessonItemMapper::toEntity).collect(Collectors.toSet()))
-                .offers(Optional.ofNullable(dto.getOffers()).orElse(Collections.emptyList()).stream().map(OfferMapper::toEntity).toList())
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())
                 .build();
+
+        lesson.setVisitors(Optional.ofNullable(dto.getVisitors()).orElse(Collections.emptyList()).stream().map(VisitorMapper::toEntity).toList());
+        lesson.setAttendances(Optional.ofNullable(dto.getAttendances()).orElse(Collections.emptySet()).stream().map(AttendanceMapper::toEntity).collect(Collectors.toSet()));
+        lesson.setTeachings(Optional.ofNullable(dto.getTeachings()).orElse(Collections.emptySet()).stream().map(TeachingMapper::toEntity).collect(Collectors.toSet()));
+        lesson.setItems(Optional.ofNullable(dto.getItems()).orElse(Collections.emptySet()).stream().map(LessonItemMapper::toEntity).collect(Collectors.toSet()));
+        lesson.setOffers(Optional.ofNullable(dto.getOffers()).orElse(Collections.emptyList()).stream().map(OfferMapper::toEntity).toList());
+
+        return lesson;
     }
 
     public static Lesson toEntity(SimpleLessonDTO dto) {
