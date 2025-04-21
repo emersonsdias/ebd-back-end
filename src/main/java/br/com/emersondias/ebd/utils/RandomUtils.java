@@ -1,5 +1,7 @@
 package br.com.emersondias.ebd.utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Collection;
@@ -19,6 +21,17 @@ public class RandomUtils {
             throw new IllegalArgumentException("The min value cannot be greater than the max value");
         }
         return random.nextInt((max - min) + 1) + min;
+    }
+
+    public static BigDecimal generateRandomBigDecimal(int min, int max, int scale) {
+        if (min > max) {
+            throw new IllegalArgumentException("The min value cannot be greater than the max value");
+        }
+        if (scale < 0) {
+            throw new IllegalArgumentException("Scale must be non-negative");
+        }
+        double randomDouble = min + (max - min) * random.nextDouble();
+        return BigDecimal.valueOf(randomDouble).setScale(scale, RoundingMode.HALF_UP);
     }
 
     @SafeVarargs

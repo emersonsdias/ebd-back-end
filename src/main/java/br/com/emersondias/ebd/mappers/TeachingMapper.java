@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.mappers;
 
 import br.com.emersondias.ebd.dtos.TeachingDTO;
+import br.com.emersondias.ebd.entities.Lesson;
 import br.com.emersondias.ebd.entities.Teacher;
 import br.com.emersondias.ebd.entities.Teaching;
 
@@ -15,6 +16,7 @@ public class TeachingMapper {
         return TeachingDTO.builder()
                 .id(entity.getId())
                 .teacherId(entity.getTeacher().getId())
+                .lesson(LessonMapper.toSimpleDTO(entity.getLesson()))
                 .active(entity.isActive())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
@@ -28,6 +30,7 @@ public class TeachingMapper {
         return Teaching.builder()
                 .id(dto.getId())
                 .teacher(Teacher.builder().id(dto.getTeacherId()).build())
+                .lesson(LessonMapper.toEntity(dto.getLesson()))
                 .active(dto.isActive())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())

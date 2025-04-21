@@ -21,5 +21,4 @@ public class VisitorDTO implements Serializable {
     private Instant createdAt;
     private Instant updatedAt;
 
-
 }

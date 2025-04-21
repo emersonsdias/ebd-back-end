@@ -8,7 +8,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
+
+import static java.util.Objects.nonNull;
 
 public class UserAuthenticated implements UserDetails {
 
@@ -20,6 +23,8 @@ public class UserAuthenticated implements UserDetails {
     private final Collection<? extends GrantedAuthority> authorities;
     @Getter
     private final String name;
+    @Getter
+    private final UUID personId;
 
     public UserAuthenticated(User user) {
         super();
@@ -29,6 +34,7 @@ public class UserAuthenticated implements UserDetails {
         active = user.isActive();
         authorities = user.getRoles().stream().map(p -> new SimpleGrantedAuthority("ROLE_" + p.getDescription())).toList();
         name = user.getName();
+        personId = nonNull(user.getPerson()) ? user.getPerson().getId() : null;
     }
 
     @Override

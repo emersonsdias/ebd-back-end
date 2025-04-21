@@ -44,6 +44,7 @@ public class JwtTokenProvider {
                 .claim("iat", Date.from(iat))
                 .claim("token_usage", TokenUsageType.ACCESS_TOKEN)
                 .claim("user_id", userAuthenticated.getId())
+                .claim("person_id", userAuthenticated.getPersonId())
                 .claim("name", userAuthenticated.getName())
                 .claim("roles", userAuthenticated.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                 .signWith(SecurityUtils.getSecretKey())

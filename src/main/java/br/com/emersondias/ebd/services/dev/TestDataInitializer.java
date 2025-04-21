@@ -36,6 +36,7 @@ public class TestDataInitializer {
     private final IClassroomService classroomService;
     private final ILessonService lessonService;
     private final ISchoolProfileService schoolProfileService;
+    private final IItemService itemService;
     private final Faker faker = new Faker();
 
     private static String generateEmailByName(String name) {
@@ -104,23 +105,77 @@ public class TestDataInitializer {
                     lesson.setStatus(LessonStatus.OPEN_SAME_DAY);
                 }
                 if (LessonStatus.FINALIZED.equals(lesson.getStatus())) {
-                    var attendances = classroom.getStudents()
-                            .stream()
-                            .map(student -> AttendanceDTO.builder()
-                                    .present(RandomUtils.generateRandomBoolean())
-                                    .studentId(student.getId())
-                                    .studentName(student.getPerson().getName())
-                                    .active(true)
-                                    .build()
-                            )
-                            .collect(Collectors.toSet());
-                    lesson.setAttendances(attendances);
+                    lesson.setAttendances(generateAttendances(classroom));
+                    lesson.setTeachings(generateTeachings(classroom));
+                    lesson.setItems(generateRandomLessonItems());
+                    lesson.setOffers(List.of(generateRandomOffer()));
+                    lesson.setVisitors(generateRandomVisitors(0, 3));
                 }
                 lessons.add(lessonService.create(lesson));
             }
         }
         return lessons;
     }
+
+    private Set<LessonItemDTO> generateRandomLessonItems() {
+        return itemService.findAll().stream()
+                .map(item -> LessonItemDTO.builder()
+                        .quantity(RandomUtils.generateRandomInteger(0, 12))
+                        .item(item)
+                        .active(true)
+                        .build()
+                )
+                .collect(Collectors.toSet());
+    }
+
+    private Set<TeachingDTO> generateTeachings(ClassroomDTO classroom) {
+        final int NUM_TEACHINGS = RandomUtils.chooseWeightedRandomElement(List.of(1, 2), List.of(9, 1));
+        var teachers = new ArrayList<>(classroom.getTeachers());
+        Collections.shuffle(teachers);
+        return teachers.stream()
+                .limit(NUM_TEACHINGS)
+                .map(teacher -> TeachingDTO.builder()
+                        .teacherId(teacher.getId())
+                        .active(true)
+                        .build()
+                )
+                .collect(Collectors.toSet());
+    }
+
+    private static Set<AttendanceDTO> generateAttendances(ClassroomDTO classroom) {
+        return classroom.getStudents()
+                .stream()
+                .map(student -> AttendanceDTO.builder()
+                        .present(RandomUtils.generateRandomBoolean())
+                        .studentId(student.getId())
+                        .studentName(student.getPerson().getName())
+                        .active(true)
+                        .build()
+                )
+                .collect(Collectors.toSet());
+    }
+
+    private OfferDTO generateRandomOffer() {
+        return OfferDTO.builder()
+                .amount(RandomUtils.generateRandomBigDecimal(0, 80, 2))
+                .active(true)
+                .build();
+    }
+
+    private List<VisitorDTO> generateRandomVisitors(int min, int max) {
+        final int NUM_VISITORS = generateRandomInteger(min, max);
+        List<VisitorDTO> visitors = new ArrayList<>();
+        for(int i = 0; i < NUM_VISITORS; i++) {
+            visitors.add(VisitorDTO.builder()
+                    .name(generateRandomFullName(RandomUtils.chooseRandomElement(MALE, FEMALE)))
+                    .active(true)
+                    .build()
+            );
+        }
+        return visitors;
+    }
+
+
 
     private TeachingDTO teacherToTeaching(TeacherDTO teacher) {
         return TeachingDTO.builder()
