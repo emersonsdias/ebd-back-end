@@ -1,6 +1,5 @@
 package br.com.emersondias.ebd.services.impl;
 
-import br.com.emersondias.ebd.dtos.OfferDTO;
 import br.com.emersondias.ebd.dtos.OfferDTOWithLesson;
 import br.com.emersondias.ebd.mappers.OfferMapper;
 import br.com.emersondias.ebd.repositories.OfferRepository;

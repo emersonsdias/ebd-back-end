@@ -2,6 +2,7 @@ package br.com.emersondias.ebd.services.dev;
 
 import br.com.emersondias.ebd.dtos.*;
 import br.com.emersondias.ebd.dtos.location.CityDTO;
+import br.com.emersondias.ebd.entities.SchoolProfile;
 import br.com.emersondias.ebd.entities.enums.*;
 import br.com.emersondias.ebd.services.interfaces.*;
 import br.com.emersondias.ebd.utils.RandomUtils;
@@ -34,9 +35,18 @@ public class TestDataInitializer {
     private final IAgeRangeService ageRangeService;
     private final IClassroomService classroomService;
     private final ILessonService lessonService;
+    private final ISchoolProfileService schoolProfileService;
     private final Faker faker = new Faker();
 
+    private static String generateEmailByName(String name) {
+        var nameParts = removeAccents(name).toLowerCase().split(" ");
+        var email = nameParts[0] + "." + nameParts[nameParts.length - 1] + "." + UUID.randomUUID() + "@" + chooseRandomElement("gmail.com", "hotmail.com", "yahoo.com.br", "msn.com");
+        return email;
+    }
+
     public void initializeTestData() {
+
+        seedSchoolProfiles();
 
         var ageRanges = ageRangeService.findAll();
         var students = seedStudents(ageRanges);
@@ -47,6 +57,25 @@ public class TestDataInitializer {
         var teacherUsers = seedUsersByPeeople(teachers);
         List<UserDTO> users = seedUsers();
 
+    }
+
+    private List<SchoolProfileDTO> seedSchoolProfiles() {
+        var address = AddressDTO.builder()
+                .street("Rua Vereador Antônio Giacomassi")
+                .number("25")
+                .complement(null)
+                .neighborhood("Alto Boqueirão")
+                .zipCode("81770240")
+                .city(CityDTO.builder().id(4106902L).build())
+                .active(true)
+                .build();
+        var profile = SchoolProfileDTO.builder()
+                .name("Assembleia de Deus")
+                .subtitle("Congregação JD Castelo Branco")
+                .address(address)
+                .active(true)
+                .build();
+        return List.of(schoolProfileService.create(profile));
     }
 
     private List<LessonDTO> seedLessons(List<ClassroomDTO> classrooms) {
@@ -231,12 +260,6 @@ public class TestDataInitializer {
             }
         }
         return students;
-    }
-
-    private static String generateEmailByName(String name) {
-        var nameParts = removeAccents(name).toLowerCase().split(" ");
-        var email = nameParts[0] + "." + nameParts[nameParts.length - 1] + "." + UUID.randomUUID() + "@" + chooseRandomElement("gmail.com", "hotmail.com", "yahoo.com.br", "msn.com");
-        return email;
     }
 
     private List<UserDTO> seedUsers() {

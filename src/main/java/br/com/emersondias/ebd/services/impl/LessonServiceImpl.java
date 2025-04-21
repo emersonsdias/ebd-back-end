@@ -1,10 +1,12 @@
 package br.com.emersondias.ebd.services.impl;
 
 import br.com.emersondias.ebd.dtos.LessonDTO;
+import br.com.emersondias.ebd.dtos.filters.LessonFilterDTO;
 import br.com.emersondias.ebd.entities.Lesson;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.LessonMapper;
 import br.com.emersondias.ebd.repositories.LessonRepository;
+import br.com.emersondias.ebd.repositories.specifications.LessonSpecification;
 import br.com.emersondias.ebd.services.interfaces.ILessonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -72,15 +74,18 @@ public class LessonServiceImpl implements ILessonService {
     }
 
     @Override
-    public List<LessonDTO> findRecentLessons(Integer limit) {
-        requireNonNull(limit);
-        return repository.findRecentLessons(limit).stream().map(LessonMapper::toDTO).toList();
-    }
-
-    @Override
     public List<LessonDTO> findByIds(List<Long> ids) {
         requireNonNull(ids);
         return repository.findAllById(ids).stream().map(LessonMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<LessonDTO> findByFilter(LessonFilterDTO filter) {
+        requireNonNull(filter);
+        var spec = LessonSpecification.withFilter(filter);
+        List<Lesson> lessons = repository.findAll(spec);
+
+        return lessons.stream().map(LessonMapper::toDTO).toList();
     }
 
     private Lesson findEntityById(Long id) {

@@ -1,7 +1,6 @@
 package br.com.emersondias.ebd.controllers;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
-import br.com.emersondias.ebd.dtos.OfferDTO;
 import br.com.emersondias.ebd.dtos.OfferDTOWithLesson;
 import br.com.emersondias.ebd.services.interfaces.IOfferService;
 import io.swagger.v3.oas.annotations.Operation;

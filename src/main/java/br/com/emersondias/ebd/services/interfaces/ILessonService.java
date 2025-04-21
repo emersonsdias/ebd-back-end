@@ -1,6 +1,7 @@
 package br.com.emersondias.ebd.services.interfaces;
 
 import br.com.emersondias.ebd.dtos.LessonDTO;
+import br.com.emersondias.ebd.dtos.filters.LessonFilterDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +20,7 @@ public interface ILessonService {
 
     List<LessonDTO> findByPeriod(LocalDate startDate, LocalDate endDate);
 
-    List<LessonDTO> findRecentLessons(Integer limit);
-
     List<LessonDTO> findByIds(List<Long> ids);
+
+    List<LessonDTO> findByFilter(LessonFilterDTO filter);
 }

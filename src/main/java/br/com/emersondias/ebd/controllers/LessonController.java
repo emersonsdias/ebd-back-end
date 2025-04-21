@@ -2,13 +2,15 @@ package br.com.emersondias.ebd.controllers;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
 import br.com.emersondias.ebd.dtos.LessonDTO;
-import br.com.emersondias.ebd.entities.Lesson;
+import br.com.emersondias.ebd.dtos.filters.LessonFilterDTO;
+import br.com.emersondias.ebd.entities.enums.LessonStatus;
 import br.com.emersondias.ebd.services.interfaces.ILessonService;
 import br.com.emersondias.ebd.utils.URIUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import static java.util.Objects.nonNull;
 
 @Tag(name = "Lesson", description = "the lesson API")
 @RestController
@@ -74,15 +74,23 @@ public class LessonController {
     public ResponseEntity<List<LessonDTO>> findAll(
             @RequestParam(value = "startDate", required = false) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) LocalDate endDate,
-            @RequestParam(value = "maxRecentLessons", required = false) Integer maxRecentLessons
+            @RequestParam(value = "maxRecentLessons", required = false) Integer maxRecentLessons,
+            @RequestParam(value = "lessonNumber", required = false) Integer lessonNumber,
+            @RequestParam(value = "lessonStatus", required = false) LessonStatus lessonStatus,
+            HttpServletRequest request
     ) {
-        if (nonNull(maxRecentLessons)) {
-            return ResponseEntity.ok(lessonService.findRecentLessons(maxRecentLessons));
+        if (request.getParameterMap().isEmpty()) {
+            return ResponseEntity.ok(lessonService.findAll());
         }
-        if (nonNull(startDate) || nonNull(endDate)) {
-            return ResponseEntity.ok(lessonService.findByPeriod(startDate, endDate));
-        }
-        return ResponseEntity.ok(lessonService.findAll());
+
+        var filter = LessonFilterDTO.builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .lessonNumber(lessonNumber)
+                .lessonStatus(lessonStatus)
+                .build();
+
+        return ResponseEntity.ok(lessonService.findByFilter(filter));
     }
 
     @Operation(summary = "Find lessons by list of IDs")
