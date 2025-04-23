@@ -1,0 +1,63 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="lesson_report" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8a867e9b-01ef-4c77-852b-9a9ffe32c7fc">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="lesson_number" class="java.lang.Integer"/>
+	<parameter name="start_date" class="java.util.Date"/>
+	<parameter name="end_date" class="java.util.Date"/>
+	<query language="sql"><![CDATA[select distinct(l.lesson_number) from app.lessons l where l.lesson_number = $P{lesson_number} ]]></query>
+	<field name="lesson_number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="lesson_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="lesson_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="lessons"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="80" splitType="Stretch">
+		<element kind="staticText" uuid="409a53c3-0945-4aec-ae51-6dc7d07a97cf" x="0" y="0" width="800" height="20" fontSize="14.0" hTextAlign="Center">
+			<text><![CDATA[RELATÓRIO DA ESCOLA BÍBLICA DOMINICAL]]></text>
+		</element>
+		<element kind="staticText" uuid="5fa3e029-b30b-47db-80ea-933f57f46591" x="0" y="20" width="800" height="30" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[IGREJA EVANGELICA ASSEMBLÉIA DE DEUS EM JARDIM CASTELO BRANCO]]></text>
+		</element>
+		<element kind="textField" uuid="ec3ffb7b-f559-47d1-8e87-907b4a9460d9" x="0" y="50" width="800" height="30" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA["Lição número " 
++ $P{lesson_number} 
++", período: " 
++ new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{start_date})
++ " a "
++ new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{end_date})]]></expression>
+		</element>
+	</title>
+	<detail>
+		<band height="60">
+			<element kind="subreport" uuid="1159d2e3-bd50-4747-8e04-b62a7c14d555" x="0" y="0" width="800" height="60">
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<expression><![CDATA["reports/lesson_report/sub_report_by_classroom.jasper"]]></expression>
+				<parameter name="lesson_number">
+					<expression><![CDATA[$P{lesson_number}]]></expression>
+				</parameter>
+				<parameter name="start_date">
+					<expression><![CDATA[$P{start_date}]]></expression>
+				</parameter>
+				<parameter name="end_date">
+					<expression><![CDATA[$P{end_date}]]></expression>
+				</parameter>
+			</element>
+		</band>
+		<band height="69">
+			<element kind="subreport" uuid="1cc5b943-978e-4ce5-99be-6def4b4fc279" x="1" y="0" width="800" height="69">
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<expression><![CDATA["reports/lesson_report/sub_ranking_classroom.jasper"]]></expression>
+				<parameter name="lesson_number">
+					<expression><![CDATA[$P{lesson_number}]]></expression>
+				</parameter>
+				<parameter name="start_date">
+					<expression><![CDATA[$P{start_date}]]></expression>
+				</parameter>
+				<parameter name="end_date">
+					<expression><![CDATA[$P{end_date}]]></expression>
+				</parameter>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

@@ -7,17 +7,22 @@ import br.com.emersondias.ebd.entities.enums.LessonStatus;
 import br.com.emersondias.ebd.services.interfaces.ILessonService;
 import br.com.emersondias.ebd.utils.URIUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Tag(name = "Lesson", description = "the lesson API")
 @RestController
@@ -100,5 +105,24 @@ public class LessonController {
     @PostMapping("/batch")
     public ResponseEntity<List<LessonDTO>> findByIds(@RequestBody List<Long> ids) {
         return ResponseEntity.ok(lessonService.findByIds(ids));
+    }
+
+    @Operation(summary = "Generate lesson report pdf")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/pdf",
+                            schema = @Schema(type = "string", format = "binary")))
+    })
+    @GetMapping(value = "/report/pdf")
+    public ResponseEntity<byte[]> generateLessonPdf(@RequestParam(value = "lessonNumber") Integer lessonNumber,
+                                                    @RequestParam(value = "startDate") LocalDate startDate,
+                                                    @RequestParam(value = "endDate") LocalDate endDate
+        ) {
+        byte[] pdf = lessonService.generateLessonUnitReportPdf(lessonNumber, startDate, endDate);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("filename", "lesson_" + lessonNumber + ".pdf");
+        return ResponseEntity.ok().headers(headers).body(pdf);
     }
 }

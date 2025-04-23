@@ -1,7 +1,6 @@
 package br.com.emersondias.ebd.mappers;
 
 import br.com.emersondias.ebd.dtos.TeachingDTO;
-import br.com.emersondias.ebd.entities.Lesson;
 import br.com.emersondias.ebd.entities.Teacher;
 import br.com.emersondias.ebd.entities.Teaching;
 

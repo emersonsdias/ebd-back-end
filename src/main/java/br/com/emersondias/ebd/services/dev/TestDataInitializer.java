@@ -2,7 +2,6 @@ package br.com.emersondias.ebd.services.dev;
 
 import br.com.emersondias.ebd.dtos.*;
 import br.com.emersondias.ebd.dtos.location.CityDTO;
-import br.com.emersondias.ebd.entities.SchoolProfile;
 import br.com.emersondias.ebd.entities.enums.*;
 import br.com.emersondias.ebd.services.interfaces.*;
 import br.com.emersondias.ebd.utils.RandomUtils;
@@ -25,7 +24,7 @@ import static br.com.emersondias.ebd.utils.Utils.removeAccents;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-@Profile("test")
+@Profile({"test"})
 @Service
 @RequiredArgsConstructor
 public class TestDataInitializer {
@@ -43,6 +42,19 @@ public class TestDataInitializer {
         var nameParts = removeAccents(name).toLowerCase().split(" ");
         var email = nameParts[0] + "." + nameParts[nameParts.length - 1] + "." + UUID.randomUUID() + "@" + chooseRandomElement("gmail.com", "hotmail.com", "yahoo.com.br", "msn.com");
         return email;
+    }
+
+    private static Set<AttendanceDTO> generateAttendances(ClassroomDTO classroom) {
+        return classroom.getStudents()
+                .stream()
+                .map(student -> AttendanceDTO.builder()
+                        .present(RandomUtils.generateRandomBoolean())
+                        .studentId(student.getId())
+                        .studentName(student.getPerson().getName())
+                        .active(true)
+                        .build()
+                )
+                .collect(Collectors.toSet());
     }
 
     public void initializeTestData() {
@@ -142,19 +154,6 @@ public class TestDataInitializer {
                 .collect(Collectors.toSet());
     }
 
-    private static Set<AttendanceDTO> generateAttendances(ClassroomDTO classroom) {
-        return classroom.getStudents()
-                .stream()
-                .map(student -> AttendanceDTO.builder()
-                        .present(RandomUtils.generateRandomBoolean())
-                        .studentId(student.getId())
-                        .studentName(student.getPerson().getName())
-                        .active(true)
-                        .build()
-                )
-                .collect(Collectors.toSet());
-    }
-
     private OfferDTO generateRandomOffer() {
         return OfferDTO.builder()
                 .amount(RandomUtils.generateRandomBigDecimal(0, 80, 2))
@@ -165,7 +164,7 @@ public class TestDataInitializer {
     private List<VisitorDTO> generateRandomVisitors(int min, int max) {
         final int NUM_VISITORS = generateRandomInteger(min, max);
         List<VisitorDTO> visitors = new ArrayList<>();
-        for(int i = 0; i < NUM_VISITORS; i++) {
+        for (int i = 0; i < NUM_VISITORS; i++) {
             visitors.add(VisitorDTO.builder()
                     .name(generateRandomFullName(RandomUtils.chooseRandomElement(MALE, FEMALE)))
                     .active(true)
@@ -174,7 +173,6 @@ public class TestDataInitializer {
         }
         return visitors;
     }
-
 
 
     private TeachingDTO teacherToTeaching(TeacherDTO teacher) {

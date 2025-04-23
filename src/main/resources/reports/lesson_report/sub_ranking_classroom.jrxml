@@ -1,0 +1,81 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="sub_ranking_classroom" language="java" columnCount="2" pageWidth="800" pageHeight="595" orientation="Landscape" columnWidth="400" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b211ad11-6eec-4843-b749-75a3cc6ad2b3">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="lesson_number" class="java.lang.Integer"/>
+	<parameter name="start_date" class="java.util.Date"/>
+	<parameter name="end_date" class="java.util.Date"/>
+	<query language="sql"><![CDATA[select
+    row_number() over (order by performance desc) as rank,
+    classroom_name,
+    performance
+from (
+    select
+        (select c.name from app.classrooms c where c.id = l.classroom_id) as classroom_name,
+        (
+            (select count(a.id) from app.attendances a where a.lesson_id = l.id and a.present = true) * 1.0 /
+            nullif((select count(a.id) from app.attendances a where a.lesson_id = l.id), 0)
+        ) as performance
+    from app.lessons l
+    where l.status = 4 
+        and l.lesson_number =  $P{lesson_number} 
+        and l.lesson_date >= $P{start_date}
+        and l.lesson_date <=  $P{end_date}
+    group by l.id
+) sub
+order by performance desc
+]]></query>
+	<field name="rank" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="rank"/>
+		<property name="com.jaspersoft.studio.field.label" value="rank"/>
+	</field>
+	<field name="classroom_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="classroom_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="classroom_name"/>
+	</field>
+	<field name="performance" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="performance"/>
+		<property name="com.jaspersoft.studio.field.label" value="performance"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="50">
+		<element kind="staticText" uuid="f2ac1edc-9e36-4e2e-9957-2f58adc06a77" x="0" y="10" width="800" height="30" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[CLASSIFICAÇÃO DAS CLASSES]]></text>
+		</element>
+	</title>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<element kind="textField" uuid="2ec2c840-e897-4aed-9e89-c50f3e029419" x="0" y="0" width="100" height="30" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$F{rank} + "º lugar"]]></expression>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="070ad838-c95a-40d1-8784-753b623b3b19" x="100" y="0" width="220" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{classroom_name}]]></expression>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="2953fc8f-03c0-4a6a-8cf4-5039cc7115f4" x="320" y="0" width="80" height="30" pattern="#,##0.0%;(#,##0.0-) %" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{performance}]]></expression>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

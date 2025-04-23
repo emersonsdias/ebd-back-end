@@ -1,0 +1,444 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="sub_report_by_classroom" language="java" pageWidth="800" pageHeight="595" orientation="Landscape" columnWidth="800" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ef3756da-25b0-4d8b-92a9-b81938599ee0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="lesson_number" class="java.lang.Integer"/>
+	<parameter name="start_date" class="java.util.Date"/>
+	<parameter name="end_date" class="java.util.Date"/>
+	<query language="sql"><![CDATA[select
+    (select c.name from app.classrooms c where c.id = l.classroom_id) as classroom_name,
+    (select count(a.id) from app.attendances a where a.lesson_id = l.id) as enrolled_students,
+    (select count(a.id) from app.attendances a where a.lesson_id = l.id and a.present = false) as absent_students,
+    (select count(a.id) from app.attendances a where a.lesson_id = l.id and a.present = true) as present_students,
+    (select count(v.id) from app.visitors v where v.lesson_id = l.id) as visitors,
+    (
+    	(select count(a.id) from app.attendances a where a.lesson_id = l.id and a.present = true) +
+    	(select count(v.id) from app.visitors v where v.lesson_id = l.id)
+    ) as total_participation,
+    (select sum(li.quantity) from app.lessons_items li where li.lesson_id = l.id and li.item_id = 1) as biblia,
+    (select sum(li.quantity) from app.lessons_items li where li.lesson_id = l.id and li.item_id = 2) as revista,
+    (select sum(o.amount) from app.offers o where o.lesson_id = l.id) as offers,
+    (
+        (select count(a.id) from app.attendances a where a.lesson_id = l.id and a.present = true) * 1.0 /
+        nullif((select count(a.id) from app.attendances a where a.lesson_id = l.id), 0)
+    ) as performance
+from app.lessons l
+where l.status = 4 
+	and l.lesson_number =  $P{lesson_number} 
+	and  l.lesson_date >= $P{start_date}
+	and l.lesson_date <=  $P{end_date}
+group by l.id
+order by classroom_name
+]]></query>
+	<field name="classroom_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="classroom_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="classroom_name"/>
+	</field>
+	<field name="enrolled_students" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="enrolled_students"/>
+		<property name="com.jaspersoft.studio.field.label" value="enrolled_students"/>
+	</field>
+	<field name="absent_students" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="absent_students"/>
+		<property name="com.jaspersoft.studio.field.label" value="absent_students"/>
+	</field>
+	<field name="present_students" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="present_students"/>
+		<property name="com.jaspersoft.studio.field.label" value="present_students"/>
+	</field>
+	<field name="visitors" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="visitors"/>
+		<property name="com.jaspersoft.studio.field.label" value="visitors"/>
+	</field>
+	<field name="total_participation" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_participation"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_participation"/>
+	</field>
+	<field name="biblia" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="biblia"/>
+		<property name="com.jaspersoft.studio.field.label" value="biblia"/>
+	</field>
+	<field name="revista" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="revista"/>
+		<property name="com.jaspersoft.studio.field.label" value="revista"/>
+	</field>
+	<field name="offers" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="offers"/>
+		<property name="com.jaspersoft.studio.field.label" value="offers"/>
+	</field>
+	<field name="performance" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="performance"/>
+		<property name="com.jaspersoft.studio.field.label" value="performance"/>
+	</field>
+	<variable name="sum_enrolled_students" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{enrolled_students}]]></expression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="sum_absent_students" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{absent_students}]]></expression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="sum_present_students" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{present_students}]]></expression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="sum_visitors" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{visitors}]]></expression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="sum_total_participation" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{total_participation}]]></expression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="sum_biblias" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{biblia}]]></expression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="sum_revistas" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{revista}]]></expression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="sum_offers" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{offers}]]></expression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background splitType="Stretch"/>
+	<columnHeader height="30" splitType="Stretch">
+		<element kind="staticText" uuid="152f8cbe-c9bf-4540-bbda-9a92abc46c90" x="0" y="0" width="82" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[CLASSE]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="232edfac-85d2-461e-9b36-982cebea5904"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="f87d50bc-ba9e-425c-b861-29ee07516348" x="82" y="0" width="80" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[MATRICULADOS]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2dff7161-4cd3-4c4d-8dc7-f0ed77133be2"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="c8113a7a-e8fc-4903-99d5-3959f521366a" x="162" y="0" width="80" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[AUSENTES]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1217802-3e33-401e-9909-a1dc54b67ec6"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="1194fae6-4b90-48d4-801c-cc13ff85b7b2" x="242" y="0" width="80" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[PRESENTES]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad26cc9e-9f54-48f4-8e51-8e641acc7749"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="7a18fba3-1a9b-4c6b-91c1-3f8f5e78be57" x="322" y="0" width="80" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[VISITANTES]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6889ff18-f2fe-4225-a5d0-d97f4c8b97c9"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="cfa26ecb-8381-4625-ad8b-fe715450ea09" x="402" y="0" width="80" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[PARTICIPANTES TOTAL]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="476e9b01-ff66-4a5a-b7c5-4e2d5b9c2d1e"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="e05b31d2-34b8-4404-9509-2cc9f176ac7d" x="482" y="0" width="80" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[BÍBLIAS]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6b70656-30ec-4c8c-ae70-2c86f3003cb8"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="233ab796-00f5-4a99-b852-d8ecd331b929" x="562" y="0" width="80" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[RESVISTAS]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="763c33e9-61d0-459e-b0a5-7380f817f839"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="c2b6a174-0fa3-4723-977c-56c2c241b275" x="642" y="0" width="80" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[OFERTAS]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8d211a50-12a5-4bc5-bbbb-99209ec70de3"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="6a5b9ef7-2c2a-4965-a4a3-5d46ac268b7d" x="722" y="0" width="80" height="30" fontSize="9.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[%]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad176460-2400-4547-86dc-badeb92dcf7e"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<element kind="textField" uuid="3e36b822-5631-4503-9afd-4db7d6f73200" x="0" y="0" width="82" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{classroom_name}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="232edfac-85d2-461e-9b36-982cebea5904"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="9e05ab3b-9006-45e2-b2a3-af0e91ebb81e" x="82" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{enrolled_students}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2dff7161-4cd3-4c4d-8dc7-f0ed77133be2"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="b2ad1b84-ce18-4af0-b42e-620b4975b90a" x="162" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{absent_students}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1217802-3e33-401e-9909-a1dc54b67ec6"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="9d17557a-8ff8-4db4-9f5d-4b4011d9d887" x="242" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{present_students}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad26cc9e-9f54-48f4-8e51-8e641acc7749"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="883d3f63-6b90-423f-ba5e-ace9be14b679" x="322" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{visitors}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6889ff18-f2fe-4225-a5d0-d97f4c8b97c9"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="e9afa1ca-6d4b-4233-a12d-64df6d0316b5" x="402" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{total_participation}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="476e9b01-ff66-4a5a-b7c5-4e2d5b9c2d1e"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="16a8d3c6-84a2-48ca-812c-61d33e9b3019" x="482" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{biblia}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6b70656-30ec-4c8c-ae70-2c86f3003cb8"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="f01cd92c-b23f-490e-b0b2-e1e7940b16f1" x="562" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{revista}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="763c33e9-61d0-459e-b0a5-7380f817f839"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="f6b53860-49af-4f11-8ae5-840a7ac97b60" x="642" y="0" width="80" height="30" pattern="¤#,##0.00;¤-#,##0.00" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{offers}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8d211a50-12a5-4bc5-bbbb-99209ec70de3"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="4aa66d0b-cd17-4637-876b-4711ddf2f056" x="722" y="0" width="80" height="30" pattern="#,##0.0%;(#,##0.0-) %" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{performance}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad176460-2400-4547-86dc-badeb92dcf7e"/>
+				<box>
+					<pen lineColor="#C2C2C2"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				</box>
+			</element>
+		</band>
+	</detail>
+	<summary height="30">
+		<element kind="textField" uuid="11940c8c-d77d-4481-9c5b-96e90ef8223b" x="642" y="0" width="80" height="30" pattern="¤#,##0.00;¤-#,##0.00" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$V{sum_offers}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8d211a50-12a5-4bc5-bbbb-99209ec70de3"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="2d4c1e81-c77d-49eb-b7b0-6a0135c162b4" x="562" y="0" width="80" height="30" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$V{sum_revistas}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="763c33e9-61d0-459e-b0a5-7380f817f839"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="ac24ecfc-e3a8-4b83-9ce4-4a8a84c4f993" x="322" y="0" width="80" height="30" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$V{sum_visitors}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6889ff18-f2fe-4225-a5d0-d97f4c8b97c9"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="18dc8f62-c15b-40df-b3b7-090ed4fee776" x="402" y="0" width="80" height="30" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$V{sum_total_participation}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="476e9b01-ff66-4a5a-b7c5-4e2d5b9c2d1e"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="d5d7895d-baaa-4b9c-8249-bfee9fc6767e" x="162" y="0" width="80" height="30" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$V{sum_absent_students}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1217802-3e33-401e-9909-a1dc54b67ec6"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="a8c1e6c1-c258-431a-aa42-263c468039f7" x="242" y="0" width="80" height="30" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$V{sum_present_students}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad26cc9e-9f54-48f4-8e51-8e641acc7749"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="3901d951-d1cd-43db-92d7-b789abac3a26" x="482" y="0" width="80" height="30" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$V{sum_biblias}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6b70656-30ec-4c8c-ae70-2c86f3003cb8"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="9e39c6ab-4d70-4bd0-99e6-7d16bfd4e224" x="82" y="0" width="80" height="30" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$V{sum_enrolled_students}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2dff7161-4cd3-4c4d-8dc7-f0ed77133be2"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="b323499b-11ce-4cd6-acd3-9c04180621a9" x="722" y="0" width="80" height="30" pattern="#,##0.0#%;(#,##0.0#-) %" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[((double)$V{sum_present_students}/$V{sum_enrolled_students})]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad176460-2400-4547-86dc-badeb92dcf7e"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="0d7136b9-3824-4e77-b08a-f2c0b79747c5" x="0" y="0" width="82" height="30" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[TOTAL GERAL]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="232edfac-85d2-461e-9b36-982cebea5904"/>
+			<box>
+				<pen lineColor="#C2C2C2"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#C2C2C2"/>
+			</box>
+		</element>
+	</summary>
+</jasperReport>

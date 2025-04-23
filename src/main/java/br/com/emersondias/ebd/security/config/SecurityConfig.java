@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        if (Arrays.asList(environment.getActiveProfiles()).contains("test")) {
+        final var activeProfiles = Arrays.asList(environment.getActiveProfiles());
+        if (activeProfiles.contains("test")) {
             httpSecurity
                     .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                     .authorizeHttpRequests(authorize -> authorize.requestMatchers(PathRequest.toH2Console()).permitAll())
@@ -50,6 +52,18 @@ public class SecurityConfig {
                                 config.setAllowedHeaders(List.of("*"));
                                 return config;
                             }));
+        }
+        if (activeProfiles.contains("dev")) {
+            httpSecurity
+                    .cors(cors -> cors
+                            .configurationSource(request -> {
+                                CorsConfiguration config = new CorsConfiguration();
+                                config.setAllowedOrigins(List.of("*"));
+                                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+                                config.setAllowedHeaders(List.of("*"));
+                                return config;
+                            }));
+
         }
         var authenticationManager = authenticationManager(httpSecurity);
         httpSecurity

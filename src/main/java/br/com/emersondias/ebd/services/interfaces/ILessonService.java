@@ -5,6 +5,7 @@ import br.com.emersondias.ebd.dtos.filters.LessonFilterDTO;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public interface ILessonService {
 
@@ -23,4 +24,7 @@ public interface ILessonService {
     List<LessonDTO> findByIds(List<Long> ids);
 
     List<LessonDTO> findByFilter(LessonFilterDTO filter);
+
+    byte[] generateLessonUnitReportPdf(Integer lessonNumber, LocalDate startDate, LocalDate endDate);
+
 }
