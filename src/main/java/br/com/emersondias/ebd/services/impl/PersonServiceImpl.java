@@ -14,6 +14,7 @@ import br.com.emersondias.ebd.mappers.CityMapper;
 import br.com.emersondias.ebd.mappers.PersonMapper;
 import br.com.emersondias.ebd.mappers.PhoneNumberMapper;
 import br.com.emersondias.ebd.repositories.PersonRepository;
+import br.com.emersondias.ebd.repositories.specifications.PersonSpecification;
 import br.com.emersondias.ebd.services.interfaces.IAttendanceService;
 import br.com.emersondias.ebd.services.interfaces.IClassroomService;
 import br.com.emersondias.ebd.services.interfaces.IPersonService;
@@ -164,7 +165,8 @@ public class PersonServiceImpl implements IPersonService {
         int endDateInt = endDate.getMonth().getValue() * 100 + endDate.getDayOfMonth();
 
         if (startDateInt < endDateInt) {
-            return repository.findByBirthdateCrossingYear(startDate, endDate).stream().map(PersonMapper::toDTO).toList();
+            var specification = PersonSpecification.birthdateBetween(startDate, endDate);
+            return repository.findAll(specification).stream().map(PersonMapper::toDTO).toList();
         }
         var lastDayYear = LocalDate.of(startDate.getYear(), Month.DECEMBER, 31);
         var firstDayYear = lastDayYear.plusDays(1);

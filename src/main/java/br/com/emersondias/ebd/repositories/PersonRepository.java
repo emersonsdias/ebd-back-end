@@ -3,6 +3,7 @@ package br.com.emersondias.ebd.repositories;
 import br.com.emersondias.ebd.entities.Person;
 import br.com.emersondias.ebd.entities.enums.PersonType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public interface PersonRepository extends JpaRepository<Person, UUID> {
+public interface PersonRepository extends JpaRepository<Person, UUID>, JpaSpecificationExecutor<Person> {
     List<Person> findByTypesInOrderByName(List<PersonType> types);
 
     @Query(value = "select p from Person p where p.active = false")

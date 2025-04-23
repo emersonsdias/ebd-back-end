@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Tag(name = "Lesson", description = "the lesson API")
 @RestController
@@ -118,7 +117,7 @@ public class LessonController {
     public ResponseEntity<byte[]> generateLessonPdf(@RequestParam(value = "lessonNumber") Integer lessonNumber,
                                                     @RequestParam(value = "startDate") LocalDate startDate,
                                                     @RequestParam(value = "endDate") LocalDate endDate
-        ) {
+    ) {
         byte[] pdf = lessonService.generateLessonUnitReportPdf(lessonNumber, startDate, endDate);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
