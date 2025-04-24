@@ -99,7 +99,15 @@ public class ClassroomServiceImpl implements IClassroomService {
 
     @Override
     public List<SimpleClassroomDTO> findByStudentsPersonId(UUID personId) {
+        requireNonNull(personId);
         var classrooms = repository.findByStudentsPersonId(requireNonNull(personId));
+        return classrooms.stream().map(ClassroomMapper::toSimpleDTO).toList();
+    }
+
+    @Override
+    public List<SimpleClassroomDTO> findByTeachersPersonId(UUID personId) {
+        requireNonNull(personId);
+        var classrooms = repository.findByTeachersPersonId(requireNonNull(personId));
         return classrooms.stream().map(ClassroomMapper::toSimpleDTO).toList();
     }
 

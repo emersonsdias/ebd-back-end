@@ -13,11 +13,12 @@ public class PersonReportDTO implements Serializable {
 
     private final PersonDTO person;
     private final List<ClassroomAttendanceDTO> attendancesByClassroom;
+    private final List<ClassroomTeacherDTO> teachingsByClassroom;
     private final Integer totalLessons;
     private final Integer attendedLessons;
     private final Integer missedLessons;
 
-    public PersonReportDTO(PersonDTO person, List<ClassroomAttendanceDTO> attendancesByClassroom) {
+    public PersonReportDTO(PersonDTO person, List<ClassroomAttendanceDTO> attendancesByClassroom, List<ClassroomTeacherDTO> teachingsByClassroom) {
         this.person = person;
         this.attendancesByClassroom = nonNull(attendancesByClassroom) ? attendancesByClassroom : new ArrayList<>();
         this.totalLessons = attendancesByClassroom
@@ -31,7 +32,10 @@ public class PersonReportDTO implements Serializable {
                 .flatMap(List::stream)
                 .filter(AttendanceDTO::isPresent)
                 .count();
+        this.teachingsByClassroom = nonNull(teachingsByClassroom) ? teachingsByClassroom : new ArrayList<>();
+
         this.missedLessons = this.totalLessons - this.attendedLessons;
+
     }
 
 }

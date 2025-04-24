@@ -23,4 +23,6 @@ public interface IClassroomService {
     ClassroomDTO enrollStudent(Long classroomId, UUID personId);
 
     List<SimpleClassroomDTO> findByStudentsPersonId(UUID personId);
+
+    List<SimpleClassroomDTO> findByTeachersPersonId(UUID personId);
 }

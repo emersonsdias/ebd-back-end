@@ -1,65 +1,64 @@
 <!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
-<jasperReport name="person_student" language="java" columnCount="1" pageWidth="555" pageHeight="842" columnWidth="555"
-              leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="a197ebe4-33f4-435c-9129-afc271252fed">
+<jasperReport name="sub_person_teacher" language="java" pageWidth="555" pageHeight="842" columnWidth="555"
+              leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="12267a1c-f6a8-421f-977e-76942a0199ce">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql"/>
     <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <style name="alternate_colors" mode="Opaque" backcolor="#FFFFFF">
+        <conditionalStyle mode="Opaque" backcolor="#CCFFFF">
+            <conditionExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></conditionExpression>
+        </conditionalStyle>
+    </style>
     <parameter name="person_id" class="java.lang.String"/>
     <query language="sql"><![CDATA[select
-	s.id,
-	s.classroom_id,
-	s.created_at,
+	t.id,
+	t.classroom_id,
+	t.created_at,
 	c.name as classroom_name,
-	COUNT(a.id) AS total_attendances,
-    COUNT(CASE WHEN a.present THEN 1 END) AS total_present,
+	COUNT(t2.id) AS total_teachings,
     max(l.lesson_date) as last_lesson
-from app.students s
-left join app.classrooms c on c.id = s.classroom_id
-left join app.attendances a on a.student_id = s.id
-left join app.lessons l on l.id = a.lesson_id
-where s.person_id =   CAST($P{person_id} AS UUID)
-GROUP BY s.id, s.classroom_id, s.created_at, c.name
+from app.teachers t
+left join app.classrooms c on c.id = t.classroom_id
+left join app.teachings t2 on t2.teacher_id = t.id
+left join app.lessons l on l.id = t2.lesson_id
+where t.person_id =   CAST($P{person_id} AS UUID)
+GROUP BY t.id, t.classroom_id, t.created_at, c.name
 ]]></query>
     <field name="id" class="java.util.UUID">
         <property name="com.jaspersoft.studio.field.name" value="id"/>
         <property name="com.jaspersoft.studio.field.label" value="id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="students"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="teachers"/>
     </field>
     <field name="classroom_id" class="java.lang.Long">
         <property name="com.jaspersoft.studio.field.name" value="classroom_id"/>
         <property name="com.jaspersoft.studio.field.label" value="classroom_id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="students"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="teachers"/>
     </field>
     <field name="created_at" class="java.sql.Timestamp">
         <property name="com.jaspersoft.studio.field.name" value="created_at"/>
         <property name="com.jaspersoft.studio.field.label" value="created_at"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="students"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="teachers"/>
     </field>
     <field name="classroom_name" class="java.lang.String">
         <property name="com.jaspersoft.studio.field.name" value="classroom_name"/>
         <property name="com.jaspersoft.studio.field.label" value="classroom_name"/>
         <property name="com.jaspersoft.studio.field.tree.path" value="classrooms"/>
     </field>
-    <field name="total_attendances" class="java.lang.Long">
-        <property name="com.jaspersoft.studio.field.name" value="total_attendances"/>
-        <property name="com.jaspersoft.studio.field.label" value="total_attendances"/>
-    </field>
-    <field name="total_present" class="java.lang.Long">
-        <property name="com.jaspersoft.studio.field.name" value="total_present"/>
-        <property name="com.jaspersoft.studio.field.label" value="total_present"/>
+    <field name="total_teachings" class="java.lang.Long">
+        <property name="com.jaspersoft.studio.field.name" value="total_teachings"/>
+        <property name="com.jaspersoft.studio.field.label" value="total_teachings"/>
     </field>
     <field name="last_lesson" class="java.sql.Date">
         <property name="com.jaspersoft.studio.field.name" value="last_lesson"/>
         <property name="com.jaspersoft.studio.field.label" value="last_lesson"/>
     </field>
     <group name="Group1">
-        <expression><![CDATA[$F{id}]]></expression>
         <groupHeader>
             <band height="70">
-                <element kind="rectangle" uuid="c2b20bdc-a6fd-4b4b-9a3d-f2a3dfcb4b2b" x="0" y="0" width="555"
+                <element kind="rectangle" uuid="7e9f8ee8-9bfe-4af6-a675-ea154c661115" x="0" y="0" width="555"
                          height="70" backcolor="#33CCFF">
                     <pen lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.05882353)"/>
                 </element>
-                <element kind="textField" uuid="de8d6d8b-ec6e-4a62-b423-dcefd33bdae5" x="0" y="0" width="260"
+                <element kind="textField" uuid="169d3fa2-13dd-4480-8b88-4c681594c9f8" x="0" y="0" width="260"
                          height="30" markup="html" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
                     <expression><![CDATA["Turma: <b>" + $F{classroom_name} + "</b>"]]></expression>
                     <box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -70,9 +69,9 @@ GROUP BY s.id, s.classroom_id, s.created_at, c.name
                         <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="2e51aeda-9e8e-4bf3-9958-98236d7e6eb4" x="260" y="0" width="295"
+                <element kind="textField" uuid="34618fc2-4400-4d22-b454-e00b1960f58a" x="260" y="0" width="295"
                          height="30" markup="html" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA["Matrícula: <b>" + $F{id} + "</b>"]]></expression>
+                    <expression><![CDATA["Id professor: <b>" + $F{id} + "</b>"]]></expression>
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID"
                               value="72b2b9fa-6132-45e5-8900-d9e66e08144c"/>
                     <box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -83,9 +82,9 @@ GROUP BY s.id, s.classroom_id, s.created_at, c.name
                         <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="cd7e6341-45dc-4cb5-8ca5-35050214a494" x="0" y="30" width="260"
-                         height="20" markup="html" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA["Data da matrícula: <b>" +
+                <element kind="textField" uuid="4b8e6744-c6eb-4484-948a-aa3d465c0843" x="0" y="30" width="260"
+                         height="40" markup="html" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
+                    <expression><![CDATA["Data de atribuição: <b>" +
    new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm")
    .format(new java.util.Date($F{created_at}.getTime())) + "</b>"]]></expression>
                     <box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -96,9 +95,9 @@ GROUP BY s.id, s.classroom_id, s.created_at, c.name
                         <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="515821ed-04e9-4562-81b6-db53d53abec5" x="260" y="30" width="170"
+                <element kind="textField" uuid="12412e73-c1a5-4aa8-90a7-66a17ba71076" x="260" y="30" width="295"
                          height="20" markup="html" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA["Total de aulas: <b>" + $F{total_attendances} + "</b>"]]></expression>
+                    <expression><![CDATA["Total de aulas: <b>" + $F{total_teachings} + "</b>"]]></expression>
                     <box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
                         <pen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
                         <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
@@ -107,30 +106,7 @@ GROUP BY s.id, s.classroom_id, s.created_at, c.name
                         <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="c13e0388-c83b-4caa-84d6-2339f01ebe69" x="260" y="50" width="170"
-                         height="20" markup="html" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA["Total de presenças: <b>" + $F{total_present} + "</b>"]]></expression>
-                    <box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-                        <pen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                    </box>
-                </element>
-                <element kind="textField" uuid="c3638df5-f3b0-42d6-93e1-86b3f2a01be8" x="430" y="30" width="125"
-                         height="40" markup="html" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA["Aproveitamento: <b>" + String.format("%.1f", ((double)$F{total_present}) / $F{total_attendances} * 100) + "%</b>"
-]]></expression>
-                    <box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-                        <pen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
-                    </box>
-                </element>
-                <element kind="textField" uuid="80a24f76-3b6f-4a35-b6c2-691319713cd7" x="0" y="50" width="260"
+                <element kind="textField" uuid="75ecd5dd-028b-4d43-bcc2-8d5707f44898" x="260" y="50" width="295"
                          height="20" markup="html" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
                     <expression><![CDATA["Última aula: <b>" +
    (($F{last_lesson} != null) ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date($F{last_lesson}.getTime())) : "Não houve nenhuma aula")
@@ -147,20 +123,23 @@ GROUP BY s.id, s.classroom_id, s.created_at, c.name
         </groupHeader>
     </group>
     <title height="30">
-        <element kind="staticText" uuid="d70085f1-f58b-4146-bea9-37330206cf4c" x="0" y="0" width="555" height="30"
+        <element kind="staticText" uuid="15f702ab-cbfd-409f-a047-c4a2519539c7" x="0" y="0" width="555" height="30"
                  bold="true" hTextAlign="Center" vTextAlign="Middle">
-            <text><![CDATA[COMO ALUNO]]></text>
+            <text><![CDATA[COMO PROFESSOR]]></text>
         </element>
     </title>
     <detail>
         <band height="64" splitType="Stretch">
-            <element kind="subreport" uuid="beb2135e-d5b4-41d9-9033-4fd7d6b85d62" x="0" y="0" width="555" height="50">
+            <element kind="subreport" uuid="85a669aa-845a-4cbe-8fc9-04fe1fc7c7b8" x="0" y="0" width="555" height="50">
                 <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-                <expression><![CDATA["reports/person_report/sub_student_attendance.jasper"]]></expression>
-                <parameter name="student_id">
+                <expression><![CDATA["reports/person_report/sub_teacher_teaching.jasper"]]></expression>
+                <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                <parameter name="teacher_id">
                     <expression><![CDATA[$F{id}]]></expression>
                 </parameter>
             </element>
+            <property name="com.jaspersoft.studio.unit.height" value="px"/>
         </band>
     </detail>
 </jasperReport>

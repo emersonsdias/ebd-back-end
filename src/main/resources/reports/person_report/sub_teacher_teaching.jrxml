@@ -1,0 +1,134 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="sub_teacher_teaching" language="java" pageWidth="555" pageHeight="842" columnWidth="555"
+              leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="49deb854-4691-4cf8-8fca-b66e80740a50">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql"/>
+    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <style name="alternate_colors" mode="Opaque" backcolor="#FFFFFF">
+        <conditionalStyle mode="Opaque" backcolor="#CCFFFF">
+            <conditionExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></conditionExpression>
+        </conditionalStyle>
+    </style>
+    <parameter name="teacher_id" class="java.lang.String"/>
+    <query language="sql"><![CDATA[select
+	l.lesson_date,
+	l.lesson_number,
+	l.topic
+from app.teachings t
+left join app.lessons l on l.id = t.lesson_id
+where t.teacher_id =  CAST($P{teacher_id} AS UUID) 
+order by l.lesson_number asc
+]]></query>
+    <field name="topic" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="topic"/>
+        <property name="com.jaspersoft.studio.field.label" value="topic"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="lessons"/>
+    </field>
+    <field name="lesson_number" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.name" value="lesson_number"/>
+        <property name="com.jaspersoft.studio.field.label" value="lesson_number"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="lessons"/>
+    </field>
+    <field name="lesson_date" class="java.sql.Date">
+        <property name="com.jaspersoft.studio.field.name" value="lesson_date"/>
+        <property name="com.jaspersoft.studio.field.label" value="lesson_date"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="lessons"/>
+    </field>
+    <background splitType="Stretch"/>
+    <columnHeader height="31" splitType="Stretch">
+        <element kind="staticText" uuid="d8229a62-4ccd-4dfa-a3c8-632616624668" mode="Opaque" x="0" y="1" width="141"
+                 height="30" forecolor="#FFFFFF" backcolor="#3333FF" hTextAlign="Center" vTextAlign="Middle">
+            <text><![CDATA[Data]]></text>
+            <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                      value="59294bbb-8c7d-4209-9b15-4a03dc87fec4"/>
+            <box>
+                <pen lineColor="#DEDEDE"/>
+                <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+            </box>
+        </element>
+        <element kind="staticText" uuid="880f24d4-191e-4316-a8ad-94740c7056af" mode="Opaque" x="141" y="1" width="138"
+                 height="30" forecolor="#FFFFFF" backcolor="#3333FF" hTextAlign="Center" vTextAlign="Middle">
+            <text><![CDATA[Lição]]></text>
+            <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                      value="cadf73c6-e7b3-4c56-84d9-399c03c48de6"/>
+            <box>
+                <pen lineColor="#DEDEDE"/>
+                <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+            </box>
+        </element>
+        <element kind="staticText" uuid="c22e2c56-5ff3-4931-b2a4-afaffc5b042d" mode="Opaque" x="279" y="1" width="276"
+                 height="30" forecolor="#FFFFFF" backcolor="#3333FF" hTextAlign="Center" vTextAlign="Middle">
+            <text><![CDATA[Tema aula]]></text>
+            <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                      value="173a4f96-d3fd-4c90-b39f-383c13371cd0"/>
+            <box>
+                <pen lineColor="#DEDEDE"/>
+                <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+            </box>
+        </element>
+    </columnHeader>
+    <detail>
+        <band height="31" splitType="Stretch">
+            <element kind="frame" uuid="b17d8be1-f34e-4b76-b200-387c11501872" x="0" y="0" width="555" height="31">
+                <element kind="textField" uuid="1dba0bf2-401b-42b8-824d-eabd0a8ff51e" stretchType="ContainerHeight"
+                         x="1" y="1" width="140" height="30" hTextAlign="Center" vTextAlign="Middle"
+                         style="alternate_colors">
+                    <expression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy")
+   .format(new java.util.Date($F{lesson_date}.getTime()))]]></expression>
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                              value="59294bbb-8c7d-4209-9b15-4a03dc87fec4"/>
+                    <box style="alternate_colors">
+                        <pen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                        <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                </element>
+                <element kind="textField" uuid="e23acaf6-5249-4206-ab21-da7e56e80687" stretchType="ContainerHeight"
+                         x="141" y="1" width="138" height="30" hTextAlign="Center" vTextAlign="Middle"
+                         style="alternate_colors">
+                    <expression><![CDATA["Lição " + $F{lesson_number}]]></expression>
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                              value="cadf73c6-e7b3-4c56-84d9-399c03c48de6"/>
+                    <box style="alternate_colors">
+                        <pen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                        <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                </element>
+                <element kind="textField" uuid="aa520f1f-184d-450c-b5f6-f2bb8cd64efd" stretchType="ContainerHeight"
+                         x="279" y="1" width="276" height="30" hTextAlign="Center" vTextAlign="Middle"
+                         style="alternate_colors">
+                    <expression><![CDATA[$F{topic}]]></expression>
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                              value="cadf73c6-e7b3-4c56-84d9-399c03c48de6"/>
+                    <box style="alternate_colors">
+                        <pen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                        <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                </element>
+                <box>
+                    <pen lineColor="#DEDEDE"/>
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#DEDEDE"/>
+                </box>
+            </element>
+        </band>
+    </detail>
+</jasperReport>

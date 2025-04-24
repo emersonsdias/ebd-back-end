@@ -1,10 +1,7 @@
 package br.com.emersondias.ebd.services.impl;
 
 import br.com.emersondias.ebd.constants.RouteConstants;
-import br.com.emersondias.ebd.dtos.AddressDTO;
-import br.com.emersondias.ebd.dtos.ClassroomAttendanceDTO;
-import br.com.emersondias.ebd.dtos.PersonDTO;
-import br.com.emersondias.ebd.dtos.PersonReportDTO;
+import br.com.emersondias.ebd.dtos.*;
 import br.com.emersondias.ebd.entities.Address;
 import br.com.emersondias.ebd.entities.Person;
 import br.com.emersondias.ebd.entities.enums.PersonType;
@@ -15,10 +12,7 @@ import br.com.emersondias.ebd.mappers.PersonMapper;
 import br.com.emersondias.ebd.mappers.PhoneNumberMapper;
 import br.com.emersondias.ebd.repositories.PersonRepository;
 import br.com.emersondias.ebd.repositories.specifications.PersonSpecification;
-import br.com.emersondias.ebd.services.interfaces.IAttendanceService;
-import br.com.emersondias.ebd.services.interfaces.IClassroomService;
-import br.com.emersondias.ebd.services.interfaces.IPersonService;
-import br.com.emersondias.ebd.services.interfaces.IReportService;
+import br.com.emersondias.ebd.services.interfaces.*;
 import br.com.emersondias.ebd.utils.LogHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +33,7 @@ public class PersonServiceImpl implements IPersonService {
     private final PersonRepository repository;
     private final IClassroomService classroomService;
     private final IAttendanceService attendanceService;
+    private final ITeachingService teachingService;
     private final IReportService reportService;
 
     @Transactional
@@ -104,17 +99,27 @@ public class PersonServiceImpl implements IPersonService {
     public PersonReportDTO generatePersonReport(UUID id) {
         requireNonNull(id);
         var personDTO = findById(id);
-        var classrooms = classroomService.findByStudentsPersonId(id);
+        var studentClassrooms = classroomService.findByStudentsPersonId(id);
         var attendances = attendanceService.findByStudentPersonId(id);
-        List<ClassroomAttendanceDTO> attendancesByClassroom = new ArrayList<>();
 
-        classrooms.forEach(classroom -> {
+        List<ClassroomAttendanceDTO> attendancesByClassroom = new ArrayList<>();
+        studentClassrooms.forEach(classroom -> {
             var attendacesFiltered = attendances.stream()
                     .filter(a -> a.getLesson().getClassroomId().equals(classroom.getId())).toList();
             attendancesByClassroom.add(new ClassroomAttendanceDTO(classroom, attendacesFiltered));
         });
 
-        return new PersonReportDTO(personDTO, attendancesByClassroom);
+        var teacherClassrooms = classroomService.findByTeachersPersonId(id);
+        var teachings = teachingService.findByTeacherPersonId(id);
+
+        List<ClassroomTeacherDTO> teachingsByClassroom = new ArrayList<>();
+        teacherClassrooms.forEach(classroom -> {
+            var teachingsFiltered = teachings.stream()
+                    .filter(t -> t.getLesson().getClassroomId().equals(classroom.getId())).toList();
+            teachingsByClassroom.add(new ClassroomTeacherDTO(classroom, teachingsFiltered));
+        });
+
+        return new PersonReportDTO(personDTO, attendancesByClassroom, teachingsByClassroom);
     }
 
     @Transactional(readOnly = true)

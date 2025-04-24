@@ -218,6 +218,15 @@ where p.id = CAST($P{person_id} AS UUID)]]></query>
                 </parameter>
             </element>
         </band>
+        <band height="40">
+            <element kind="subreport" uuid="20758ca8-9034-4378-8ae0-96585c4df091" x="0" y="0" width="555" height="40">
+                <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+                <expression><![CDATA["reports/person_report/sub_person_teacher.jasper"]]></expression>
+                <parameter name="person_id">
+                    <expression><![CDATA[$P{person_id}]]></expression>
+                </parameter>
+            </element>
+        </band>
     </detail>
     <columnFooter height="45" splitType="Stretch"/>
     <pageFooter height="31" splitType="Stretch">
