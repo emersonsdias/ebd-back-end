@@ -1,8 +1,9 @@
 # Build stage
 FROM maven:3.9.6-eclipse-temurin-11 AS maven
-COPY pom.xml /home/app
-COPY src /home/app/src
-RUN mvn -f /home/app/pom.xml clean package
+WORKDIR /home/app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package
 
 # Runtime stage
 FROM eclipse-temurin:21-jdk
