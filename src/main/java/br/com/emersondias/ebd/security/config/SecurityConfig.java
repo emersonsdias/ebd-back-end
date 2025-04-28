@@ -81,6 +81,17 @@ public class SecurityConfig {
                             }));
 
         }
+        if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
+            httpSecurity
+                    .cors(cors -> cors
+                            .configurationSource(request -> {
+                                CorsConfiguration config = new CorsConfiguration();
+                                config.setAllowedOrigins(List.of("https://ebd-escolabiblica.netlify.app/", "http://localhost:4200"));
+                                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+                                config.setAllowedHeaders(List.of("*"));
+                                return config;
+                            }));
+        }
         var authenticationManager = authenticationManager(httpSecurity);
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
