@@ -26,4 +26,7 @@ public interface ILessonService {
 
     byte[] generateLessonUnitReportPdf(Integer lessonNumber, LocalDate startDate, LocalDate endDate);
 
+    List<LessonDTO> findAllConsideringUser();
+
+    List<LessonDTO> findByFilterConsideringUser(LessonFilterDTO filter);
 }

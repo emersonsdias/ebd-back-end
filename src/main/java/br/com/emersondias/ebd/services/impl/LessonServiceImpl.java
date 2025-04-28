@@ -3,11 +3,13 @@ package br.com.emersondias.ebd.services.impl;
 import br.com.emersondias.ebd.dtos.LessonDTO;
 import br.com.emersondias.ebd.dtos.filters.LessonFilterDTO;
 import br.com.emersondias.ebd.entities.Lesson;
+import br.com.emersondias.ebd.entities.enums.UserRole;
 import br.com.emersondias.ebd.exceptions.ReportGenerationException;
 import br.com.emersondias.ebd.exceptions.ResourceNotFoundException;
 import br.com.emersondias.ebd.mappers.LessonMapper;
 import br.com.emersondias.ebd.repositories.LessonRepository;
 import br.com.emersondias.ebd.repositories.specifications.LessonSpecification;
+import br.com.emersondias.ebd.security.utils.SecurityUtils;
 import br.com.emersondias.ebd.services.interfaces.ILessonService;
 import br.com.emersondias.ebd.services.interfaces.IReportService;
 import br.com.emersondias.ebd.utils.LogHelper;
@@ -17,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Objects.*;
 
@@ -116,6 +115,36 @@ public class LessonServiceImpl implements ILessonService {
             LOG.error(error);
             throw new RuntimeException(error, e);
         }
+    }
+
+    @Override
+    public List<LessonDTO> findAllConsideringUser() {
+        var authenticatedUser = SecurityUtils.getAuthenticatedUser();
+
+        assert authenticatedUser != null;
+        if (authenticatedUser.hasRole(UserRole.ADMIN)) {
+            return findAll();
+        }
+
+        List<Lesson> lessons = repository.findLessonsByTeacherPersonId(authenticatedUser.getPersonId());
+
+        return lessons.stream().map(LessonMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<LessonDTO> findByFilterConsideringUser(LessonFilterDTO filter) {
+        requireNonNull(filter);
+
+        var authenticatedUser = SecurityUtils.getAuthenticatedUser();
+        assert authenticatedUser != null;
+        if (authenticatedUser.hasRole(UserRole.ADMIN)) {
+            return findByFilter(filter);
+        }
+
+        var spec = LessonSpecification.withFilterAndAuthenticatedPersonId(filter, authenticatedUser.getPersonId());
+        List<Lesson> lessons = repository.findAll(spec);
+
+        return lessons.stream().map(LessonMapper::toDTO).toList();
     }
 
     private Lesson findEntityById(Long id) {

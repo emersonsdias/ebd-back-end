@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.UUID;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class UserAuthenticated implements UserDetails {
@@ -72,6 +73,9 @@ public class UserAuthenticated implements UserDetails {
     }
 
     public boolean hasRole(UserRole role) {
+        if (isNull(role)) {
+            return false;
+        }
         return getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + role.getDescription()));
     }
 }

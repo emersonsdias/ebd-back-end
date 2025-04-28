@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,9 +31,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final static String[] PUBLIC_MATCHERS = {"/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"};
-
-    private final static String[] AUTH_MATCHERS = {"/auth/**"};
+    private final static String[] PUBLIC_MATCHERS = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
+    private final static String[] AUTH_MATCHERS = {
+            RouteConstants.AUTH_ROUTE + "/**"
+    };
+    private final static String[] AUTH_MATCHERS_GET = {
+            RouteConstants.CLASSROOMS_ROUTE + "/{classroomId}",
+            RouteConstants.ITEMS_ROUTE + "/**",
+            RouteConstants.LESSONS_ROUTE + "/**",
+            RouteConstants.PEOPLE_ROUTE + "/birthdate",
+            RouteConstants.USERS_ROUTE + "/{userId}"
+    };
+    private final static String[] AUTH_MATCHERS_PUT = {
+            RouteConstants.LESSONS_ROUTE + "/{lessonId}",
+            RouteConstants.USERS_ROUTE + "/{userId}"
+    };
     private final Environment environment;
     private final UserDetailsService userDetailsService;
 
@@ -71,6 +88,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
                         .requestMatchers(AUTH_MATCHERS).authenticated()
+                        .requestMatchers(HttpMethod.GET, AUTH_MATCHERS_GET).authenticated()
+                        .requestMatchers(HttpMethod.PUT, AUTH_MATCHERS_PUT).authenticated()
                         .anyRequest().hasAnyRole(UserRole.ADMIN.getDescription())
                 )
                 .addFilter(getJWTAuthenticationFilter(authenticationManager))

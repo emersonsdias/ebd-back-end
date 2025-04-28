@@ -75,7 +75,7 @@ public class LessonController {
             @ApiResponse(responseCode = "200")
     })
     @GetMapping
-    public ResponseEntity<List<LessonDTO>> findAll(
+    public ResponseEntity<List<LessonDTO>> find(
             @RequestParam(value = "startDate", required = false) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) LocalDate endDate,
             @RequestParam(value = "maxRecentLessons", required = false) Integer maxRecentLessons,
@@ -84,7 +84,7 @@ public class LessonController {
             HttpServletRequest request
     ) {
         if (request.getParameterMap().isEmpty()) {
-            return ResponseEntity.ok(lessonService.findAll());
+            return ResponseEntity.ok(lessonService.findAllConsideringUser());
         }
 
         var filter = LessonFilterDTO.builder()
@@ -94,7 +94,7 @@ public class LessonController {
                 .lessonStatus(lessonStatus)
                 .build();
 
-        return ResponseEntity.ok(lessonService.findByFilter(filter));
+        return ResponseEntity.ok(lessonService.findByFilterConsideringUser(filter));
     }
 
     @Operation(summary = "Find lessons by list of IDs")
