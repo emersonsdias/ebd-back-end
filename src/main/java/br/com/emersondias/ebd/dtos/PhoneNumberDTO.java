@@ -22,5 +22,4 @@ public class PhoneNumberDTO implements Serializable {
     private Instant createdAt;
     private Instant updatedAt;
 
-
 }

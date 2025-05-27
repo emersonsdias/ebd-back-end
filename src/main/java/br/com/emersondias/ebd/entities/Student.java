@@ -8,9 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,7 +20,6 @@ import java.util.UUID;
 @Table(schema = "app", name = "students")
 public class Student implements Serializable {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -48,6 +47,18 @@ public class Student implements Serializable {
         this.academicPeriodStart = other.getAcademicPeriodStart();
         this.academicPeriodEnd = other.getAcademicPeriodEnd();
         this.active = other.isActive();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass() || id == null) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
 }

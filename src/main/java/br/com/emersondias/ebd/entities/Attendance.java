@@ -7,8 +7,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -24,7 +24,6 @@ public class Attendance implements Serializable {
     private Long id;
     @Column(name = "present", nullable = false)
     private boolean present;
-    @EqualsAndHashCode.Include
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
@@ -46,4 +45,15 @@ public class Attendance implements Serializable {
         this.active = other.isActive();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Attendance that = (Attendance) o;
+        return Objects.equals(student, that.student) && Objects.equals(lesson, that.lesson);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(student, lesson);
+    }
 }

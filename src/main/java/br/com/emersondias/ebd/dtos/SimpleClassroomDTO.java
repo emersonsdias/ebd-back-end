@@ -4,7 +4,6 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,15 +19,4 @@ public class SimpleClassroomDTO implements Serializable {
     private Instant createdAt;
     private Instant updatedAt;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        SimpleClassroomDTO that = (SimpleClassroomDTO) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }
