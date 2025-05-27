@@ -39,8 +39,10 @@ public class PersonValidatorServiceImpl implements Validator<PersonDTO>, Constra
         validateName(personDTO, errors);
         validateBirthdate(personDTO, errors);
         validateEmail(personDTO, errors);
+        validateGender(personDTO, errors);
         validateAddress(personDTO, errors);
         validatePhoneNumbers(personDTO, errors);
+        validateTypes(personDTO, errors);
 
         return new DefaultValidationResult<>(personDTO, errors);
     }
@@ -58,6 +60,15 @@ public class PersonValidatorServiceImpl implements Validator<PersonDTO>, Constra
         });
 
         return validationResult.isValid();
+    }
+
+    private void validateTypes(PersonDTO personDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "types";
+        final var FIELD_VALUE = personDTO.getTypes();
+
+        if (isNull(FIELD_VALUE) || FIELD_VALUE.isEmpty()) {
+            addFieldError(errors, FIELD_NAME, null, "A pessoa deve ter pelo menos um tipo");
+        }
     }
 
     private void validatePhoneNumbers(PersonDTO personDTO, List<FieldMessageDTO> errors) {
@@ -82,6 +93,15 @@ public class PersonValidatorServiceImpl implements Validator<PersonDTO>, Constra
 
         var addressValidationResult = addressValidator.validate(FIELD_VALUE);
         errors.addAll(addressValidationResult.getErrors());
+    }
+
+    private void validateGender(PersonDTO personDTO, List<FieldMessageDTO> errors) {
+        final var FIELD_NAME = "gender";
+        final var FIELD_VALUE = personDTO.getGender();
+
+        if (isNull(FIELD_VALUE)) {
+            addFieldError(errors, FIELD_NAME, null, "O gênero não pode ser nulo");
+        }
     }
 
     private void validateEmail(PersonDTO personDTO, List<FieldMessageDTO> errors) {
