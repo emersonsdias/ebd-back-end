@@ -12,6 +12,7 @@ import br.com.emersondias.ebd.repositories.ClassroomRepository;
 import br.com.emersondias.ebd.repositories.PersonRepository;
 import br.com.emersondias.ebd.services.interfaces.IClassroomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +61,8 @@ public class ClassroomServiceImpl implements IClassroomService {
     @Transactional(readOnly = true)
     @Override
     public List<ClassroomDTO> findAll() {
-        return repository.findAll().stream().map(ClassroomMapper::toDTO).toList();
+        var sort = Sort.by(Sort.Direction.ASC, "name");
+        return repository.findAll(sort).stream().map(ClassroomMapper::toDTO).toList();
     }
 
     @Transactional

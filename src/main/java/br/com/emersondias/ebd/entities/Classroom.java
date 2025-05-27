@@ -3,6 +3,7 @@ package br.com.emersondias.ebd.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
@@ -32,10 +33,12 @@ public class Classroom implements Serializable {
     @ManyToOne
     @JoinColumn(name = "age_range_id")
     private AgeRange ageRange;
+    @SQLRestriction("active = true")
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Teacher> teachers = new ArrayList<>();
+    @SQLRestriction("active = true")
     @Setter(AccessLevel.NONE)
     @Builder.Default
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
